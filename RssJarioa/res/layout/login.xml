@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+     android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dip" > 
+
+    
+     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Izena: "
+        android:textSize="20dp"
+       
+       />
+     
+     <EditText 
+         android:id="@+id/txt_izena"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+           android:singleLine="true" 
+           android:hint="gorka"
+         />
+     
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pasahitza: "
+        android:textSize="20dp"
+       />
+     
+     <EditText 
+         android:id="@+id/txt_pasahitza"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:password="true"
+         android:singleLine="true" 
+         android:hint="123"
+         />
+     
+     <Button 
+        android:id="@+id/btn_balidatu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Balidatu"
+        android:onClick="BalidatuOnClick"
+       
+        
+        
+         />
+
+</LinearLayout>

@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E8E8E8"
+    android:orientation="vertical"
+    android:padding="10dp" >
+    
+    <Button
+        android:id="@+id/btnberriak"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/5_content_paste"
+        android:drawablePadding="35dp"
+        android:paddingLeft="50dp"
+        android:onClick="onclickbtnberriak"
+        android:text="Berriak"
+        android:textSize="25dp"
+        android:gravity="left"
+          />
+
+    <Button
+        android:id="@+id/btnirudiak"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Irudiak"
+        android:textSize="25dp"
+        android:gravity="left"
+        android:drawableLeft="@drawable/5_content_picture"
+        android:drawablePadding="35dp"
+        android:paddingLeft="50dp"
+        android:onClick="onclickbtnirudiak"
+        
+        />
+    <Button
+        android:id="@+id/btnkamara"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Kamara"
+        android:textSize="25dp"
+        android:gravity="left"
+        android:drawableLeft="@drawable/10_device_access_camera"
+        android:drawablePadding="35dp"
+        android:paddingLeft="50dp"
+        android:onClick="onclickbtnkamara"
+        
+        />
+ 
+    
+    <Button
+        android:id="@+id/btnkontaktua"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Kontaktua"
+        android:textSize="25dp"
+        android:gravity="left"
+        android:drawableLeft="@drawable/5_content_new_email"
+        android:drawablePadding="35dp"
+        android:paddingLeft="50dp"
+         android:onClick="onclickbtnkontaktua"
+        />
+
+</LinearLayout>

@@ -1,0 +1,78 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dip" >
+    
+<TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" 
+        android:paddingBottom="10dip">
+
+       
+
+        <Button
+            android:id="@+id/deitu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onclickdeitu"
+            android:text="Garatzaileari deitu"
+            android:textSize="15sp" />
+
+    </TableRow>
+    
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:paddingBottom="10dip">
+
+            <TextView
+                android:id="@+id/txtgaia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gaia: "
+                android:textSize="23sp" 
+                android:layout_gravity="bottom"/>
+
+            <EditText
+                android:id="@+id/Gaia"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:textSize="15sp" >
+               
+           </EditText>
+
+            
+            
+        </TableRow>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+</TableLayout>
+   
+    <EditText
+        android:id="@+id/testua"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:lines="5"
+        android:width="300sp" 
+         android:hint="Hemen idatzitako Testua developerrari bidaliko da....."/>
+
+     <Button
+            android:id="@+id/bidali"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onclickenviar"
+            android:text="Bidali" 
+            android:layout_gravity="right"/>
+
+</LinearLayout>
