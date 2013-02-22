@@ -16,13 +16,9 @@ public class Menua extends Activity {
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.menua);
-	        lehena();
+	        
 	    }
 
-	    public void lehena(){
-	    	Bundle bundle=getIntent().getExtras();
-	    	Toast.makeText(this, "Ongi etorria: "+bundle.getString("izena"),Toast.LENGTH_LONG).show();
-	    }
 	    public void onclickbtnberriak(View view){
 	    	startActivity(new Intent("berriak"));	
 	    }
