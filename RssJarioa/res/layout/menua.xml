@@ -6,58 +6,70 @@
     android:orientation="vertical"
     android:padding="10dp" >
     
-    <Button
-        android:id="@+id/btnberriak"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+   <Button
         android:drawableLeft="@drawable/paste"
         android:drawablePadding="35dp"
-        android:paddingLeft="50dp"
+        android:gravity="left"
+        android:id="@+id/btnberriak"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
         android:onClick="onclickbtnberriak"
+        android:paddingLeft="50dp"
         android:text="Berriak"
         android:textSize="25dp"
-        android:gravity="left"
           />
 
     <Button
-        android:id="@+id/btnirudiak"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Irudiak"
-        android:textSize="25dp"
-        android:gravity="left"
         android:drawableLeft="@drawable/picture"
         android:drawablePadding="35dp"
-        android:paddingLeft="50dp"
+        android:gravity="left"
+        android:id="@+id/btnirudiak"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
         android:onClick="onclickbtnirudiak"
+        android:paddingLeft="50dp"
+        android:text="Irudiak"
+        android:textSize="25dp"
         
         />
     <Button
-        android:id="@+id/btnkamara"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Kamara"
-        android:textSize="25dp"
-        android:gravity="left"
         android:drawableLeft="@drawable/camera"
         android:drawablePadding="35dp"
-        android:paddingLeft="50dp"
+        android:gravity="left"
+        android:id="@+id/btnkamara"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
         android:onClick="onclickbtnkamara"
+        android:paddingLeft="50dp"
+        android:text="Kamara"
+        android:textSize="25dp"
         
         />
  
     
     <Button
+        android:drawableLeft="@drawable/read"
+        android:drawablePadding="35dp"
+        android:gravity="left"
         android:id="@+id/btnkontaktua"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:onClick="onclickbtnkontaktua"
+        android:paddingLeft="50dp"
         android:text="Kontaktua"
         android:textSize="25dp"
-        android:gravity="left"
-        android:drawableLeft="@drawable/new_email"
+        />
+    <Button
+        android:drawableLeft="@drawable/settings"
         android:drawablePadding="35dp"
+        android:gravity="left"
+        android:id="@+id/btnhobespenak"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:onClick="onclickbtnhobespenak"
         android:paddingLeft="50dp"
-         android:onClick="onclickbtnkontaktua"
+        android:text="Hobespenak"
+        android:textSize="25dp"
         />
 
 </LinearLayout>

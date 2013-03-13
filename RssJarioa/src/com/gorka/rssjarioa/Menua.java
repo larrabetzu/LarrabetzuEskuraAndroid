@@ -37,6 +37,9 @@ public class Menua extends Activity {
 	    	startActivity(new Intent("kontaktua"));
 	    }
 	    
+	    public void onclickbtnhobespenak(View view){
+	    	startActivity(new Intent("hobespenak"));
+	    }
 	    
 	   
 	    			

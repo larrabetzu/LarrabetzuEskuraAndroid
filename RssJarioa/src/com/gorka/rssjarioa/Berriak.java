@@ -25,7 +25,7 @@ public class Berriak extends Activity {
 	static final String DATA_TITLE = "T";
 	static final String DATA_LINK  = "L";
 	static LinkedList<HashMap<String, String>> data;
-	static String feedUrl = "http://www.berria.info/rss/mundua.xml";
+	static String feedUrl = "http://larrabetzutik.org/feed/";
 
 	private ProgressDialog progressDialog;//
 	

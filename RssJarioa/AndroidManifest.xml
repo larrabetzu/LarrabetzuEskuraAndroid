@@ -42,8 +42,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gorka.rssjarioa.SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:name="com.gorka.rssjarioa.Hobespenak"
+            android:label="hobespenak" >
+            <intent-filter>
+                <action android:name="hobespenak" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
     </application>
 
