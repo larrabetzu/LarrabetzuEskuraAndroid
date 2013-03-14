@@ -12,18 +12,17 @@
 		   android:summary="Zenbat Post Blog Bakoitzeko"
 		   android:dialogTitle="Zenbat Post Bakoitzeko"
 		   android:entries="@array/post"
-		   android:entryValues="@array/codipost" />
+		   android:entryValues="@array/codipost" 
+		   android:defaultValue="4"/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="Aukeratu blogak">
 	 	<CheckBoxPreference
 	        android:key="http://larrabetzutik.org/feed/"
-	        android:title="Larrabetzutik" />
+	        android:title="Larrabetzutik"
+	        android:defaultValue="true" />
 	 	<CheckBoxPreference
 	        android:key="http://horibai.org/feed/rss/"
 	        android:title="hori bai" />
-	 	<CheckBoxPreference
-	        android:key="http://www.larrabetzukoeskola.org/feed/"
-	        android:title="eskola" />
 	 	<CheckBoxPreference
 	        android:key="http://www.larrabetzu.info/feeds/posts/default"
 	        android:title="eskola" />

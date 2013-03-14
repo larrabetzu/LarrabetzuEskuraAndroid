@@ -7,6 +7,7 @@ import com.gorka.rssjarioa.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -29,9 +30,8 @@ public class Berriak extends Activity {
 	static final String DATA_LINK  = "L";
 	static LinkedList<HashMap<String, String>> data;
 	static String feedUrl = "http://www.berria.info/rss/euskalherria.xml";
-	SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 	private ProgressDialog progressDialog;//
-	//int post = sharedPrefs.getInt("post",4);
+	private int post;
 	/**(Handler) Datuak kargetan amaituten direnean mesu bat bidaltzeko beste hari batera
 	 */	
 	private final Handler progressHandler = new Handler() {
@@ -49,12 +49,17 @@ public class Berriak extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.berriak);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         try {
-        	loadData();
+        	this.post =Integer.parseInt(sharedPrefs.getString("post","Null"));
+        	//Log.i("Preferencias", "es: " + sharedPrefs.getBoolean("opcion1", false));
 		} catch (Exception e) {
-			Log.e("El error", e.toString());
+			this.post=6;
 		}
         
+        
+        loadData();
+		
       
         
         ListView lv = (ListView) findViewById(R.id.lstData);
@@ -96,7 +101,7 @@ public class Berriak extends Activity {
     	new Thread(new Runnable(){
     		@Override
     		public void run() {
-    			XMLParser parser = new XMLParser(feedUrl); 
+    			XMLParser parser = new XMLParser(feedUrl,post); 
                 Message msg = progressHandler.obtainMessage();
                 msg.obj = parser.parse();
     			progressHandler.sendMessage(msg);

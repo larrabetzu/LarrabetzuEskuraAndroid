@@ -16,16 +16,17 @@ import org.w3c.dom.NodeList;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class XMLParser {
 	private URL url;
-	//private int post;
+	private int post;
 
 	
-	public XMLParser(String url) {
+	public XMLParser(String url,int post) {
 		try {
 			this.url = new URL(url);
-			//this.post=post;
+			this.post=post;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -40,7 +41,12 @@ public class XMLParser {
 			Document dom = builder.parse(this.url.openConnection().getInputStream());
 			Element root = dom.getDocumentElement();
 			NodeList items = root.getElementsByTagName("item");
-			for (int i=0;i<items.getLength();i++){
+			int numpost=this.post;
+			if (this.post>items.getLength()) {
+				numpost=items.getLength();
+				
+			}
+			for (int i=0;i<numpost;i++){
 				entry = new HashMap<String, String>();				
 				Node item = items.item(i);
 				NodeList properties = item.getChildNodes();
