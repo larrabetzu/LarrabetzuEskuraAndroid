@@ -6,8 +6,10 @@ import java.util.LinkedList;
 import com.gorka.rssjarioa.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class Berriak extends Activity {
@@ -54,10 +57,8 @@ public class Berriak extends Activity {
         	this.post =Integer.parseInt(sharedPrefs.getString("post","Null"));
         	//Log.i("Preferencias", "es: " + sharedPrefs.getBoolean("opcion1", false));
 		} catch (Exception e) {
-			this.post=6;
+			eleccion("Lehenengo zure hobespenak jarri behar dituzu");
 		}
-        
-        
         loadData();
 		
       
@@ -79,6 +80,8 @@ public class Berriak extends Activity {
     		}
     	});        
     }
+  
+   
     
     /** 
      * Mapan lista bat jaso eta ListView-a sortu
@@ -107,4 +110,32 @@ public class Berriak extends Activity {
     			progressHandler.sendMessage(msg);
     		}}).start();
     }    
+    
+    
+	public void eleccion(String cadena){
+	    
+	        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+	        alertbox.setMessage(cadena);
+	        alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface arg0, int arg1) {
+	            	startActivity(new Intent("hobespenak"));
+	            }
+	        });
+	 
+	        alertbox.setNegativeButton("Ez", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface arg0, int arg1) {
+	                finish();
+	            }
+	        });
+	 
+	        alertbox.show();
+	    }
+	
+	
+	public void mensaje(String cadena){
+	    Toast.makeText(this, cadena, Toast.LENGTH_SHORT).show();
+	    }
+	
+    
+    
 }
