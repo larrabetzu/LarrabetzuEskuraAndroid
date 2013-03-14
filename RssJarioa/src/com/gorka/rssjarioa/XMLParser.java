@@ -14,12 +14,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 public class XMLParser {
 	private URL url;
+	//private int post;
+
 	
 	public XMLParser(String url) {
 		try {
 			this.url = new URL(url);
+			//this.post=post;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

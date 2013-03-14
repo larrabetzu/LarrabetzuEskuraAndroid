@@ -8,10 +8,13 @@ import com.gorka.rssjarioa.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,10 +28,10 @@ public class Berriak extends Activity {
 	static final String DATA_TITLE = "T";
 	static final String DATA_LINK  = "L";
 	static LinkedList<HashMap<String, String>> data;
-	static String feedUrl = "http://larrabetzutik.org/feed/";
-
+	static String feedUrl = "http://www.berria.info/rss/euskalherria.xml";
+	SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 	private ProgressDialog progressDialog;//
-	
+	//int post = sharedPrefs.getInt("post",4);
 	/**(Handler) Datuak kargetan amaituten direnean mesu bat bidaltzeko beste hari batera
 	 */	
 	private final Handler progressHandler = new Handler() {
@@ -46,7 +49,12 @@ public class Berriak extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.berriak);
-        loadData();
+        try {
+        	loadData();
+		} catch (Exception e) {
+			Log.e("El error", e.toString());
+		}
+        
       
         
         ListView lv = (ListView) findViewById(R.id.lstData);
@@ -83,11 +91,7 @@ public class Berriak extends Activity {
      *  progressDialog eta datuak kargatu 
      */
     private void loadData() {
-    	progressDialog = ProgressDialog.show(
-    			Berriak.this,
-    			"", 
-    			"Mesedez itxaron datuak kargatu arte...", 
-    			true);
+    	progressDialog = ProgressDialog.show(Berriak.this,"","Mesedez itxaron datuak kargatu arte...",true);
     	
     	new Thread(new Runnable(){
     		@Override
