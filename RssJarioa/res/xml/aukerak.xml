@@ -2,10 +2,10 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Categoría 1">
-	    <CheckBoxPreference
+<!-- <CheckBoxPreference
 	        android:key="opcion1"
 	        android:title="Preferencia 1"
-	        android:summary="Descripción de la preferencia 1" />
+	        android:summary="Descripción de la preferencia 1" /> --> 
 	    <ListPreference
 		   android:key="post"
 		   android:title="Post Kantidadea"
@@ -17,17 +17,17 @@
 	</PreferenceCategory>
 	<PreferenceCategory android:title="Aukeratu blogak">
 	 	<CheckBoxPreference
-	        android:key="http://larrabetzutik.org/feed/"
+	        android:key="1"
 	        android:title="Larrabetzutik"
 	        android:defaultValue="true" />
 	 	<CheckBoxPreference
-	        android:key="http://horibai.org/feed/rss/"
+	        android:key="2"
 	        android:title="hori bai" />
 	 	<CheckBoxPreference
-	        android:key="http://www.larrabetzu.info/feeds/posts/default"
+	        android:key="3"
 	        android:title="eskola" />
 	 	<CheckBoxPreference
-	        android:key="http://www.larrabetzu.net/?feed=rss2"
+	        android:key="4"
 	        android:title="iPtx" />
 	 	
     </PreferenceCategory>

@@ -4,7 +4,10 @@ package com.gorka.rssjarioa;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,13 +22,18 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class XMLParser {
-	private URL url;
+	private URL[] url=null;
 	private int post;
-
+	private static int len;
 	
-	public XMLParser(String url,int post) {
+	public XMLParser(String[] arr,int post) {
 		try {
-			this.url = new URL(url);
+			XMLParser.len=arr.length;
+			this.url=new URL [len];
+			for (int i = 0; i < len; i++) {
+				Log.i("array",""+arr[i]);
+				this.url[i]=new URL(arr[i]);
+			}
 			this.post=post;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -37,19 +45,27 @@ public class XMLParser {
 		LinkedList<HashMap<String, String>> entries = new LinkedList<HashMap<String, String>>();
 		HashMap<String, String> entry;
 		try {
+			for (int x = 0; x < len; x++) 
+			{
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document dom = builder.parse(this.url.openConnection().getInputStream());
+			Document dom = builder.parse(this.url[x].openConnection().getInputStream());
 			Element root = dom.getDocumentElement();
 			NodeList items = root.getElementsByTagName("item");
+			
+			NodeList avatar = root.getChildNodes();
+			Log.i("avater",""+avatar.toString());
+			
+			
+			
 			int numpost=this.post;
 			if (this.post>items.getLength()) {
 				numpost=items.getLength();
-				
 			}
 			for (int i=0;i<numpost;i++){
 				entry = new HashMap<String, String>();				
 				Node item = items.item(i);
 				NodeList properties = item.getChildNodes();
+				
 				for (int j=0;j<properties.getLength();j++){
 					Node property = properties.item(j);
 					String name = property.getNodeName();
@@ -59,13 +75,19 @@ public class XMLParser {
 						entry.put(Berriak.DATA_LINK, property.getFirstChild().getNodeValue());						
 					}/**
 					*else if(name.equalsIgnoreCase("pubDate")){
-						entry.put(noticias.DATA_DATE, property.getFirstChild().getNodeValue());		
+						entry.put(Berriak.DATA_DATE, property.getFirstChild().getNodeValue());		
 					**/
+					
 				}
+				
+				
 				entries.add(entry);
 			}
+		}	
+			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+			
 		} 
 
 		return entries;

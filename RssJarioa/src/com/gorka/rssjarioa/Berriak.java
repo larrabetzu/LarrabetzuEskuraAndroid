@@ -1,6 +1,8 @@
 package com.gorka.rssjarioa;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.gorka.rssjarioa.R;
@@ -31,22 +33,13 @@ public class Berriak extends Activity {
 	 */
 	static final String DATA_TITLE = "T";
 	static final String DATA_LINK  = "L";
+	
 	static LinkedList<HashMap<String, String>> data;
-	static String feedUrl = "http://www.berria.info/rss/euskalherria.xml";
+	static String feedUrl = "http://larrabetzutik.org/feed/";
+	public static ArrayList<String> arr_blogs= new ArrayList<String>(); 
 	private ProgressDialog progressDialog;//
 	private int post;
-	/**(Handler) Datuak kargetan amaituten direnean mesu bat bidaltzeko beste hari batera
-	 */	
-	private final Handler progressHandler = new Handler() {
-		@SuppressWarnings("unchecked")
-		public void handleMessage(Message msg) {
-			if (msg.obj != null) {
-				data = (LinkedList<HashMap<String, String>>)msg.obj;
-				setData(data);					
-			}
-			progressDialog.dismiss();
-	    }
-	};
+	
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,13 +48,42 @@ public class Berriak extends Activity {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         try {
         	this.post =Integer.parseInt(sharedPrefs.getString("post","Null"));
-        	//Log.i("Preferencias", "es: " + sharedPrefs.getBoolean("opcion1", false));
-		} catch (Exception e) {
+        	arr_blogs.clear();
+        	for (int i = 1; i <= 4; i++) {
+        		boolean posi=sharedPrefs.getBoolean(""+i, false);
+            	if (posi==true) {
+            		switch (i) {
+					case 1:
+						arr_blogs.add("http://larrabetzutik.org/feed/");
+						Log.i("array", "http://larrabetzutik.org/feed/");
+						break;
+					case 2:
+						arr_blogs.add("http://horibai.org/feed/rss/");
+						Log.i("array", "http://horibai.org/feed/rss/");
+						break;
+					case 3:
+						arr_blogs.add("http://www.larrabetzu.info/feeds/posts/default");
+						Log.i("array", "http://www.larrabetzu.info/feeds/posts/default");
+						break;
+					case 4:
+						arr_blogs.add("http://www.larrabetzu.net/?feed=rss2");
+						Log.i("array", "http://www.larrabetzu.net/?feed=rss2");
+						break;
+
+					//default:break;
+					}
+    				
+    			}
+			}
+        	Log.i("Arraylist", ""+arr_blogs.size()); 
+        	loadData();
+        	
+        	
+        	
+		} catch (Exception ex) {
 			eleccion("Lehenengo zure hobespenak jarri behar dituzu");
+			Log.e("patapan", ex.getMessage());
 		}
-        loadData();
-		
-      
         
         ListView lv = (ListView) findViewById(R.id.lstData);
         /**
@@ -87,13 +109,16 @@ public class Berriak extends Activity {
      * Mapan lista bat jaso eta ListView-a sortu
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
-    	SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, 
-    			android.R.layout.two_line_list_item, 
+    	SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.layout_items, 
     			new String[] { DATA_TITLE, DATA_LINK }, 
-    			new int[] { android.R.id.text1});
+    			new int[] { R.id.titulo});
     	ListView lv = (ListView) findViewById(R.id.lstData);
     	lv.setAdapter(sAdapter);
     }   
+    
+    
+    
+    
     
     /**
      *  progressDialog eta datuak kargatu 
@@ -104,12 +129,37 @@ public class Berriak extends Activity {
     	new Thread(new Runnable(){
     		@Override
     		public void run() {
-    			XMLParser parser = new XMLParser(feedUrl,post); 
+    			/*
+    			String []arr=new String [arr_blogs.size()];
+    			for (int i = 0; i < arr_blogs.size(); i++) {
+				Log.i("posicion array", ""+i);
+				Log.i("blog array", ""+arr_blogs.get(i));
+				arr[i]=arr_blogs.get(i);
+    			}*/
+    			String [] arr = arr_blogs.toArray(new String[arr_blogs.size()]);
+    			
+    			XMLParser parser = new XMLParser(arr,post); 
                 Message msg = progressHandler.obtainMessage();
                 msg.obj = parser.parse();
     			progressHandler.sendMessage(msg);
+    			
+    			 
     		}}).start();
     }    
+    
+    /**(Handler) Datuak kargetan amaituten direnean mesu bat bidaltzeko beste hari batera
+	 */	
+	private final Handler progressHandler = new Handler() {
+		@SuppressWarnings("unchecked")
+		public void handleMessage(Message msg) {
+			if (msg.obj != null) {
+				data = (LinkedList<HashMap<String, String>>)msg.obj;
+				setData(data);					
+			}
+			progressDialog.dismiss();
+	    }
+	};
+	
     
     
 	public void eleccion(String cadena){
@@ -119,6 +169,7 @@ public class Berriak extends Activity {
 	        alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface arg0, int arg1) {
 	            	startActivity(new Intent("hobespenak"));
+	            	finish();
 	            }
 	        });
 	 
