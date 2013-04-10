@@ -46,8 +46,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.gorka.rssjarioa.Agenda"
+            android:label="agenda" >
+            <intent-filter>
+                <action android:name="agenda" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
-
 
     <uses-permission android:name="android.permission.CAMERA" >
     </uses-permission>

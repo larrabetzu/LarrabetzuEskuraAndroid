@@ -18,6 +18,18 @@
         android:text="Berriak"
         android:textSize="25dp"
           />
+   <Button
+        android:drawableLeft="@drawable/today"
+        android:drawablePadding="35dp"
+        android:gravity="left"
+        android:id="@+id/btnagenda"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:onClick="onclickbtnagenda"
+        android:paddingLeft="50dp"
+        android:text="Agenda"
+        android:textSize="25dp"
+          />
 
     <Button
         android:drawableLeft="@drawable/picture"
