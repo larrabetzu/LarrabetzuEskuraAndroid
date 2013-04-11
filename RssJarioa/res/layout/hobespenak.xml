@@ -7,7 +7,7 @@
     android:padding="10dp" >
     
 
-    <!-- 
+    
      <Button
         android:drawableLeft="@drawable/paste"
         android:drawablePadding="35dp"
@@ -21,5 +21,5 @@
         android:textSize="25dp"
           />
     
-     -->
+    
 </LinearLayout>

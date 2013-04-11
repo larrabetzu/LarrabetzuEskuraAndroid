@@ -2,11 +2,15 @@ package com.gorka.rssjarioa;
 
 import com.gorka.rssjarioa.R;
 
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public class Menua extends Activity {
 
