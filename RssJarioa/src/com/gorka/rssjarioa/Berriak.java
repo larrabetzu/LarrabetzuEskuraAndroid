@@ -53,19 +53,19 @@ public class Berriak extends Activity {
             		switch (i) {
 					case 1:
 						arr_blogs.add("http://larrabetzutik.org/feed/");
-						Log.i("array", "http://larrabetzutik.org/feed/");
+							Log.i("array", "http://larrabetzutik.org/feed/");
 						break;
 					case 2:
 						arr_blogs.add("http://horibai.org/feed/rss/");
-						Log.i("array", "http://horibai.org/feed/rss/");
+							Log.i("array", "http://horibai.org/feed/rss/");
 						break;
 					case 3:
-						arr_blogs.add("http://www.larrabetzu.info/feeds/posts/default");
-						Log.i("array", "http://www.larrabetzu.info/feeds/posts/default");
+						arr_blogs.add("http://www.larrabetzukoeskola.org/feed/");
+							Log.i("array", "http://www.larrabetzukoeskola.org/feed/");
 						break;
 					case 4:
 						arr_blogs.add("http://www.larrabetzu.net/?feed=rss2");
-						Log.i("array", "http://www.larrabetzu.net/?feed=rss2");
+							Log.i("array", "http://www.larrabetzu.net/?feed=rss2");
 						break;
 
 					//default:break;
@@ -107,7 +107,7 @@ public class Berriak extends Activity {
      * Mapan lista bat jaso eta ListView-a sortu
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
-    	SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.layout_items, 
+    	SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.items_layout, 
     			new String[] { DATA_TITLE, DATA_LINK }, 
     			new int[] { R.id.titulo});
     	ListView lv = (ListView) findViewById(R.id.lstData);
