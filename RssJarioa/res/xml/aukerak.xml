@@ -2,10 +2,6 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="Categoría 1">
-<!-- <CheckBoxPreference
-	        android:key="opcion1"
-	        android:title="Preferencia 1"
-	        android:summary="Descripción de la preferencia 1" /> --> 
 	    <ListPreference
 		   android:key="post"
 		   android:title="Post Kantidadea"
@@ -28,6 +24,9 @@
 	        android:title="eskola" />
 	 	<CheckBoxPreference
 	        android:key="4"
+	        android:title="larrabetzun zer?" />
+	 	<CheckBoxPreference
+	        android:key="5"
 	        android:title="iPtx" />
 	 	
     </PreferenceCategory>
