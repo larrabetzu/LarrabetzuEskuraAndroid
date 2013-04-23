@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 public class Agenda extends Activity {
 	  
@@ -17,9 +16,8 @@ public class Agenda extends Activity {
     private int mYear;    
     private int mMonth;    
     private int mDay;    
-    static final int DATE_DIALOG_ID = 0;
-    
-    // the callback received when the user "sets" the date in the dialog    
+    private static final int DATE_DIALOG_ID = 0;
+     
     private DatePickerDialog.OnDateSetListener mDateSetListener =            
     	new DatePickerDialog.OnDateSetListener() {                
     	public void onDateSet(DatePicker view, int year,                                       
@@ -51,6 +49,9 @@ public class Agenda extends Activity {
     	mDay = c.get(Calendar.DAY_OF_MONTH);        
     	      
     	updateDisplay();    
+    	
+    	
+    	
     }
     
        
@@ -68,12 +69,12 @@ public class Agenda extends Activity {
     		case DATE_DIALOG_ID:        
     			return new DatePickerDialog(this,                    
     					mDateSetListener,                    
-    					mYear, mMonth, mDay);    
+    					mYear, mMonth, mDay); 
+                
     			}    
     	return null;
     	}
     
     
-
 
 }

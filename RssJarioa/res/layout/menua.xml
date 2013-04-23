@@ -40,33 +40,6 @@
         android:text="Agenda"
         android:textSize="25sp"
           />
-
-    <Button
-        android:drawableLeft="@drawable/picture"
-        android:drawablePadding="35dp"
-        android:gravity="left"
-        android:id="@+id/btnirudiak"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:onClick="onclickbtnirudiak"
-        android:paddingLeft="50dp"
-        android:text="Irudiak"
-        android:textSize="25sp"
-        
-        />
-    <Button
-        android:drawableLeft="@drawable/camera"
-        android:drawablePadding="35dp"
-        android:gravity="left"
-        android:id="@+id/btnkamara"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:onClick="onclickbtnkamara"
-        android:paddingLeft="50dp"
-        android:text="Kamara"
-        android:textSize="25sp"
-        
-        />
  
     
     <Button
@@ -93,6 +66,22 @@
         android:text="Hobespenak"
         android:textSize="25sp"
         />
+    
+    
+     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Larrabetzuko Agenda 2013"
+         />
+ 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Gorka Ercilla"
+         />
+  
     
 
 </LinearLayout>

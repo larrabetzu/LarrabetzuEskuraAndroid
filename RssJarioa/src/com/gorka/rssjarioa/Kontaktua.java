@@ -9,10 +9,12 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Kontaktua extends Activity {
 	 private NotificationManager mNotificationManager;
@@ -32,16 +34,23 @@ public class Kontaktua extends Activity {
 	        EditText etBody = (EditText) findViewById(R.id.testua);					        
             Intent itSend = new Intent(android.content.Intent.ACTION_SEND);
             
-            itSend.setType("plain/text");
-            itSend.putExtra(android.content.Intent.EXTRA_EMAIL, "ercillagorka@gmail.com");                            
-            itSend.putExtra(android.content.Intent.EXTRA_SUBJECT, etSubject.getText().toString());
-            itSend.putExtra(android.content.Intent.EXTRA_TEXT, etBody.getText());
-            
-           
-            startActivity(itSend);
-            setDefault(Notification.DEFAULT_ALL);
-            
-            finish();
+            if(etBody.getText().toString().equals("") || etSubject.getText().toString().equals("")){
+            	Toast.makeText(Kontaktua.this, "Testua eta gaia beteta egon behar dira", Toast.LENGTH_SHORT).show();
+            }else{
+            		
+	            itSend.setType("message/rfc822");
+	            itSend.putExtra(android.content.Intent.EXTRA_EMAIL, "ercillagorka@gmail.com");                            
+	            itSend.putExtra(android.content.Intent.EXTRA_SUBJECT, etSubject.getText().toString());
+	            itSend.putExtra(android.content.Intent.EXTRA_TEXT, etBody.getText());
+	            try {
+		            startActivity(itSend);
+		            setDefault(Notification.DEFAULT_ALL);
+		            startActivity(Intent.createChooser(itSend, "Send mail...")); 
+	       	 	}catch (android.content.ActivityNotFoundException ex){ 
+	       	 		Toast.makeText(Kontaktua.this, "Posta bezeroa ez dago instalatuta.", Toast.LENGTH_SHORT).show(); 
+	       	 		}
+	       	 	finish();
+					}
 
 							}
 	                });
@@ -57,19 +66,15 @@ public class Kontaktua extends Activity {
 	        
 	        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
 	        new Intent(this, Kontaktua.class), 0);
-	        CharSequence text = getText("Emaila bidalia");
+	        CharSequence text = "Emaila bidalia";
 	        final Notification notification = new Notification( R.drawable.arrowright, text,  System.currentTimeMillis()); 
-	        notification.setLatestEventInfo(this, getText("Email"),text,  contentIntent);           
+	        notification.setLatestEventInfo(this, "Email",text,  contentIntent);           
 	        notification.defaults = defaults;
 	        mNotificationManager.notify(
 	                MOOD_NOTIFICATIONS,          
 	                notification);
 	    }
-	private CharSequence getText(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}    
-	 
+	   
 	 
 	}	
 	    		

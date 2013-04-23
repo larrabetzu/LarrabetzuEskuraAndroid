@@ -4,59 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dip" >
+    android:padding="10dp" >
     
-<TableRow
+
+    <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" 
-        android:paddingBottom="10dip">
+        android:layout_height="wrap_content" 
+        android:paddingBottom="10dp">
 
-       
-
-        <Button
-            android:id="@+id/deitu"
+        <TextView
+            android:id="@+id/txtgaia"
+            android:layout_weight="0.1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onclickdeitu"
-            android:text="Garatzaileari deitu"
-            android:textSize="15sp" />
+            android:text="Gaia: "
+            android:textSize="23dp" 
+            android:layout_gravity="bottom"/>
 
-    </TableRow>
-    
-
-        <TableRow
-            android:id="@+id/tableRow2"
+        <EditText
+            android:id="@+id/Gaia"
+            android:layout_weight="9"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:paddingBottom="10dip">
-
-            <TextView
-                android:id="@+id/txtgaia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gaia: "
-                android:textSize="23sp" 
-                android:layout_gravity="bottom"/>
-
-            <EditText
-                android:id="@+id/Gaia"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:textSize="15sp" >
-               
-           </EditText>
+            android:layout_height="fill_parent"
+            android:textSize="15dp" >
+           
+       </EditText>
 
             
-            
-        </TableRow>
-
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-</TableLayout>
+   </TableRow>
    
     <EditText
         android:id="@+id/testua"
@@ -64,15 +40,37 @@
         android:layout_height="wrap_content"
         android:gravity="top"
         android:lines="5"
-        android:width="300sp" 
-         android:hint="Hemen idatzitako Testua developerrari bidaliko da....."/>
+        android:width="300dp" 
+         android:hint="Hemen idatzitako Testua garatzaileari bidaliko da....."/>
 
+    
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:paddingBottom="10dp">
+    
+    
+     <Button
+            android:id="@+id/deitu"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onclickdeitu"
+            android:text="Garatzaileari deitu"
+            android:textSize="15dp" 
+            />
+    
      <Button
             android:id="@+id/bidali"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onclickenviar"
-            android:text="Bidali" 
-            android:layout_gravity="right"/>
+            android:text="emaila bidali" 
+            android:layout_gravity="right"
+            android:textSize="15dp"
+            />
 
+     </TableRow>
 </LinearLayout>
