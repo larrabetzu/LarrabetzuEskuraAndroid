@@ -107,7 +107,7 @@ public class Berriak extends Activity {
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
     	SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.layout_items, 
-    			new String[] { DATA_TITLE,DATA_LINK},new int[] {R.id.titulo});
+    			new String[] { DATA_TITLE,DATA_LINK},new int[] {R.id.tituloa_berriak});
     	ListView lv = (ListView) findViewById(R.id.lstData);
     	lv.setAdapter(sAdapter);
     }   

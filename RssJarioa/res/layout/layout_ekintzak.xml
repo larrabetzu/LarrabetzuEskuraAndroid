@@ -5,8 +5,8 @@
   android:paddingBottom="5sp"
   android:paddingTop="5sp" >
  
-  <ImageView
-    android:id="@+id/logo"
+<ImageView
+    android:id="@+id/imagen"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
@@ -15,25 +15,38 @@
     />
      
   <TextView
-    android:id="@+id/tituloa_berriak"
+    android:id="@+id/tituloa_ekintzak"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
-    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true"
     android:layout_marginLeft="55sp"
     android:layout_marginRight="25sp"
     android:text="Large Text"
     android:textAppearance="?android:attr/textAppearanceMedium" />
- <!--  
+
   <TextView
-    android:id="@+id/link"
+    android:id="@+id/data"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/titulo"
+    android:layout_below="@+id/tituloa_ekintzak"
+    android:layout_alignParentLeft="true"
     android:layout_centerHorizontal="true"
+    android:layout_marginLeft="55sp"
+    android:layout_marginRight="25sp"
     android:text="TextView" 
     android:textAppearance="?android:attr/textAppearanceSmall"/>
-   -->
+  
+  <TextView
+    android:id="@+id/lekua"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toRightOf="@+id/data"
+    android:layout_below="@+id/tituloa_ekintzak"
+    android:text="TextView" 
+    android:textAppearance="?android:attr/textAppearanceSmall"/>
+  
+
   <ImageView
     android:id="@+id/imageIcon"
     android:layout_width="wrap_content"

@@ -50,6 +50,12 @@ public class Agenda extends Activity {
     	      
     	updateDisplay();    
     	
+    	//mirar los eventos hasta la fecha seleccionada
+    	
+    	//crear el listView
+    	
+    	//mirar si cambia algo y actualizar las notificaciones en la base de datos
+    	
     	
     	
     }
