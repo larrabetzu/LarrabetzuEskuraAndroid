@@ -1,6 +1,5 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -56,9 +55,9 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onclickdeitu"
-            android:text="Garatzaileari deitu"
-            android:textSize="15dp" 
+            android:onClick="onclicktwitter"
+            android:text="twitterren"
+            android:textSize="15dp"
             />
     
      <Button
@@ -67,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onclickenviar"
-            android:text="emaila bidali" 
+            android:text="Emaila bidali"
             android:layout_gravity="right"
             android:textSize="15dp"
             />

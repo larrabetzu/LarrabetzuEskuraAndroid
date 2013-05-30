@@ -53,8 +53,7 @@ public class DbEgokitua {
 	 */
 	static final String DB_TAULA_principal_ekintza_sortzailea= "principal_ekintza_sortzailea";
 	static final String KEY_SORTZAILEA="sortzailea";
-	
-	
+
 	
 	static final int DB_BERTSIOA = 2;
     static final String DB_IZENA = "NireDB1";
@@ -86,158 +85,158 @@ public class DbEgokitua {
     
     public  DbEgokitua(Context ctx)
     {
-        this.context = ctx;
-        DBHelper = new DatabaseHelper(context);
+            this.context = ctx;
+            DBHelper = new DatabaseHelper(context);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper
     {
-        DatabaseHelper(Context context)
-        {
-            super(context, DB_IZENA, null, DB_BERTSIOA);
-     }
-        
-        @Override
-        public void onCreate(SQLiteDatabase db)
-        {
-            try {
-                
-                db.execSQL(DB_SORTU);
-                //db autor internetetik aktualizatu
-                //db ekintza internetetik aktualizatu
-                
-            } catch (SQLException e) {
-                e.printStackTrace();
-                Log.e("error", " creando tablas bases de datos ");
+            DatabaseHelper(Context context)
+            {
+                super(context, DB_IZENA, null, DB_BERTSIOA);
             }
-        }
         
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-        {
-            Log.w("DbEgokitua", "Datu-basearen bertsioa eguneratzen " + oldVersion + " tik " + newVersion +"-ra" +", datu zahar guztiak kenduko dira");
-            db.execSQL("DROP TABLE IF EXISTS principal_autor");
-            db.execSQL("DROP TABLE IF EXISTS principal_ekintza_sortzailea");
-            db.execSQL("DROP TABLE IF EXISTS principal_ekintza");
-            onCreate(db);
-            
-        }
+            @Override
+            public void onCreate(SQLiteDatabase db)
+            {
+                try {
+                    db.execSQL(DB_SORTU);
+                    //db autor internetetik aktualizatu
+                    //db ekintza internetetik aktualizatu
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Log.e("error", " creando tablas bases de datos ");
+                }
+            }
+        
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+            {
+                Log.w("DbEgokitua", "Datu-basearen bertsioa eguneratzen " + oldVersion + " tik " + newVersion +"-ra" +", datu zahar guztiak kenduko dira");
+                db.execSQL("DROP TABLE IF EXISTS principal_autor");
+                db.execSQL("DROP TABLE IF EXISTS principal_ekintza_sortzailea");
+                db.execSQL("DROP TABLE IF EXISTS principal_ekintza");
+                onCreate(db);
+
+            }
     }
 
     public  DbEgokitua zabaldu() throws SQLException 
     {
-        db = DBHelper.getWritableDatabase();
-        return this;
+            db = DBHelper.getWritableDatabase();
+            return this;
     }
 
     public void zarratu() 
     {
-        DBHelper.close();
+            DBHelper.close();
     }
     
     	
-    	//"SELECT MAX(_id) AS _id FROM egitaraua"
-    	//"SELECT MAX(id) AS max_id FROM mytable
+
     	
 	public int azkenId() 
 	{ 
-		String query = "SELECT MAX(_id) AS max_id FROM principal_ekintza";
-	 	Cursor cursor = db.rawQuery(query, null);  
-    	int id = 0;
-    	if (cursor.moveToFirst()) {
-    		do { id = cursor.getInt(0);
-    		} while(cursor.moveToNext()); 
-    	} return id;
+            String query = "SELECT MAX(_id) AS max_id FROM principal_ekintza";
+            //"SELECT MAX(_id) AS _id FROM egitaraua"
+            //"SELECT MAX(id) AS max_id FROM mytable
+            Cursor cursor = db.rawQuery(query, null);
+            int id = 0;
+            if (cursor.moveToFirst()) {
+                do { id = cursor.getInt(0);
+                } while(cursor.moveToNext());
+            } return id;
     }
     
 	
 	public boolean garbitu(int urtea,int hilabeta,int egune)
 	{
-		db.execSQL("DELETE FROM principal_ekintza WHERE egune < '"+urtea+"-"+hilabeta+"-"+egune+"'"); //adibi:'1990-12-31'
-		return true;
+            db.execSQL("DELETE FROM principal_ekintza WHERE egune < '"+urtea+"-"+hilabeta+"-"+egune+"'"); //adibi:'1990-12-31'
+            return true;
 	}
     
     /*
     
     public boolean autorsortu(){
     	
-        int numero=0;
-        String webgunea=null;
-        String email=null;
-        String nor=null;
-        boolean com=true;
+            int numero=0;
+            String webgunea=null;
+            String email=null;
+            String nor=null;
+            boolean com=true;
         
-    try {
-	     URL url = new URL("http://10.0.2.2:8000/wsAutor/");
-	     URLConnection uc = url.openConnection();
-	     uc.connect();
-	     BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-	     String inputLine=in.readLine();
-	     while (inputLine != null) {
-                String palabra="";
-                for(int x=0;x<inputLine.length();x++){
-                       char carac=inputLine.charAt(x);
-                       if(carac!=' '){
-                           
-                           palabra=palabra+carac;
-                       }else{
-                          // todas las palabras menos la ultima
-                          
-                            switch (numero){
-                               case 1:webgunea=palabra.replace("\"", "").replace(",", "");           numero=0; break;
-                               case 2:email=palabra.replace("\"", "").replace("]", "").replace(",", "");       numero=0; break;
-                               case 3:nor=palabra.replace("\"", "").replace(",", "");         numero=0; 
-                                   ContentValues initialValues = new ContentValues();
-                                   initialValues.put(KEY_NOR, nor);
-                                   initialValues.put(KEY_EMAIL, email);
-                                   initialValues.put(KEY_webgunea, webgunea);
-                                   long id =db.insert(DB_TAULA_principal_autor, null, initialValues);
-                                   
-                                   if (id==-1) {
-                              			Log.d(nor, "No se ha añadido ningun autor");
-                              			
-                              		}else {
-                              			Log.d(nor, "autor añadido");    }break;
-                            			};
-                           if(palabra.equalsIgnoreCase("{\"webgunea\":")){
-                               numero=1;
-                            }
-                           if(palabra.equalsIgnoreCase("\"email\":")){
-                               numero=2;
-                            }
-                           if(palabra.equalsIgnoreCase("\"nor\":")){
-                               numero=3;
-                            }
-                           palabra="";
-                        }
-                     }
-                //ultima palabra antes de terminar
-                
-                nor=palabra.replaceAll("}}]", "").replace("\"","");
-                ContentValues initialValues = new ContentValues();
-                initialValues.put(KEY_NOR, nor);
-                initialValues.put(KEY_EMAIL, email);
-                initialValues.put(KEY_webgunea, webgunea);
-                long id =db.insert(DB_TAULA_principal_autor, null, initialValues);
-                
-                if (id==-1) {
-           			Log.d("autoraktualizatu", "No se ha añadido ningun autor");
-           			com=false;
-           		}else {
-           			Log.d("autoraktualizatu", "autor añadido");
-           			com=true;
-                
-           		}
-                
+            try {
+                 URL url = new URL("http://10.0.2.2:8000/wsAutor/");
+                 URLConnection uc = url.openConnection();
+                 uc.connect();
+                 BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+                 String inputLine=in.readLine();
+                 while (inputLine != null) {
+                        String palabra="";
+                        for(int x=0;x<inputLine.length();x++){
+                               char carac=inputLine.charAt(x);
+                               if(carac!=' '){
 
-                inputLine=in.readLine();
-	            }
-	            in.close();
-	    } catch (Exception e) {
-		         System.out.println( e.toString());
-	    }
-		
-	    return com;
+                                   palabra=palabra+carac;
+                               }else{
+                                  // todas las palabras menos la ultima
+
+                                    switch (numero){
+                                       case 1:webgunea=palabra.replace("\"", "").replace(",", "");           numero=0; break;
+                                       case 2:email=palabra.replace("\"", "").replace("]", "").replace(",", "");       numero=0; break;
+                                       case 3:nor=palabra.replace("\"", "").replace(",", "");         numero=0;
+                                           ContentValues initialValues = new ContentValues();
+                                           initialValues.put(KEY_NOR, nor);
+                                           initialValues.put(KEY_EMAIL, email);
+                                           initialValues.put(KEY_webgunea, webgunea);
+                                           long id =db.insert(DB_TAULA_principal_autor, null, initialValues);
+
+                                           if (id==-1) {
+                                                Log.d(nor, "No se ha añadido ningun autor");
+
+                                            }else {
+                                                Log.d(nor, "autor añadido");    }break;
+                                                };
+                                   if(palabra.equalsIgnoreCase("{\"webgunea\":")){
+                                       numero=1;
+                                    }
+                                   if(palabra.equalsIgnoreCase("\"email\":")){
+                                       numero=2;
+                                    }
+                                   if(palabra.equalsIgnoreCase("\"nor\":")){
+                                       numero=3;
+                                    }
+                                   palabra="";
+                                }
+                             }
+                        //ultima palabra antes de terminar
+
+                        nor=palabra.replaceAll("}}]", "").replace("\"","");
+                        ContentValues initialValues = new ContentValues();
+                        initialValues.put(KEY_NOR, nor);
+                        initialValues.put(KEY_EMAIL, email);
+                        initialValues.put(KEY_webgunea, webgunea);
+                        long id =db.insert(DB_TAULA_principal_autor, null, initialValues);
+
+                        if (id==-1) {
+                            Log.d("autoraktualizatu", "No se ha añadido ningun autor");
+                            com=false;
+                        }else {
+                            Log.d("autoraktualizatu", "autor añadido");
+                            com=true;
+
+                        }
+
+
+                        inputLine=in.readLine();
+                        }
+                        in.close();
+                } catch (Exception e) {
+                         System.out.println( e.toString());
+                }
+
+            return com;
     }
     
     public boolean ekintzasortu(){

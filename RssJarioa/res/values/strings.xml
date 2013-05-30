@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">RssJarioa</string>
+    <string name="app_name">LAD</string>
     <string name="title_activity_hobespenak">Hobespenak</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>

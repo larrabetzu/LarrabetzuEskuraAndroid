@@ -4,16 +4,18 @@
   android:layout_height="wrap_content" 
   android:paddingBottom="5sp"
   android:paddingTop="5sp" >
- 
-  <ImageView
-    android:id="@+id/logo"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_centerVertical="true"
-    android:src="@drawable/ic_launcher"
-    />
-     
+
+  <!--
+
+      <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_launcher"
+        />
+  -->
   <TextView
     android:id="@+id/tituloa_berriak"
     android:layout_width="wrap_content"
@@ -25,15 +27,15 @@
     android:text="Large Text"
     android:textAppearance="?android:attr/textAppearanceMedium" />
  <!--  
-  <TextView
-    android:id="@+id/link"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/titulo"
-    android:layout_centerHorizontal="true"
-    android:text="TextView" 
-    android:textAppearance="?android:attr/textAppearanceSmall"/>
-   -->
+      <TextView
+        android:id="@+id/link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titulo"
+        android:layout_centerHorizontal="true"
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+       -->
   <ImageView
     android:id="@+id/imageIcon"
     android:layout_width="wrap_content"
