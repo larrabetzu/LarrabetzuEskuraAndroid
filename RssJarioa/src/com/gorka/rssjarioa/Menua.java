@@ -1,15 +1,16 @@
 package com.gorka.rssjarioa;
 
-import java.util.Calendar;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class Menua extends Activity {
 
@@ -23,12 +24,8 @@ public class Menua extends Activity {
             networkAvailable=networkAvailable();
             if(networkAvailable) {
                 // Badago Interneta
-                    hilo1.run();
-                    hilo1.start();
-                    db.zabaldu();
-                    db.zarratu();
-
                     Log.d("INTERNET", "Badago");
+                    hilo1.run();
             }else{
                 // Ez dago internetik
                     Toast.makeText(Menua.this,"EZ zaude intenetari konektatuta",Toast.LENGTH_LONG).show();
@@ -74,8 +71,12 @@ public class Menua extends Activity {
                 //obtener ultimo evento
                     //int azken_Id =db.azkenId();
                 //obtener json /wsEkintza
-                    //db.autorsortu();
-                    //db.ekintzasortu();
+                    try {
+                       int id= db.azkenId();
+                        Log.d("azkenID",id+"");
+                    }catch (Exception e){
+                        Log.e("azkenID",e.toString());
+                    }
                 //comparar ultimo evento con la web mirando la fecha que se añadio
 
                 //añadir ultimos evento

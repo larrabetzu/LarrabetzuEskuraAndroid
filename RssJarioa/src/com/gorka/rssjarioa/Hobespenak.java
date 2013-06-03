@@ -1,11 +1,10 @@
 package com.gorka.rssjarioa;
 
-import java.util.List;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.widget.Toast;
+
+import java.util.List;
 
 public class Hobespenak extends PreferenceActivity {
         @SuppressWarnings("deprecation")
