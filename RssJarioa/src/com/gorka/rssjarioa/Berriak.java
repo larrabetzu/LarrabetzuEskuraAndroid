@@ -31,7 +31,6 @@ public class Berriak extends Activity {
 	private ProgressDialog progressDialog;//
 	private int post;
 
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);

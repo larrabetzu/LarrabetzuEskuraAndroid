@@ -69,6 +69,7 @@ public class Menua extends Activity {
 
                 //elimiar los eventos pasados
                     //db.garbitu(mYear, mMonth, mDay);
+
                 //obtener ultimo evento
                     //int azken_Id =db.azkenId();
                 //obtener json /wsEkintza
