@@ -22,7 +22,7 @@ public class DbEgokitua {
     /*
 	 * TABLE principal_autor
 	 */
-	static final String TAULA_principal_autor= "principal_autor";
+	static final String TAULA_autor= "principal_autor";
 	static final String AUT_NOR = "nor";
 	static final String AUT_EMAIL = "email";
 	static final String AUT_webgunea = "webgunea";
@@ -31,17 +31,18 @@ public class DbEgokitua {
 	 * TABLE principal_ekintza
 	 */
     static final String TAULA_ekintza= "principal_ekintza";
+    static final String KEY_id= "id";
     static final String KEY_TITULOA = "tituloa";
+    static final String KEY_LEKUA = "lekua";
 	static final String KEY_PUB_DATE="pub_date"; //publikatutako data
 	static final String KEY_EGUNE="egune";		 // ekitaldian egune
 	static final String KEY_DESKRIBAPENA="deskribapena";
 	static final String KEY_JAKINARAZPENA1="jakinarazpena_1";
 	static final String KEY_JAKINARAZPENA2="jakinarazpena_2";
-	
 	/*
 	 * TABLE principal_ekintza_sortzailea
 	 */
-	static final String TAULA_principal_ekintza_sortzailea= "principal_ekintza_sortzailea";
+	static final String TAULA_ekintza_sortzailea= "principal_ekintza_sortzailea";
     static final String SOR_EKINTZA="ekintza_id";
     static final String SOR_AUTOR="autor_id";
 	
@@ -58,6 +59,7 @@ public class DbEgokitua {
     static final String DB_TAULA_ekintza ="CREATE TABLE principal_ekintza ("+
 									"id integer NOT NULL PRIMARY KEY,"+
 									"tituloa varchar(100) NOT NULL,"+
+                                    "lekua varchar(100) NOT NULL,"+
 									"egune datetime NOT NULL,"+
 									"deskribapena varchar(300) NOT NULL,"+
 									"pub_date datetime NOT NULL,"+
@@ -124,7 +126,7 @@ public class DbEgokitua {
                                             initialValues.put(AUT_NOR, nor);
                                             initialValues.put(AUT_EMAIL, email);
                                             initialValues.put(AUT_webgunea, webgunea);
-                                            long id =db.insert(TAULA_principal_autor, null, initialValues);
+                                            long id =db.insert(TAULA_autor, null, initialValues);
                                             if (id==-1) {
                                                 Log.d(nor, "Ez da gehitu autor");
                                             }else {
@@ -149,7 +151,7 @@ public class DbEgokitua {
                             initialValues.put(AUT_NOR, nor);
                             initialValues.put(AUT_EMAIL, email);
                             initialValues.put(AUT_webgunea, webgunea);
-                            long id =db.insert(TAULA_principal_autor, null, initialValues);
+                            long id =db.insert(TAULA_autor, null, initialValues);
 
                             if (id==-1) {
                                 Log.d(nor, "Ez da gehitu autor");
@@ -211,7 +213,7 @@ public class DbEgokitua {
                                                 ContentValues initialValuesSortzailea = new ContentValues();
                                                 initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
                                                 initialValuesSortzailea.put(SOR_EKINTZA, id);
-                                                long idsor=db.insert(TAULA_principal_ekintza_sortzailea,null,initialValuesSortzailea);
+                                                long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
                                                 if (idsor==-1) {Log.d(sortzailea, "Ez da sortzailea gehitu");
                                                 }else {Log.d(sortzailea,"+ sortzailea");}
                                             }break;
@@ -254,7 +256,7 @@ public class DbEgokitua {
                                 ContentValues initialValuesSortzailea = new ContentValues();
                                 initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
                                 initialValuesSortzailea.put(SOR_EKINTZA, id);
-                                long idsor=db.insert(TAULA_principal_ekintza_sortzailea,null,initialValuesSortzailea);
+                                long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
                                 if (idsor==-1)
                                 {Log.d(sortzailea, "Ez da sortzailea gehitu");
                                 }else
@@ -294,10 +296,7 @@ public class DbEgokitua {
     {
             DBHelper.close();
     }
-    
-    	
 
-    	
 	public int azkenId() 
 	{ 
             String query = "SELECT MAX(id) AS max_id FROM "+TAULA_ekintza;
@@ -310,12 +309,22 @@ public class DbEgokitua {
                 } while(cursor.moveToNext());
             } return id;
     }
-    
+
+    public Cursor ekitaldiakid(int urtea,int hilabeta,int egune)
+    {
+        String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune between '2013-05-22' and '"+urtea+"-"+hilabeta+"-"+egune+"'";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
 	
 	public boolean garbitu(int urtea,int hilabeta,int egune)
 	{
         try {
-            db.execSQL("DELETE FROM "+TAULA_ekintza+" WHERE egune < '"+urtea+"-"+hilabeta+"-"+egune+" 00:00:00'"); //adibi:'YYYY-MM-DD HH:MM:SS'
+            db.execSQL("DELETE FROM "+TAULA_ekintza+" WHERE egune between '2013-05-22' and '"+urtea+"-"+hilabeta+"-"+egune+"'"); //adibi:'YYYY-MM-DD HH:MM:SS'
 
         }catch (Exception e){
             Log.e("garbitu",e.toString());
@@ -324,10 +333,39 @@ public class DbEgokitua {
         return true;
 	}
 
+    public Cursor ekitaldiaLortu(int id) throws SQLException
+    {
+        String query = "SELECT tituloa,egune,lekua,deskribapena FROM "+TAULA_ekintza+" WHERE id = '"+id+"'";
+        Cursor c = db.rawQuery(query, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+    public String autoreaLortu(int id)
+    {
+        String query = "SELECT autor_id FROM "+TAULA_ekintza_sortzailea+" WHERE ekintza_id ="+id;
+        Cursor c = db.rawQuery(query, null);
+        int autor_id = 0;
+        if (c.moveToFirst()) {
+            do {
+                autor_id = c.getInt(0);
+            } while(c.moveToNext());
+        }
+        query = "SELECT nor FROM "+TAULA_autor+" WHERE id = '"+autor_id+"'";
+        c = db.rawQuery(query, null);
+        String autor=null;
+        if (c.moveToFirst()) {
+            do {
+                autor = c.getString(0);
+            } while(c.moveToNext());
+        }
+        return autor;
+    }
 
     /*
 
-    public long ekitaldiaJarri(String tituloa,String pub_date,String egune, String sortzailea,String deskribapena,boolean Jakinarazpena) 
+    public long ekitaldiaJarri(String tituloa,String pub_date,String egune, String sortzailea,String deskribapena,boolean Jakinarazpena)
     {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITULOA, tituloa);
@@ -339,7 +377,7 @@ public class DbEgokitua {
         return db.insert(DB_TAULA, null, initialValues);
     }
 
-    public boolean ekitaldiaEguneratu(long rowId,String tituloa,String pub_date,String egune,String sortzailea,String deskribapena,boolean Jakinarazpena) 
+    public boolean ekitaldiaEguneratu(long rowId,String tituloa,String pub_date,String egune,String sortzailea,String deskribapena,boolean Jakinarazpena)
     {
     	ContentValues args = new ContentValues();
     	args.put(KEY_TITULOA,tituloa);
@@ -351,23 +389,14 @@ public class DbEgokitua {
     	return db.update(DB_TAULA, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
-    
+
     public Cursor ekitaldiGuztiekLortu()
     {
     	return db.query(DB_TAULA, new String[] {KEY_ROWID,KEY_TITULOA,KEY_PUB_DATE,KEY_EGUNE,SOR_SORTZAILEA,KEY_DESKRIBAPENA,KEY_JAKINARAZPENA1}, null, null, null, null, null, null);
-        
+
     }
 
-    public Cursor ekitaldiaLortu(long rowId) throws SQLException 
-    {
-        Cursor mCursor =
-                db.query(true, DB_TAULA, new String[] {KEY_ROWID,KEY_TITULOA,KEY_PUB_DATE,KEY_EGUNE,SOR_SORTZAILEA,KEY_DESKRIBAPENA,KEY_JAKINARAZPENA1}, KEY_ROWID + "=" + rowId, null,
-                null, null, null, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-    }
-    
+    // para alarma :SELECT * FROM mytable WHERE strftime('%m-%d', 'now') = strftime('%m-%d', birthday)
+
    */
 }

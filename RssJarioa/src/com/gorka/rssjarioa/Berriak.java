@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -86,21 +85,9 @@ public class Berriak extends Activity {
                 }
             });
     }
-  
-    
+
     /**
-     * Mapan lista bat jaso eta ListView-a sortu
-     *
-     * */
-    private void setData(LinkedList<HashMap<String, String>> data){
-            SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.layout_items,
-            new String[] { DATA_TITLE,DATA_LINK},new int[] {R.id.tituloa_berriak});
-            ListView lv = (ListView) findViewById(R.id.lstData);
-            lv.setAdapter(sAdapter);
-    }   
-    
-    /**
-     *  progressDialog eta datuak kargatu 
+     *  progressDialog eta datuak kargatu
      */
     private void loadData() {
             progressDialog = ProgressDialog.show(Berriak.this,"","Mesedez itxaron datuak kargatu arte...",true);
@@ -115,28 +102,38 @@ public class Berriak extends Activity {
 
                 }}).start();
     }
-    
+
     /**(Handler) Datuak kargetan amaituten direnean mesu bat bidaltzeko beste hari batera
-	 */	
+	 */
 	private final Handler progressHandler = new Handler() {
 		@SuppressWarnings("unchecked")
 		public void handleMessage(Message msg) {
 			if (msg.obj != null) {
 				data = (LinkedList<HashMap<String, String>>)msg.obj;
-				setData(data);					
+				setData(data);
 			}
 			progressDialog.dismiss();
 	    }
 	};
-	
-    
-    
+
+    /**
+     * Mapan lista bat jaso eta ListView-a sortu
+     *
+     * */
+    private void setData(LinkedList<HashMap<String, String>> data){
+            SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.layout_items,
+            new String[] { DATA_TITLE,DATA_LINK},new int[] {R.id.tituloa_berriak});
+            ListView lv = (ListView) findViewById(R.id.lstData);
+            lv.setAdapter(sAdapter);
+    }
+
+
+
 	public void eleccion(String cadena){
 	        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
 	        alertbox.setMessage(cadena);
 	        alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
-	            public void onClick(DialogInterface arg0, int arg1) {startActivity(new Intent("hobespenak"));finish();
-	            	}
+	            public void onClick(DialogInterface arg0, int arg1) {startActivity(new Intent("hobespenak"));finish();}
 	        	});
 	        alertbox.setNegativeButton("Ez", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface arg0, int arg1) {

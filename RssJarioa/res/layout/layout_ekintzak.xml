@@ -45,14 +45,6 @@
     android:layout_below="@+id/tituloa_ekintzak"
     android:text="TextView" 
     android:textAppearance="?android:attr/textAppearanceSmall"/>
-  
 
-  <ImageView
-    android:id="@+id/imageIcon"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentRight="true"
-    android:layout_centerVertical="true"
-    android:src="@drawable/next_item" />
   
 </RelativeLayout>

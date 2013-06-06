@@ -64,6 +64,7 @@ public class Menua extends Activity {
             int mMonth = c.get(Calendar.MONTH)+1;   //urtarrila=0
             int mDay = c.get(Calendar.DAY_OF_MONTH);
 
+
             db.zabaldu();
 
                 //elimiar los eventos pasados
@@ -74,6 +75,10 @@ public class Menua extends Activity {
                     try {
                        int id= db.azkenId();
                         Log.d("azkenID",id+"");
+
+
+
+
                     }catch (Exception e){
                         Log.e("azkenID",e.toString());
                     }
