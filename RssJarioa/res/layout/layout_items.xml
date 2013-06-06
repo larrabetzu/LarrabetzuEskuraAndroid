@@ -43,5 +43,5 @@
     android:layout_alignParentRight="true"
     android:layout_centerVertical="true"
     android:src="@drawable/next_item" />
-  
+
 </RelativeLayout>
