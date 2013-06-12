@@ -177,7 +177,8 @@ public class DbEgokitua {
                     String sortzailea=null;
                     String tituloa=null;
                     String pub_date=null;
-                    String deskribapena;
+                    String deskribapena=null;
+                    String lekua=null;
 
                     try {
                         URL url = new URL("http://10.0.2.2:8000/wsEkintza/");
@@ -195,13 +196,15 @@ public class DbEgokitua {
                                 }else{
                                     // todas las palabras menos la ultima
                                     switch (numero){
-                                        case 1:egune=palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z",""); numero=0; break;
-                                        case 2:sortzailea=palabra.replace("[", "").replace("]", "").replace(",", "");       numero=0; break;
-                                        case 3:tituloa=palabra.replace("\"", "").replace(",", "");         numero=0; break;
-                                        case 4:pub_date=palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z",""); numero=0; break;
-                                        case 5:deskribapena=palabra.replace("\"", "").replace("}},", "");    numero=0;
+                                        case 1:tituloa = palabra.replace("\"", "").replace(",", "");                      numero=0; break;
+                                        case 2:deskribapena = palabra.replace("\"", "").replace("}},", "");               numero=0; break;
+                                        case 3:sortzailea = palabra.replace("[", "").replace("]", "").replace(",", "");   numero=0; break;
+                                        case 4:lekua = palabra.replace("[", "").replace("]", "").replace(",", "");        numero=0; break;
+                                        case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z",""); numero=0; break;
+                                        case 6:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z",""); numero=0;
                                             ContentValues initialValues = new ContentValues();
                                             initialValues.put(KEY_EGUNE, egune);
+                                            initialValues.put(KEY_LEKUA,lekua);
                                             initialValues.put(KEY_TITULOA, tituloa);
                                             initialValues.put(KEY_PUB_DATE, pub_date);
                                             initialValues.put(KEY_DESKRIBAPENA, deskribapena);
@@ -219,20 +222,23 @@ public class DbEgokitua {
                                             }break;
                                     }
 
-                                    if(palabra.equalsIgnoreCase("{\"egune\":")){
+                                    if(palabra.equalsIgnoreCase("\"tituloa\":")){
                                         numero=1;
                                     }
-                                    if(palabra.equalsIgnoreCase("\"sortzailea\":")){
+                                    if(palabra.equalsIgnoreCase("\"deskribapena\":")){
                                         numero=2;
                                     }
-                                    if(palabra.equalsIgnoreCase("\"tituloa\":")){
+                                    if(palabra.equalsIgnoreCase("\"sortzailea\":")){
                                         numero=3;
                                     }
-                                    if(palabra.equalsIgnoreCase("\"pub_date\":")){
+                                    if(palabra.equalsIgnoreCase("\"lekua\":")){
                                         numero=4;
                                     }
-                                    if(palabra.equalsIgnoreCase("\"deskribapena\":")){
+                                    if(palabra.equalsIgnoreCase("{\"egune\":")){
                                         numero=5;
+                                    }
+                                    if(palabra.equalsIgnoreCase("\"pub_date\":")){
+                                        numero=6;
                                     }
                                     palabra="";
                                 }
@@ -243,6 +249,7 @@ public class DbEgokitua {
                             deskribapena=palabra.replace("}}]", "").replace("\"","");
                             ContentValues initialValues = new ContentValues();
                             initialValues.put(KEY_EGUNE, egune);
+                            initialValues.put(KEY_LEKUA,lekua);
                             initialValues.put(KEY_TITULOA, tituloa);
                             initialValues.put(KEY_PUB_DATE, pub_date);
                             initialValues.put(KEY_DESKRIBAPENA, deskribapena);
@@ -323,8 +330,17 @@ public class DbEgokitua {
 	
 	public boolean garbitu(int urtea,int hilabeta,int egune)
 	{
+        String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <='"+urtea+"-"+hilabeta+"-"+egune+"'";
+        Cursor c = db.rawQuery(query, null);
+        int id=0;
+        if (c != null) {
+            c.moveToLast();
+            id=c.getInt(0);
+        }
+
         try {
-            db.execSQL("DELETE FROM "+TAULA_ekintza+" WHERE egune between '2013-05-22' and '"+urtea+"-"+hilabeta+"-"+egune+"'"); //adibi:'YYYY-MM-DD HH:MM:SS'
+            db.execSQL("DELETE FROM "+TAULA_ekintza_sortzailea+" WHERE id <= '"+id+"'");
+            db.execSQL("DELETE FROM "+TAULA_ekintza+" WHERE egune <= '"+urtea+"-"+hilabeta+"-"+egune+"'"); //adibi:'YYYY-MM-DD HH:MM:SS'
 
         }catch (Exception e){
             Log.e("garbitu",e.toString());

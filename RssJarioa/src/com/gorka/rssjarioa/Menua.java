@@ -66,9 +66,8 @@ public class Menua extends Activity {
 
 
             db.zabaldu();
-
                 //elimiar los eventos pasados
-                    //db.garbitu(mYear, mMonth, mDay);
+            db.garbitu(mYear, mMonth, mDay);
 
                 //obtener ultimo evento
                     //int azken_Id =db.azkenId();
@@ -76,8 +75,6 @@ public class Menua extends Activity {
                     try {
                        int id= db.azkenId();
                         Log.d("azkenID",id+"");
-
-
 
 
                     }catch (Exception e){
