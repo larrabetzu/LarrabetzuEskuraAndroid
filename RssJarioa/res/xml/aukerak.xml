@@ -24,9 +24,6 @@
 	        android:title="eskola" />
 	 	<CheckBoxPreference
 	        android:key="4"
-	        android:title="larrabetzun zer?" />
-	 	<CheckBoxPreference
-	        android:key="5"
 	        android:title="iPtx" />
 	 	
     </PreferenceCategory>

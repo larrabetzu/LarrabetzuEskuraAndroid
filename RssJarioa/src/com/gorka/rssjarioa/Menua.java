@@ -67,7 +67,10 @@ public class Menua extends Activity {
 
             db.zabaldu();
                 //elimiar los eventos pasados
-            db.garbitu(mYear, mMonth, mDay);
+            //db.garbitu(mYear, mMonth, mDay);
+
+
+                //db.eguneratu();
 
                 //obtener ultimo evento
                     //int azken_Id =db.azkenId();
@@ -83,8 +86,6 @@ public class Menua extends Activity {
                 //comparar ultimo evento con la web mirando la fecha que se añadio
 
                 //añadir ultimos evento
-
-
 
             db.zarratu();
             Log.e("hilo1", "off");

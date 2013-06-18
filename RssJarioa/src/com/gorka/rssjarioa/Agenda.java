@@ -31,7 +31,7 @@ public class Agenda extends Activity {
                 int mDay = c.get(Calendar.DAY_OF_MONTH);
                 ArrayList<List_Sarrera> datos = new ArrayList<List_Sarrera>();
                 db.zabaldu();
-                Cursor cursor = db.ekitaldiakid(mYear,mMonth+2,mDay); //bi hilabete erakuzteko
+                Cursor cursor = db.ekitaldiakid(mYear,mMonth+1,mDay); //bi hilabete erakuzteko
                 int id ;
                 if (cursor.moveToFirst()) {
                     do {
@@ -39,13 +39,6 @@ public class Agenda extends Activity {
                         Log.d("id ",id+"");
                         Cursor cursor1=db.ekitaldiaLortu(id);
                         int logo = R.drawable.ic_launcher;
-                        String autorea = db.autoreaLortu(id);
-                        if(autorea.equalsIgnoreCase("hori")){
-                           logo = R.drawable.horibai;
-                        }
-                        if(autorea.equalsIgnoreCase("herria")){
-                            logo = R.drawable.iptx;
-                        }
                         do{
                             datos.add(new List_Sarrera(logo,cursor1.getString(0), cursor1.getString(1),cursor1.getString(2),cursor1.getString(3)));
                         } while(cursor1.moveToNext());
@@ -82,16 +75,18 @@ public class Agenda extends Activity {
                     @Override
                     public void onItemClick(AdapterView<?> pariente, View view, int posicion, long id) {
                         List_Sarrera elegido = (List_Sarrera) pariente.getItemAtPosition(posicion);
-
-                        CharSequence texto = "Deskribapena: " + elegido.get_deskribapena();
+                        CharSequence texto;
+                        if (elegido.get_deskribapena()==null){
+                            texto = "Deskribapena: ez dago erabilgarri";
+                        }else{
+                            texto = "Deskribapena: " + elegido.get_deskribapena();
+                        }
                         Toast toast = Toast.makeText(Agenda.this, texto, Toast.LENGTH_LONG);
                         toast.show();
                     }
                 });
 
-
             //mirar si cambia algo y actualizar las notificaciones en la base de datos
-
 
             db.zarratu();
             }

@@ -56,10 +56,6 @@ public class Berriak extends Activity {
                                 Log.i("array", "http://www.larrabetzukoeskola.org/feed/");
                             break;
                         case 4:
-                            arr_blogs.add("http://www.larrabetzu.net/?feed=rss2");
-                                Log.i("array", "http://www.larrabetzu.net/?feed=rss2");
-                            break;
-                        case 5:
                             arr_blogs.add("http://www.larrabetzu.org/gaztelumendi/?feed=rss2");
                                 Log.i("array", "http://www.larrabetzu.org/gaztelumendi/?feed=rss2");
                             break;
@@ -121,7 +117,7 @@ public class Berriak extends Activity {
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
             SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.layout_items,
-            new String[] { DATA_TITLE,DATA_LINK},new int[] {R.id.tituloa_berriak});
+            new String[] { DATA_TITLE,DATA_LINK},new int[] {R.id.tituloa_berriak, R.drawable.ic_launcher});
             ListView lv = (ListView) findViewById(R.id.lstData);
             lv.setAdapter(sAdapter);
     }
