@@ -25,23 +25,14 @@
     android:layout_marginLeft="55sp"
     android:layout_marginRight="25sp"
     android:text="Large Text"
+    android:textColor="#000"
     android:textAppearance="?android:attr/textAppearanceMedium" />
- <!--  
-      <TextView
-        android:id="@+id/link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titulo"
-        android:layout_centerHorizontal="true"
-        android:text="TextView"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
-       -->
   <ImageView
     android:id="@+id/imageIcon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentRight="true"
     android:layout_centerVertical="true"
-    android:src="@drawable/next_item" />
+    android:src="@drawable/navigation_next_item" />
 
 </RelativeLayout>

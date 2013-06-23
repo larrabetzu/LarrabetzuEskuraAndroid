@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Menua extends Activity {
@@ -63,30 +65,26 @@ public class Menua extends Activity {
             int mYear = c.get(Calendar.YEAR);
             int mMonth = c.get(Calendar.MONTH)+1;   //urtarrila=0
             int mDay = c.get(Calendar.DAY_OF_MONTH);
+            int mhour = c.get(Calendar.HOUR_OF_DAY);
 
-
+            Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + mDay +" "+mhour);
             db.zabaldu();
-                //elimiar los eventos pasados
-            //db.garbitu(mYear, mMonth, mDay);
-
-
-                //db.eguneratu();
-
-                //obtener ultimo evento
-                    //int azken_Id =db.azkenId();
-                //obtener json /wsEkintza
-                    try {
-                       int id= db.azkenId();
-                        Log.d("azkenID",id+"");
-
-
-                    }catch (Exception e){
-                        Log.e("azkenID",e.toString());
-                    }
-                //comparar ultimo evento con la web mirando la fecha que se añadio
-
-                //añadir ultimos evento
-
+            try{
+                db.garbitu(mYear, String.format("%02d",mMonth), mDay, mhour);
+                }catch (Exception e){
+                Log.e("garbitu",e.toString());
+            }
+            try{
+                db.eguneratuEkintzak();
+                }catch (Exception e){
+                Log.e("eguneratu",e.toString());
+            }
+            try {
+                int id= db.azkenId();
+                Log.d("azkenID",id+"");
+                }catch (Exception e){
+                Log.e("azkenID",e.toString());
+            }
             db.zarratu();
             Log.e("hilo1", "off");
         }

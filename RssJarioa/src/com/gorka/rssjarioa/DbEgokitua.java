@@ -7,11 +7,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 
 public class DbEgokitua {
     
@@ -104,6 +105,7 @@ public class DbEgokitua {
                     String webgunea=null;
                     String email=null;
                     String nor;
+                    int foo = 0;
                     try {
                         URL url = new URL("http://10.0.2.2:8000/wsAutor/");
                         URLConnection uc = url.openConnection();
@@ -114,54 +116,50 @@ public class DbEgokitua {
                             String palabra="";
                             for(int x=0;x<inputLine.length();x++){
                                 char carac=inputLine.charAt(x);
-                                if(carac!=' '){
+                                if(carac!='"'){
                                     palabra=palabra+carac;
                                 }else{
-                                    // todas las palabras menos la ultima
-                                    switch (numero){
-                                        case 1:webgunea=palabra.replace("\"", "").replace(",", "").replace("}}", "");           numero=0; break;
-                                        case 2:email=palabra.replace("\"", "").replace("]", "").replace(",", "").replace("}}", "");       numero=0; break;
-                                        case 3:nor=palabra.replace("\"", "").replace(",", "").replace("}}", "");         numero=0;
-                                            ContentValues initialValues = new ContentValues();
-                                            initialValues.put(AUT_NOR, nor);
-                                            initialValues.put(AUT_EMAIL, email);
-                                            initialValues.put(AUT_webgunea, webgunea);
-                                            long id =db.insert(TAULA_autor, null, initialValues);
-                                            if (id==-1) {
-                                                Log.d(nor, "Ez da gehitu autor");
-                                            }else {
-                                                Log.d(nor, "+autor");    }break;
+                                    foo = foo +1;
+                                    if(0!=foo%2){
+                                        // todas las palabras menos la ultima
+                                        switch (numero){
+                                            case 1:webgunea=palabra.replace(",", "");           numero=0; break;
+                                            case 2:email=palabra.replace(",", "");       numero=0; break;
+                                            case 3:nor=palabra.replace("}},", "").replace("{", "");         numero=0;
+                                                ContentValues initialValues = new ContentValues();
+                                                initialValues.put(AUT_NOR, nor);
+                                                initialValues.put(AUT_EMAIL, email);
+                                                initialValues.put(AUT_webgunea, webgunea);
+                                                long id =db.insert(TAULA_autor, null, initialValues);
+                                                if (id==-1) {
+                                                    Log.d(nor, "Ez da gehitu autor");
+                                                }else {
+                                                    Log.d(nor, "+autor");    }break;
+                                        }
+                                        if(palabra.contains("webgunea:")){
+                                            numero=1;
+                                        }
+                                        if(palabra.contains("email:")){
+                                            numero=2;
+                                        }
+                                        if(palabra.contains("nor:")){
+                                            numero=3;
+                                        }
+                                        palabra="";
                                     }
-                                    if(palabra.contains("webgunea") && (palabra.length()>=10)){
-                                        numero=1;
-                                    }
-                                    if(palabra.contains("email") && (palabra.length()>=7)){
-                                        numero=2;
-                                    }
-                                    if(palabra.contains("nor") && (palabra.length()>=5)){
-                                        numero=3;
-                                    }
-
-                                    palabra="";
                                 }
                             }
-                            //ultima palabra antes de terminar
-
-                            nor=palabra.replace("}}]","").replace("\"","");
+                            nor=palabra.replace("}}]","");
                             ContentValues initialValues = new ContentValues();
                             initialValues.put(AUT_NOR, nor);
                             initialValues.put(AUT_EMAIL, email);
                             initialValues.put(AUT_webgunea, webgunea);
                             long id =db.insert(TAULA_autor, null, initialValues);
-
                             if (id==-1) {
                                 Log.d(nor, "Ez da gehitu autor");
                             }else {
                                 Log.d(nor, "+autor");
-
                             }
-
-
                             inputLine=in.readLine();
                         }
                         in.close();
@@ -171,7 +169,6 @@ public class DbEgokitua {
                     /**
                      * db ekintza internetetik aktualizatu
                      *
-                     *
                      */
                     numero=0;
                     String egune=null;
@@ -180,9 +177,8 @@ public class DbEgokitua {
                     String pub_date;
                     String deskribapena=null;
                     String lekua=null;
-                    int foo = 0;
+                    foo = 0;
                     String substring = null;
-
                     try {
                         URL url = new URL("http://10.0.2.2:8000/wsEkintza/");
                         URLConnection uc = url.openConnection();
@@ -201,11 +197,16 @@ public class DbEgokitua {
                                     if(0!=foo%2){
                                         // todas las palabras menos la ultima
                                         switch (numero){
-                                            case 1:tituloa = palabra.replace("\"", "").replace(",", "");                        numero=0; break;
-                                            case 2:deskribapena = palabra.replace("\"", "").replace("}},", "").replace(",",""); numero=0; break;
-                                            case 4:lekua = palabra.replace("[", "").replace("]", "").replace(",", "");          numero=0; break;
-                                            case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z",""); numero=0; break;
-                                            case 6:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19); numero=0;
+                                            case 1:tituloa = palabra.replace("\"", "").replace(",", "");
+                                                    numero=0; break;
+                                            case 2:deskribapena = palabra.replace("\"", "").replace("}},", "").replace(",","");
+                                                    numero=0; break;
+                                            case 4:lekua = palabra.replace("[", "").replace("]", "").replace(",", "");
+                                                    numero=0; break;
+                                            case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z","");
+                                                    numero=0; break;
+                                            case 6:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19);
+                                                    numero=0;
                                                 ContentValues initialValues = new ContentValues();
                                                 initialValues.put(KEY_EGUNE, egune);
                                                 initialValues.put(KEY_LEKUA,lekua);
@@ -308,6 +309,160 @@ public class DbEgokitua {
 
             }
     }
+    public void eguneratuEkintzak()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date fecha1 = null;
+        java.util.Date fecha2 = null;
+
+        String query = "SELECT MAX(pub_date) AS max  FROM "+TAULA_ekintza;
+        Cursor cursor = db.rawQuery(query, null);
+        String azken_pub_date = null;
+        if (cursor.moveToFirst()) {
+            do { azken_pub_date = cursor.getString(0);
+            } while(cursor.moveToNext());
+        }
+        Log.e("azken_pub_date",azken_pub_date);
+
+        try{
+            fecha1 = sdf.parse(azken_pub_date , new ParsePosition(0));
+        }catch (Exception e){
+            Log.e("String to date",e.toString());
+        }
+        /**
+         * db ekintza internetetik aktualizatu
+         */
+        int numero=0;
+        String egune=null;
+        String sortzailea;
+        String tituloa=null;
+        String pub_date;
+        String deskribapena=null;
+        String lekua=null;
+        int foo = 0;
+        String substring = null;
+        try {
+            URL url = new URL("http://10.0.2.2:8000/wsEkintza/");
+            URLConnection uc = url.openConnection();
+            uc.connect();
+            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+            String inputLine=in.readLine();
+            while (inputLine != null) {
+                String palabra="";
+                for(int x=0;x<inputLine.length();x++){
+                    char carac=inputLine.charAt(x);
+                    if(carac!='"'){
+                        palabra=palabra+carac;
+                    }else{
+                        foo = foo +1;
+                        if(0!=foo%2){
+                            // todas las palabras menos la ultima
+                            switch (numero){
+                                case 1:tituloa = palabra.replace("\"", "").replace(",", "");                        numero=0; break;
+                                case 2:deskribapena = palabra.replace("\"", "").replace("}},", "").replace(",",""); numero=0; break;
+                                case 4:lekua = palabra.replace("[", "").replace("]", "").replace(",", "");          numero=0; break;
+                                case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z",""); numero=0; break;
+                                case 6:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19); numero=0;
+                                    try{
+                                    fecha2 = sdf.parse(pub_date , new ParsePosition(0));
+                                    }catch (Exception e){
+                                        Log.e("Parse date",e.toString());
+                                    }
+                                    if(fecha1.before(fecha2)){
+                                        ContentValues initialValues = new ContentValues();
+                                        initialValues.put(KEY_EGUNE, egune);
+                                        initialValues.put(KEY_LEKUA,lekua);
+                                        initialValues.put(KEY_TITULOA, tituloa);
+                                        initialValues.put(KEY_PUB_DATE, pub_date);
+                                        initialValues.put(KEY_DESKRIBAPENA, deskribapena);
+                                        initialValues.put(KEY_JAKINARAZPENA1, false);
+                                        initialValues.put(KEY_JAKINARAZPENA2, false);
+                                        long id =db.insert(TAULA_ekintza, null, initialValues);
+                                        Log.i("id",""+id);
+                                        if (id==-1) {Log.d(tituloa, "Ez da ekintzarik gehitu");
+                                        }else {Log.d(tituloa, "+ ekintza");
+                                            for (int i = 0; i < substring.length(); i++){
+                                                if(substring.charAt(i)!=' '){
+                                                    sortzailea = substring.charAt(i)+"";
+                                                    ContentValues initialValuesSortzailea = new ContentValues();
+                                                    initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
+                                                    initialValuesSortzailea.put(SOR_EKINTZA, id);
+                                                    long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
+                                                    if (idsor==-1) {Log.d(sortzailea, "Ez da sortzailea gehitu");
+                                                    }else {Log.d(sortzailea,"+ sortzailea");}
+                                                }
+                                            }
+                                        }
+                                    }
+                                    break;
+                            }
+                            if(palabra.equals("tituloa: ") ){
+                                numero=1;
+                            }
+                            if(palabra.equals("deskribapena: ")){
+                                numero=2;
+                            }
+                            if(palabra.contains("sortzailea: ")){
+                                substring = palabra.substring(13).replace(",", "").replace("]", "");
+                            }
+                            if(palabra.equals("lekua: ") ){
+                                numero=4;
+                            }
+                            if(palabra.equals("egune: ") ){
+                                numero=5;
+                            }
+                            if(palabra.contains("pub_date: ")){
+                                numero=6;
+                            }
+                            palabra="";
+                        }
+                    }
+
+                }
+                //ultima palabra antes de terminar
+                pub_date=palabra.replace("}}]", "").replace("\"","").replace("T", " ").replace("Z","").substring(0, 19);
+                try{
+                    fecha2 = sdf.parse(pub_date , new ParsePosition(0));
+                }catch (Exception e){
+                    Log.e("Parse date",e.toString());
+                }
+                if(fecha1.before(fecha2)){
+                    ContentValues initialValues = new ContentValues();
+                    initialValues.put(KEY_EGUNE, egune);
+                    initialValues.put(KEY_LEKUA,lekua);
+                    initialValues.put(KEY_TITULOA, tituloa);
+                    initialValues.put(KEY_PUB_DATE, pub_date);
+                    initialValues.put(KEY_DESKRIBAPENA, deskribapena);
+                    initialValues.put(KEY_JAKINARAZPENA1, false);
+                    initialValues.put(KEY_JAKINARAZPENA2, false);
+                    long id =db.insert(TAULA_ekintza, null, initialValues);
+                    if (id==-1){
+                        Log.d(tituloa, "Ez da ekintzarik gehitu");
+                    }else{
+                        Log.d(tituloa, "+ ekintza");
+
+                        for (int i = 0; i < substring.length(); i++){
+                            if(substring.charAt(i)!=' '){
+
+                                sortzailea = substring.charAt(i)+"";
+                                ContentValues initialValuesSortzailea = new ContentValues();
+                                initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
+                                initialValuesSortzailea.put(SOR_EKINTZA, id);
+                                long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
+                                if (idsor==-1) {Log.d(sortzailea, "Ez da sortzailea gehitu");
+                                }else {Log.d(sortzailea,"+ sortzailea");}
+                            }
+                        }
+                    }
+                }
+                inputLine=in.readLine();
+            }
+            in.close();
+        } catch (Exception e) {
+            Log.e("ekintzasortu", e.toString());
+        }
+    }
+
 
     public  DbEgokitua zabaldu() throws SQLException 
     {
@@ -323,8 +478,6 @@ public class DbEgokitua {
 	public int azkenId() 
 	{ 
             String query = "SELECT MAX(id) AS max_id FROM "+TAULA_ekintza;
-            //"SELECT MAX(_id) AS _id FROM egitaraua"
-            //"SELECT MAX(id) AS max_id FROM mytable
             Cursor cursor = db.rawQuery(query, null);
             int id = 0;
             if (cursor.moveToFirst()) {
@@ -335,47 +488,47 @@ public class DbEgokitua {
 
     public Cursor ekitaldiakid(int urtea,int hilabeta,int egune)
     {
-        String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune between '2013-05-22' and '"+urtea+"-"+hilabeta+"-"+egune+"'";
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
+            String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <= '"+urtea+"-"+hilabeta+"-"+egune+"' order by egune";
+            Cursor cursor = db.rawQuery(query, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+            }
+            return cursor;
     }
-    /**
 
-
-    public boolean garbitu(int urtea,int hilabeta,int egune)
+    public boolean garbitu(int urtea,String hilabetea,int egune, int ordue)
     {
-        String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <='"+urtea+"-"+hilabeta+"-"+egune+"'";
-        Cursor c = db.rawQuery(query, null);
-        int id=0;
-        if (c != null) {
-            c.moveToLast();
-            id=c.getInt(0);
-        }
+            String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <='"+urtea+"-"+hilabetea+"-"+egune+" "+ordue+"' order by egune";
+            Cursor c = db.rawQuery(query, null);
+            int id;
+            if (c != null) {
+                c.moveToFirst();
+                do{
+                    id=c.getInt(0);
+                    Log.e("id garbiketa",""+id);
+                    try {
+                        db.execSQL("DELETE FROM "+TAULA_ekintza_sortzailea+" WHERE ekintza_id ='"+id+"'");
+                        db.execSQL("DELETE FROM "+TAULA_ekintza+" WHERE id ='"+id+"'");
 
-        try {
-            db.execSQL("DELETE FROM "+TAULA_ekintza_sortzailea+" WHERE id <= '"+id+"'");
-            db.execSQL("DELETE FROM "+TAULA_ekintza+" WHERE egune <= '"+urtea+"-"+hilabeta+"-"+egune+"'"); //adibi:'YYYY-MM-DD HH:MM:SS'
+                    }catch (Exception e){
+                        Log.e("garbitu",e.toString());
+                    }
+                }while (c.moveToNext());
+            }
 
-        }catch (Exception e){
-            Log.e("garbitu",e.toString());
-        }
 
         return true;
     }
-     */
+
 
     public Cursor ekitaldiaLortu(int id) throws SQLException
     {
-        String query = "SELECT tituloa,egune,lekua,deskribapena FROM "+TAULA_ekintza+" WHERE id = '"+id+"'";
-        Cursor c = db.rawQuery(query, null);
-        if (c != null) {
-            c.moveToFirst();
-        }
-        return c;
+            String query = "SELECT tituloa,egune,lekua,deskribapena FROM "+TAULA_ekintza+" WHERE id = '"+id+"'";
+            Cursor c = db.rawQuery(query, null);
+            if (c != null) {
+                c.moveToFirst();
+            }
+            return c;
     }
 
     /**

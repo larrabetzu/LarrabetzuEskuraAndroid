@@ -5,13 +5,15 @@
   android:paddingBottom="5sp"
   android:paddingTop="5sp" >
  
-<ImageView
-    android:id="@+id/imagen"
+<TextView
+    android:id="@+id/egune"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
     android:layout_centerVertical="true"
-    android:src="@drawable/ic_launcher"
+    android:text="22"
+    android:textSize="50sp"
+    android:textAppearance="?android:attr/textAppearanceSmall"
     />
      
   <TextView
@@ -26,7 +28,7 @@
     android:textAppearance="?android:attr/textAppearanceMedium" />
 
   <TextView
-    android:id="@+id/data"
+    android:id="@+id/ordue"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_below="@+id/tituloa_ekintzak"
@@ -41,7 +43,7 @@
     android:id="@+id/lekua"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_toRightOf="@+id/data"
+    android:layout_toRightOf="@+id/ordue"
     android:layout_below="@+id/tituloa_ekintzak"
     android:text="TextView" 
     android:textAppearance="?android:attr/textAppearanceSmall"/>

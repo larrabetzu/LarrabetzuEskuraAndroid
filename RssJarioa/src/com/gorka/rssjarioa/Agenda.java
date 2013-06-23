@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,16 +37,15 @@ public class Agenda extends Activity {
                         id = cursor.getInt(0);
                         Log.d("id ",id+"");
                         Cursor cursor1=db.ekitaldiaLortu(id);
-                        int logo = R.drawable.ic_launcher;
                         do{
-                            datos.add(new List_Sarrera(logo,cursor1.getString(0), cursor1.getString(1),cursor1.getString(2),cursor1.getString(3)));
+                            datos.add(new List_Sarrera(cursor1.getString(0),cursor1.getString(1).substring(8,10) , cursor1.getString(1).substring(10,16),cursor1.getString(2),cursor1.getString(3)));
                         } while(cursor1.moveToNext());
 
 
                     } while(cursor.moveToNext());
                 }
 
-                //crear el listView
+                //listView sortu
                 lista = (ListView) findViewById(R.id.listviewAgenda);
                 lista.setAdapter(new List_adaptador(this, R.layout.layout_ekintzak, datos){
                     @Override
@@ -61,13 +59,13 @@ public class Agenda extends Activity {
                             if (lekua != null)
                                 lekua.setText(((List_Sarrera) entrada).get_lekua());
 
-                            TextView eguna = (TextView) view.findViewById(R.id.data);
-                            if (eguna != null)
-                                eguna.setText(((List_Sarrera) entrada).get_egune());
+                            TextView ordue = (TextView) view.findViewById(R.id.ordue);
+                            if (ordue != null)
+                                ordue.setText(((List_Sarrera) entrada).get_ordue());
 
-                            ImageView imagen = (ImageView) view.findViewById(R.id.imagen);
-                            if (imagen != null)
-                                imagen.setImageResource(((List_Sarrera) entrada).get_idImagen());
+                            TextView egune= (TextView) view.findViewById(R.id.egune);
+                            if (egune != null)
+                                egune.setText(((List_Sarrera) entrada).get_egune());
                         }
                     }
                 });
