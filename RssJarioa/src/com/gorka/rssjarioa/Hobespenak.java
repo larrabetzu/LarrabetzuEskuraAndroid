@@ -1,6 +1,5 @@
 package com.gorka.rssjarioa;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
@@ -11,10 +10,7 @@ public class Hobespenak extends PreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
                 super.onCreate(savedInstanceState);
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
                 addPreferencesFromResource(R.xml.aukerak);
-                }
-
         }
         @Override
         public void onBuildHeaders(List<Header> target) {
