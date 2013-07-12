@@ -32,7 +32,6 @@ public class DbEgokitua {
 	 * TABLE principal_ekintza
 	 */
     static final String TAULA_ekintza= "principal_ekintza";
-    static final String KEY_id= "id";
     static final String KEY_TITULOA = "tituloa";
     static final String KEY_LEKUA = "lekua";
 	static final String KEY_PUB_DATE="pub_date"; //publikatutako data
