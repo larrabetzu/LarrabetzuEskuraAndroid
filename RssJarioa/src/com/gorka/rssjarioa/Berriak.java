@@ -17,7 +17,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.TextView;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,6 +32,7 @@ public class Berriak extends Activity {
 	public static ArrayList<String> arr_blogs= new ArrayList<String>(); 
 	private ProgressDialog progressDialog;//
 	private int post;
+    public ArrayList<List_Sarrera> arr_data = new ArrayList<List_Sarrera>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -116,13 +119,29 @@ public class Berriak extends Activity {
      *
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
-            SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), data, R.layout.layout_items,
-            new String[] { DATA_TITLE,DATA_LINK},new int[] {R.id.tituloa_berriak, R.drawable.ic_launcher});
+            for (HashMap<String, String> aData : data) {
+                int logo = R.drawable.ic_launcher;
+                if (aData.get("L").contains("horibai")) {
+                    logo = R.drawable.horibai;
+                }
+                arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"), logo));
+            }
             ListView lv = (ListView) findViewById(R.id.lstData);
-            lv.setAdapter(sAdapter);
+            lv.setAdapter(new List_adaptador(this, R.layout.layout_items, arr_data){
+                @Override
+                public void onEntrada(Object entrada, View view) {
+                    if (entrada != null) {
+                        TextView tituloa = (TextView) view.findViewById(R.id.tituloa_berriak);
+                        if (tituloa != null)
+                            tituloa.setText(((List_Sarrera) entrada).get_tituloa());
+
+                        ImageView imagen = (ImageView) view.findViewById(R.id.logo);
+                        if (imagen != null)
+                            imagen.setImageResource(((List_Sarrera) entrada).get_idImagen());
+                    }
+                }
+            });
     }
-
-
 
 	public void eleccion(String cadena){
 	        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
