@@ -16,9 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,25 +42,29 @@ public class Berriak extends Activity {
             try {
                 this.post =Integer.parseInt(sharedPrefs.getString("post","Null"));
                 arr_blogs.clear();
-                for (int i = 1; i <= 4; i++) {
+                for (int i = 1; i <= 5; i++) {
                     boolean posi=sharedPrefs.getBoolean(""+i, false);
                     if (posi) {
                         switch (i) {
                         case 1:
-                            arr_blogs.add("http://larrabetzutik.org/feed/");
-                                Log.i("array", "http://larrabetzutik.org/feed/");
+                            arr_blogs.add("http://www.larrabetzutik.org/feed/");
+                                Log.i("array-Berriak", "http://larrabetzutik.org/feed/");
                             break;
                         case 2:
-                            arr_blogs.add("http://horibai.org/feed/rss/");
-                                Log.i("array", "http://horibai.org/feed/rss/");
+                            arr_blogs.add("http://www.horibai.org/feed/rss/");
+                                Log.i("array-Berriak", "http://horibai.org/feed/rss/");
                             break;
                         case 3:
                             arr_blogs.add("http://www.larrabetzukoeskola.org/feed/");
-                                Log.i("array", "http://www.larrabetzukoeskola.org/feed/");
+                                Log.i("array-Berriak", "http://www.larrabetzukoeskola.org/feed/");
                             break;
                         case 4:
                             arr_blogs.add("http://www.larrabetzu.org/gaztelumendi/?feed=rss2");
-                                Log.i("array", "http://www.larrabetzu.org/gaztelumendi/?feed=rss2");
+                                Log.i("array-Berriak", "http://www.larrabetzu.org/gaztelumendi/?feed=rss2");
+                            break;
+                        case 5:
+                            arr_blogs.add("http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
+                            Log.i("array-Berriak", "http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
                             break;
                         }
                     }
@@ -121,8 +125,16 @@ public class Berriak extends Activity {
     private void setData(LinkedList<HashMap<String, String>> data){
             for (HashMap<String, String> aData : data) {
                 int logo = R.drawable.ic_launcher;
-                if (aData.get("L").contains("horibai")) {
+                if (aData.get("L").contains("larrabetzutik.org")) {
+                    logo = R.drawable.larrabetzutik;
+                }else if (aData.get("L").contains("horibai.org")) {
                     logo = R.drawable.horibai;
+                }else if (aData.get("L").contains("larrabetzukoeskola.org")) {
+                    logo = R.drawable.eskola;
+                }else if (aData.get("L").contains("larrabetzu.org/gaztelumendi")) {
+                    logo = R.drawable.iptx;
+                }else if (aData.get("L").contains("larrabetzuko-udala")) {
+                    logo = R.drawable.udala;
                 }
                 arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"), logo));
             }

@@ -25,6 +25,9 @@
 	 	<CheckBoxPreference
 	        android:key="4"
 	        android:title="iPtx" />
+        <CheckBoxPreference
+            android:key="5"
+            android:title="udala" />
 	 	
     </PreferenceCategory>
 </PreferenceScreen>

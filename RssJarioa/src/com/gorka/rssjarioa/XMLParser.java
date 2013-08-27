@@ -26,7 +26,7 @@ public class XMLParser {
                 XMLParser.len=arr.length;
                 this.url=new URL [len];
                 for (int i = 0; i < len; i++) {
-                    Log.i("array",""+arr[i]);
+                    Log.i("array-XMLParse",""+arr[i]);
                     this.url[i]=new URL(arr[i]);
                 }
                 this.post=post;
