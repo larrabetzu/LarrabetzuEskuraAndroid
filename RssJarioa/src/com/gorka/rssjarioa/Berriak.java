@@ -28,6 +28,7 @@ public class Berriak extends Activity {
 
 	static final String DATA_TITLE = "T";
 	static final String DATA_LINK  = "L";
+    static final String DATA_DATE  = "D";
 	static LinkedList<HashMap<String, String>> data;
 	public static ArrayList<String> arr_blogs= new ArrayList<String>(); 
 	private ProgressDialog progressDialog;//
@@ -136,7 +137,7 @@ public class Berriak extends Activity {
                 }else if (aData.get("L").contains("larrabetzuko-udala")) {
                     logo = R.drawable.udala;
                 }
-                arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"), logo));
+                arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"),aData.get("D"), logo));
             }
             ListView lv = (ListView) findViewById(R.id.lstData);
             lv.setAdapter(new List_adaptador(this, R.layout.layout_items, arr_data){
@@ -146,6 +147,10 @@ public class Berriak extends Activity {
                         TextView tituloa = (TextView) view.findViewById(R.id.tituloa_berriak);
                         if (tituloa != null)
                             tituloa.setText(((List_Sarrera) entrada).get_tituloa());
+
+                        TextView ordue = (TextView) view.findViewById(R.id.berriak_ordue);
+                        if (ordue != null)
+                            ordue.setText(((List_Sarrera) entrada).get_ordue());
 
                         ImageView imagen = (ImageView) view.findViewById(R.id.logo);
                         if (imagen != null)

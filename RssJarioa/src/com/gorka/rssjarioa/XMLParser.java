@@ -60,15 +60,17 @@ public class XMLParser {
                             String name = property.getNodeName();
                             if (name.equalsIgnoreCase("title")){
                                 entry.put(Berriak.DATA_TITLE, property.getFirstChild().getNodeValue());
-                            } else if (name.equalsIgnoreCase("link")){
-                                entry.put(Berriak.DATA_LINK, property.getFirstChild().getNodeValue());
-                            }/**
-                            *else if(name.equalsIgnoreCase("pubDate")){
-                                entry.put(Berriak.DATA_DATE, property.getFirstChild().getNodeValue());
-                            **/
                             }
-                        entries.add(entry);
+                            else if (name.equalsIgnoreCase("link")){
+                                entry.put(Berriak.DATA_LINK, property.getFirstChild().getNodeValue());
+                            }
+                            else if(name.equalsIgnoreCase("pubDate")){
+                                entry.put(Berriak.DATA_DATE, property.getFirstChild().getNodeValue().substring(4,25));
+                                Log.e("data-xmlParse",property.getFirstChild().getNodeValue().substring(4,25));
+                            }
                         }
+                        entries.add(entry);
+                    }
                 }
 
             }catch (Exception e) {

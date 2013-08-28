@@ -28,7 +28,17 @@
     android:text="Large Text"
     android:textColor="#000"
     android:textAppearance="?android:attr/textAppearanceMedium" />
-  <ImageView
+
+  <TextView
+    android:id="@+id/berriak_ordue"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_toEndOf="@id/tituloa_berriak"
+    android:text="TextView"
+    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+    <ImageView
     android:id="@+id/imageIcon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

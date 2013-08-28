@@ -17,9 +17,10 @@ public class List_Sarrera {
         this.deskribapena = deskribapena;
 	}
 
-    public List_Sarrera(String tituloa, String deskribapena, int idImagen) {
+    public List_Sarrera(String tituloa, String deskribapena,String ordue, int idImagen) {
         this.tituloa = tituloa;
         this.deskribapena = deskribapena;
+        this.ordue = ordue;
         this.idImagen = idImagen;
     }
 	
