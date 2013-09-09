@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,9 +27,9 @@ import java.util.LinkedList;
 
 public class Berriak extends Activity {
 
+    DbEgokitua db=new DbEgokitua(this);
 	static final String DATA_TITLE = "T";
 	static final String DATA_LINK  = "L";
-    static final String DATA_DATE  = "D";
 	static LinkedList<HashMap<String, String>> data;
 	public static ArrayList<String> arr_blogs= new ArrayList<String>(); 
 	private ProgressDialog progressDialog;//
@@ -52,8 +53,8 @@ public class Berriak extends Activity {
                                 Log.i("array-Berriak", "http://larrabetzutik.org/feed/");
                             break;
                         case 2:
-                            arr_blogs.add("http://www.horibai.org/feed/rss/");
-                                Log.i("array-Berriak", "http://horibai.org/feed/rss/");
+                            arr_blogs.add("http://www.horibai.org/feed/");
+                                Log.i("array-Berriak", "http://horibai.org/feed/");
                             break;
                         case 3:
                             arr_blogs.add("http://www.larrabetzukoeskola.org/feed/");
@@ -82,8 +83,8 @@ public class Berriak extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int position,
                         long id) {
-                    HashMap<String, String> entry = data.get(position);
-                    Intent browserAction = new Intent(Intent.ACTION_VIEW,Uri.parse(entry.get(DATA_LINK)));
+                    String link =arr_data.get(position).get_link();
+                    Intent browserAction = new Intent(Intent.ACTION_VIEW,Uri.parse(link));
                     startActivity(browserAction);
                 }
             });
@@ -97,8 +98,37 @@ public class Berriak extends Activity {
             new Thread(new Runnable(){
                 @Override
                 public void run() {
-                    String [] arr = arr_blogs.toArray(new String[arr_blogs.size()]);
-                    XMLParser parser = new XMLParser(arr,post);
+                    db.zabaldu();
+                    HashMap mblog = new HashMap();
+                    int i = arr_blogs.size();
+                    String [] arr = arr_blogs.toArray(new String[i]);
+                    try{
+                        for (String getblog : arr_blogs) {
+                            if (getblog.contains("larrabetzutik.org")) {
+                                String data = db.blogazkendata("larrabetzutik");
+                                mblog.put("larrabetzutik", data);
+
+                            } else if (getblog.contains("horibai.org")) {
+                                String data = db.blogazkendata("horibai");
+                                mblog.put("horibai", data);
+
+                            } else if (getblog.contains("larrabetzukoeskola.org")) {
+                                String data = db.blogazkendata("eskola");
+                                mblog.put("eskola", data);
+
+                            } else if (getblog.contains("larrabetzu.org/gaztelumendi")) {
+                                String data = db.blogazkendata("gaztelumendi");
+                                mblog.put("gaztelumendi", data);
+
+                            } else if (getblog.contains("larrabetzuko-udala")) {
+                                String data = db.blogazkendata("udala");
+                                mblog.put("udala", data);
+                            }
+                        }
+                    }catch (Exception ex){
+                        Log.e("loaddata-Berriak",ex.toString());
+                    }
+                    XMLParser parser = new XMLParser(arr,post,mblog);
                     Message msg = progressHandler.obtainMessage();
                     msg.obj = parser.parse();
                     progressHandler.sendMessage(msg);
@@ -114,50 +144,90 @@ public class Berriak extends Activity {
 			if (msg.obj != null) {
 				data = (LinkedList<HashMap<String, String>>)msg.obj;
 				setData(data);
-			}
+            }
+            getDataDb();
+            lvsortu();
 			progressDialog.dismiss();
 	    }
 	};
 
     /**
+     * Datu basetik informazioa hartu eta arr_data-n sartu
+     */
+    private void getDataDb(){
+        try{
+            int logo = R.drawable.ic_launcher;
+            Cursor cursor = db.linklortu();
+            do {
+                String s = cursor.getString(0);
+                if (s.equals("larrabetzutik")) {
+                    logo = R.drawable.larrabetzutik;
+                }else if (s.equals("horibai")) {
+                    logo = R.drawable.horibai;
+                }else if (s.equals("eskola")) {
+                    logo = R.drawable.eskola;
+                }else if (s.equals("gaztelumendi")) {
+                    logo = R.drawable.iptx;
+                }else if (s.equals("udala")) {
+                    logo = R.drawable.udala;
+                }
+                arr_data.add(new List_Sarrera(cursor.getString(1), cursor.getString(2), logo));
+
+            } while(cursor.moveToNext());
+
+        }catch (Exception ex){
+            Log.e("arr_data-datubasetik-Berriak",ex.toString());
+        }
+        db.zarratu();
+
+    }
+    /**
      * Mapan lista bat jaso eta ListView-a sortu
-     *
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
             for (HashMap<String, String> aData : data) {
                 int logo = R.drawable.ic_launcher;
+                String blog = null;
                 if (aData.get("L").contains("larrabetzutik.org")) {
                     logo = R.drawable.larrabetzutik;
+                    blog = "larrabetzutik";
                 }else if (aData.get("L").contains("horibai.org")) {
                     logo = R.drawable.horibai;
+                    blog = "horibai";
                 }else if (aData.get("L").contains("larrabetzukoeskola.org")) {
                     logo = R.drawable.eskola;
+                    blog = "eskola";
                 }else if (aData.get("L").contains("larrabetzu.org/gaztelumendi")) {
                     logo = R.drawable.iptx;
+                    blog = "gaztelumendi";
                 }else if (aData.get("L").contains("larrabetzuko-udala")) {
                     logo = R.drawable.udala;
+                    blog = "udala";
                 }
-                arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"),aData.get("D"), logo));
+                arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"), logo));
+                if (blog!=null)
+                    db.linkjarri(blog,aData.get("T"),aData.get("L"));
+                    db.linkkendu(blog,post);
             }
-            ListView lv = (ListView) findViewById(R.id.lstData);
-            lv.setAdapter(new List_adaptador(this, R.layout.layout_items, arr_data){
-                @Override
-                public void onEntrada(Object entrada, View view) {
-                    if (entrada != null) {
-                        TextView tituloa = (TextView) view.findViewById(R.id.tituloa_berriak);
-                        if (tituloa != null)
-                            tituloa.setText(((List_Sarrera) entrada).get_tituloa());
 
-                        TextView ordue = (TextView) view.findViewById(R.id.berriak_ordue);
-                        if (ordue != null)
-                            ordue.setText(((List_Sarrera) entrada).get_ordue());
+    }
+    private void lvsortu(){
 
-                        ImageView imagen = (ImageView) view.findViewById(R.id.logo);
-                        if (imagen != null)
-                            imagen.setImageResource(((List_Sarrera) entrada).get_idImagen());
-                    }
+        ListView lv = (ListView) findViewById(R.id.lstData);
+        lv.setAdapter(new List_adaptador(this, R.layout.layout_items, arr_data){
+            @Override
+            public void onEntrada(Object entrada, View view) {
+                if (entrada != null) {
+                    TextView tituloa = (TextView) view.findViewById(R.id.tituloa_berriak);
+                    if (tituloa != null)
+                        tituloa.setText(((List_Sarrera) entrada).get_tituloa());
+
+                    ImageView imagen = (ImageView) view.findViewById(R.id.logo);
+                    if (imagen != null)
+                        imagen.setImageResource(((List_Sarrera) entrada).get_idImagen());
                 }
-            });
+            }
+        });
     }
 
 	public void eleccion(String cadena){

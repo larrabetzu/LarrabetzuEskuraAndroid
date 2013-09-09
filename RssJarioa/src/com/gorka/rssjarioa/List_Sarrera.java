@@ -7,6 +7,7 @@ public class List_Sarrera {
 	private String lekua;
     private String ordue;
     private String deskribapena;
+    private String link;
     private int idImagen;
 
     public List_Sarrera( String tituloa,String egune, String ordue, String lekua, String deskribapena) {
@@ -17,10 +18,9 @@ public class List_Sarrera {
         this.deskribapena = deskribapena;
 	}
 
-    public List_Sarrera(String tituloa, String deskribapena,String ordue, int idImagen) {
+    public List_Sarrera(String tituloa, String link, int idImagen) {
         this.tituloa = tituloa;
-        this.deskribapena = deskribapena;
-        this.ordue = ordue;
+        this.link = link;
         this.idImagen = idImagen;
     }
 	
@@ -42,6 +42,9 @@ public class List_Sarrera {
 
     public String get_deskribapena(){
         return deskribapena;
+    }
+    public String get_link(){
+        return link;
     }
 
     public int get_idImagen() {

@@ -7,12 +7,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DbEgokitua {
     
@@ -26,7 +28,7 @@ public class DbEgokitua {
 	static final String TAULA_autor= "principal_autor";
 	static final String AUT_NOR = "nor";
 	static final String AUT_EMAIL = "email";
-	static final String AUT_webgunea = "webgunea";
+	static final String AUT_WEBGUNEA = "webgunea";
     
 	/*
 	 * TABLE principal_ekintza
@@ -45,7 +47,15 @@ public class DbEgokitua {
 	static final String TAULA_ekintza_sortzailea= "principal_ekintza_sortzailea";
     static final String SOR_EKINTZA="ekintza_id";
     static final String SOR_AUTOR="autor_id";
-	
+    /*
+     * TABLE blog_link
+     */
+    static final String TAULA_blog_links = "blog_links";
+    static final String LINK_BLOG = "blog";
+    static final String LINK_TITULOA = "tituloa";
+    static final String LINK_LINK = "link";
+    static final String LINK_PUB_DATE = "blog_pub_date";
+
 	static final int DB_BERTSIOA = 1;
     static final String DB_IZENA = "NireDB";
     
@@ -73,8 +83,13 @@ public class DbEgokitua {
 						    	    "UNIQUE (ekintza_id, autor_id)); ";
 						    	    
 						    	    
-	
-    
+	static final String DB_TAULA_blog_links = "CREATE TABLE blog_links (" +
+                                    "id integer NOT NULL PRIMARY KEY," +
+                                    "blog varchar(100) NOT NULL," +
+                                    "tituloa varchar(100) NOT NULL," +
+                                    "link varchar(200) NOT NULL," +
+                                    "blog_pub_date datetime NOT NULL);";
+
     public  DbEgokitua(Context ctx)
     {
             this.context = ctx;
@@ -96,6 +111,7 @@ public class DbEgokitua {
                     db.execSQL(DB_TAULA_autor);
                     db.execSQL(DB_TAULA_ekintza);
                     db.execSQL(DB_TAULA_ekintza_sortzailea);
+                    db.execSQL(DB_TAULA_blog_links);
                     /**
                      * db autor internetetik aktualizatu
                      *
@@ -128,7 +144,7 @@ public class DbEgokitua {
                                                 ContentValues initialValues = new ContentValues();
                                                 initialValues.put(AUT_NOR, nor);
                                                 initialValues.put(AUT_EMAIL, email);
-                                                initialValues.put(AUT_webgunea, webgunea);
+                                                initialValues.put(AUT_WEBGUNEA, webgunea);
                                                 long id =db.insert(TAULA_autor, null, initialValues);
                                                 if (id==-1) {
                                                     Log.d(nor, "Ez da gehitu autor");
@@ -152,7 +168,7 @@ public class DbEgokitua {
                             ContentValues initialValues = new ContentValues();
                             initialValues.put(AUT_NOR, nor);
                             initialValues.put(AUT_EMAIL, email);
-                            initialValues.put(AUT_webgunea, webgunea);
+                            initialValues.put(AUT_WEBGUNEA, webgunea);
                             long id =db.insert(TAULA_autor, null, initialValues);
                             if (id==-1) {
                                 Log.d(nor, "Ez da gehitu autor");
@@ -304,6 +320,7 @@ public class DbEgokitua {
                 db.execSQL("DROP TABLE IF EXISTS principal_autor");
                 db.execSQL("DROP TABLE IF EXISTS principal_ekintza_sortzailea");
                 db.execSQL("DROP TABLE IF EXISTS principal_ekintza");
+                db.execSQL("DROP TABLE IF EXISTS blog_links");
                 onCreate(db);
 
             }
@@ -510,12 +527,10 @@ public class DbEgokitua {
                         db.execSQL("DELETE FROM "+TAULA_ekintza+" WHERE id ='"+id+"'");
 
                     }catch (Exception e){
-                        Log.e("garbitu",e.toString());
+                        Log.e("garbitu-DBEgokitua",e.toString());
                     }
                 }while (c.moveToNext());
             }
-
-
         return true;
     }
 
@@ -529,78 +544,75 @@ public class DbEgokitua {
             }
             return c;
     }
-
-    /**
-     *
-     * @param tituloa
-     * @param pub_date
-     * @param egune
-     * @param lekua
-     * @param sortzailea
-     * @param deskribapena
-     * @param Jakinarazpena
-     * @return
-    public boolean ekitaldiaJarri(String tituloa,String pub_date,String egune,String lekua, String sortzailea,String deskribapena,boolean Jakinarazpena)
+    public String blogazkendata(String blog)
     {
-        boolean com = false;
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_TITULOA, tituloa);
-        initialValues.put(KEY_PUB_DATE, pub_date);
-        initialValues.put(KEY_EGUNE, egune);
-        initialValues.put(KEY_LEKUA,lekua);
-        initialValues.put(KEY_DESKRIBAPENA, deskribapena);
-        initialValues.put(KEY_JAKINARAZPENA1, false);
-        initialValues.put(KEY_JAKINARAZPENA2, false);
-        long id =db.insert(TAULA_ekintza, null, initialValues);
-        if (id==-1) {
-            Log.d(tituloa, "Ez da ekintzarik gehitu");
-        }else {
-            Log.d(tituloa, "+ ekintza");
-            ContentValues initialValuesSortzailea = new ContentValues();
-            initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
-            initialValuesSortzailea.put(SOR_EKINTZA, id);
-            long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-            if (idsor==-1) {
-                Log.d(sortzailea, "Ez da sortzailea gehitu");
-            }else {
-                com = true ;
-                Log.d(sortzailea,"+ sortzailea");
-            }
-        }
-        return com;
+            final Calendar ca = Calendar.getInstance();
+            int mYear = ca.get(Calendar.YEAR);
+            int mMonth = ca.get(Calendar.MONTH)+1-1;   //urtarrila=0 ,bat kenduko dotzet orain dela hilabeteko data lortzeko
+            int mDay = ca.get(Calendar.DAY_OF_MONTH);
+            int mhour = ca.get(Calendar.HOUR_OF_DAY);
+            String data = null;
+            String oraindelahilebat = mYear+"-"+mMonth+"-"+mDay+" "+mhour+":00:00";//yyyy-MM-dd hh:mm:ss
 
+            try {
+                String query = "SELECT MAX(blog_pub_date) FROM blog_links WHERE blog ='"+blog+"'";
+                Cursor c = db.rawQuery(query, null);
+                if (c.moveToFirst()) {
+                    do {
+                        data = c.getString(0);
+                    } while(c.moveToNext());
+                }
+                if(data==null){
+                    data = oraindelahilebat;
+                }
+            }catch (Exception ex){
+                Log.e("blogakendata-dbEgokitua"+blog,ex.toString());
+                data = oraindelahilebat;
+            }
+            return data;
     }
-     */
+    public void linkjarri(String blog,String tituloa,String link)
+    {
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(LINK_BLOG, blog);
+            initialValues.put(LINK_TITULOA, tituloa);
+            initialValues.put(LINK_LINK, link);
+            long id =db.insert(TAULA_blog_links, null, initialValues);
+            if (id==-1) {
+                Log.d("link-dbEgokitua", "Ez da gehitu linka");
+            }else {
+                Log.d("link-dbEgokitua", "+link");
+            }
+    }
+    public Cursor linklortu ()
+    {
+            String query = "SELECT blog,tituloa,link FROM "+TAULA_blog_links+" order by blog_pub_date DESC";
+            Cursor c = db.rawQuery(query, null);
+            if (c != null) {
+                c.moveToFirst();
+            }
+            return c;
+    }
+    public void linkkendu(String blog,int post)
+    {
+            String query = "SELECT id FROM "+TAULA_blog_links+" WHERE blog ='"+blog+"' order by blog_pub_date ASC";
+            Cursor c = db.rawQuery(query, null);
+            int id;
+            if (c != null) {
+                c.moveToFirst();
+                if(c.getCount()>post){
+                    id=c.getInt(0);
+                    Log.e("id linkkendu",""+id);
+                    try {
+                        db.execSQL("DELETE FROM "+TAULA_blog_links+" WHERE id ='"+id+"'");
+                    }catch (Exception e){
+                        Log.e("linkkendu-DBEgokitua",e.toString());
+                    }
+                }
+            }
+    }
 
     /*
-    public String autoreaLortu(int id)
-    {
-        String query = "SELECT autor_id FROM "+TAULA_ekintza_sortzailea+" WHERE ekintza_id ="+id;
-        Cursor c = db.rawQuery(query, null);
-        int autor_id = 0;
-        if (c.moveToFirst()) {
-            do {
-                autor_id = c.getInt(0);
-            } while(c.moveToNext());
-        }
-        query = "SELECT nor FROM "+TAULA_autor+" WHERE id = '"+autor_id+"'";
-        c = db.rawQuery(query, null);
-        String autor=null;
-        if (c.moveToFirst()) {
-            do {
-                autor = c.getString(0);
-            } while(c.moveToNext());
-        }
-        return autor;
-    }
-
-    public Cursor ekitaldiGuztiekLortu()
-    {
-    	return db.query(DB_TAULA, new String[] {KEY_ROWID,KEY_TITULOA,KEY_PUB_DATE,KEY_EGUNE,SOR_SORTZAILEA,KEY_DESKRIBAPENA,KEY_JAKINARAZPENA1}, null, null, null, null, null, null);
-
-    }
-
     // para alarma :SELECT * FROM mytable WHERE strftime('%m-%d', 'now') = strftime('%m-%d', birthday)
-
    */
 }
