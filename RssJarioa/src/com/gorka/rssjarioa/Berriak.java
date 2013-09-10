@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -30,6 +32,7 @@ public class Berriak extends Activity {
     DbEgokitua db=new DbEgokitua(this);
 	static final String DATA_TITLE = "T";
 	static final String DATA_LINK  = "L";
+    static final String DATA_DATE  = "D";
 	static LinkedList<HashMap<String, String>> data;
 	public static ArrayList<String> arr_blogs= new ArrayList<String>(); 
 	private ProgressDialog progressDialog;//
@@ -205,9 +208,10 @@ public class Berriak extends Activity {
                     blog = "udala";
                 }
                 arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"), logo));
-                if (blog!=null)
-                    db.linkjarri(blog,aData.get("T"),aData.get("L"));
+                if (blog!=null){
+                    db.linkjarri(blog,aData.get("T"),aData.get("L"),aData.get("D"));
                     db.linkkendu(blog,post);
+                }
             }
 
     }
@@ -244,6 +248,17 @@ public class Berriak extends Activity {
 	        alertbox.show();
 	}
 
-    
-    
+    @Override
+    public void onStart() {
+        super.onStart();
+        // The rest of your onStart() code.
+        EasyTracker.getInstance(this).activityStart(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // The rest of your onStop() code.
+        EasyTracker.getInstance(this).activityStop(this);
+    }
 }

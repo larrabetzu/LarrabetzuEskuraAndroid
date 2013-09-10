@@ -571,15 +571,16 @@ public class DbEgokitua {
             }
             return data;
     }
-    public void linkjarri(String blog,String tituloa,String link)
+    public void linkjarri(String blog,String tituloa,String link,String date)
     {
             ContentValues initialValues = new ContentValues();
             initialValues.put(LINK_BLOG, blog);
             initialValues.put(LINK_TITULOA, tituloa);
             initialValues.put(LINK_LINK, link);
+            initialValues.put(LINK_PUB_DATE,date);
             long id =db.insert(TAULA_blog_links, null, initialValues);
             if (id==-1) {
-                Log.d("link-dbEgokitua", "Ez da gehitu linka");
+                Log.e("link-dbEgokitua", "Ez da gehitu linka");
             }else {
                 Log.d("link-dbEgokitua", "+link");
             }

@@ -117,6 +117,7 @@ public class XMLParser {
                                     Log.e("String to date mblog",e.toString());
                                 }
                                 if(fecha1.before(fecha2)){
+                                    entry.put(Berriak.DATA_DATE, data);
                                     Log.i("data-xmlParse", data);
                                 }else {
                                     confirmado = false;

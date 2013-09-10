@@ -1,5 +1,6 @@
 package com.gorka.rssjarioa;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
+import com.google.analytics.tracking.android.EasyTracker;
+
 import java.util.Calendar;
 
 public class Menua extends Activity {
@@ -93,8 +94,9 @@ public class Menua extends Activity {
 	    
 	    
     public boolean networkAvailable() {
-            Context context = getApplicationContext();
-            ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        Context context = getApplicationContext();
+        assert context != null;
+        ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (connectMgr != null) {
                 NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
                 if (netInfo != null) {
@@ -109,5 +111,18 @@ public class Menua extends Activity {
                 Log.d("INTERNET", "EZ dago internetik");
             }
             return false;
+    }
+    @Override
+    public void onStart() {
+            super.onStart();
+            // The rest of your onStart() code.
+            EasyTracker.getInstance(this).activityStart(this);
+    }
+
+    @Override
+    public void onStop() {
+            super.onStop();
+            // The rest of your onStop() code.
+            EasyTracker.getInstance(this).activityStop(this);
     }
 }

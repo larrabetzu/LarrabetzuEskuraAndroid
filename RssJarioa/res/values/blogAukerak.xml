@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <string-array name="post">
-      <item name="Bat">Bat</item>
-      <item name="Bi">Bi</item>
-      <item name="Hiru">Hiru</item>
-      <item name="Lau">Lau</item>
-      <item name="Bost">Bost</item>
-      <item name="Sei">Sei</item>
+      <item>Bat</item>
+      <item>Bi</item>
+      <item>Hiru</item>
+      <item>Lau</item>
+      <item>Bost</item>
+      <item>Sei</item>
 <!--  <item name="Zazpi">Zazpi</item>
       <item name="Sortzi">Sortzi</item>
       <item name="Bederatzi">Bederatzi</item>
       <item name="Hamar">Hamar</item>-->
    </string-array>
    <string-array name="codipost">
-      <item name="Bat">1</item>
-      <item name="Bi">2</item>
-      <item name="Hiru">3</item>
-      <item name="Lau">4</item>
-      <item name="Bost">5</item>
-      <item name="Sei">6</item>
+      <item>1</item>
+      <item>2</item>
+      <item>3</item>
+      <item>4</item>
+      <item>5</item>
+      <item>6</item>
   <!--<item name="Zazpi">7</item>
       <item name="Sortzi">8</item>
       <item name="Bederatzi">9</item>
       <item name="Hamar">10</item> -->
    </string-array>
    <string-array name="defaults">
-       <item name="Lau">4</item>
+       <item>4</item>
     </string-array>
    
 </resources>

@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Categoría 1">
+    <PreferenceCategory android:title="Post Kantidadea">
 	    <ListPreference
 		   android:key="post"
-		   android:title="Post Kantidadea"
-		   android:summary="Zenbat Post Blog Bakoitzeko"
+		   android:title="Zenbat Post Blog Bakoitzeko"
 		   android:dialogTitle="Zenbat Post Bakoitzeko"
 		   android:entries="@array/post"
 		   android:entryValues="@array/codipost" 
 		   android:defaultValue="4"/>
 	</PreferenceCategory>
-	<PreferenceCategory android:title="Aukeratu blogak">
+	<PreferenceCategory android:title="Aukeratu blogak (gutxiago karga azkarrago)">
 	 	<CheckBoxPreference
 	        android:key="1"
 	        android:title="Larrabetzutik"

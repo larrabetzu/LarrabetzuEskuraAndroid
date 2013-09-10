@@ -9,6 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -86,8 +89,18 @@ public class Agenda extends Activity {
             db.zarratu();
 
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // The rest of your onStart() code.
+        EasyTracker.getInstance(this).activityStart(this);
+    }
 
-
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        // The rest of your onStop() code.
+        EasyTracker.getInstance(this).activityStop(this);
+    }
 
 }
