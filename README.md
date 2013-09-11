@@ -3,7 +3,9 @@ LarrabetzukoAgenda
 
 Larrabetzuko agenda digitala
 
-![APP Home](https://github.com/ercillagorka/LarrabetzukoAgenda/blob/master/Menua.jpg?raw=true)
+![APP Home](https://github.com/ercillagorka/LarrabetzukoAgenda/blob/master/menua.png?raw=true)
+![APP Home](https://github.com/ercillagorka/LarrabetzukoAgenda/blob/master/egunekoberriak.png?raw=true)
+![APP Home](https://github.com/ercillagorka/LarrabetzukoAgenda/blob/master/hobespenak.png?raw=true)
 
 
 
