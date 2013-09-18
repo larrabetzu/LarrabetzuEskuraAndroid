@@ -122,7 +122,7 @@ public class DbEgokitua {
                     String nor;
                     int foo = 0;
                     try {
-                        URL url = new URL("http://10.0.2.2:8000/wsAutor/");
+                        URL url = new URL("http://37.139.15.79/wsAutor/");
                         URLConnection uc = url.openConnection();
                         uc.connect();
                         BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
@@ -195,7 +195,7 @@ public class DbEgokitua {
                     foo = 0;
                     String substring = null;
                     try {
-                        URL url = new URL("http://10.0.2.2:8000/wsEkintza/");
+                        URL url = new URL("http://37.139.15.79/wsEkintza/");
                         URLConnection uc = url.openConnection();
                         uc.connect();
                         BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
@@ -248,22 +248,22 @@ public class DbEgokitua {
                                                 }
                                                 break;
                                         }
-                                        if(palabra.equals("tituloa: ") ){
+                                        if(palabra.equals("tituloa:") ){
                                             numero=1;
                                         }
-                                        if(palabra.equals("deskribapena: ")){
+                                        if(palabra.equals("deskribapena:")){
                                             numero=2;
                                         }
-                                        if(palabra.contains("sortzailea: ")){
+                                        if(palabra.contains("sortzailea:")){
                                             substring = palabra.substring(13).replace(",", "").replace("]", "");
                                         }
-                                        if(palabra.equals("lekua: ") ){
+                                        if(palabra.equals("lekua:") ){
                                             numero=4;
                                         }
-                                        if(palabra.equals("egune: ") ){
+                                        if(palabra.equals("egune:") ){
                                             numero=5;
                                         }
-                                        if(palabra.contains("pub_date: ")){
+                                        if(palabra.contains("pub_date:")){
                                             numero=6;
                                         }
 
@@ -308,8 +308,8 @@ public class DbEgokitua {
                         Log.e("ekintzasortu", e.toString());
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
                     Log.e("sql", "Taula ez da sortu ");
+                    Log.e("taula",e.toString());
                 }
             }
         
@@ -358,7 +358,7 @@ public class DbEgokitua {
         int foo = 0;
         String substring = null;
         try {
-            URL url = new URL("http://10.0.2.2:8000/wsEkintza/");
+            URL url = new URL("http://37.139.15.79/wsEkintza/");
             URLConnection uc = url.openConnection();
             uc.connect();
             BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
@@ -412,22 +412,22 @@ public class DbEgokitua {
                                     }
                                     break;
                             }
-                            if(palabra.equals("tituloa: ") ){
+                            if(palabra.equals("tituloa:") ){
                                 numero=1;
                             }
-                            if(palabra.equals("deskribapena: ")){
+                            if(palabra.equals("deskribapena:")){
                                 numero=2;
                             }
-                            if(palabra.contains("sortzailea: ")){
+                            if(palabra.contains("sortzailea:")){
                                 substring = palabra.substring(13).replace(",", "").replace("]", "");
                             }
-                            if(palabra.equals("lekua: ") ){
+                            if(palabra.equals("lekua:") ){
                                 numero=4;
                             }
-                            if(palabra.equals("egune: ") ){
+                            if(palabra.equals("egune:") ){
                                 numero=5;
                             }
-                            if(palabra.contains("pub_date: ")){
+                            if(palabra.contains("pub_date:")){
                                 numero=6;
                             }
                             palabra="";
