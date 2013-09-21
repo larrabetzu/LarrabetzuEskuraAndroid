@@ -30,7 +30,7 @@ public class Agenda extends Activity {
             int mDay = c.get(Calendar.DAY_OF_MONTH);
             ArrayList<List_Sarrera> datos = new ArrayList<List_Sarrera>();
             db.zabaldu();
-            Cursor cursor = db.ekitaldiakid(mYear,mMonth+1,mDay); //bi hilabete erakuzteko
+            Cursor cursor = db.ekitaldiakid(mYear,mMonth+1,mDay); // hilabete bat erakuzteko
             int id ;
             if (cursor.moveToFirst()) {
                 do {

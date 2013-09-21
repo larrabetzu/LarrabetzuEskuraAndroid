@@ -248,19 +248,19 @@ public class DbEgokitua {
                                                 }
                                                 break;
                                         }
-                                        if(palabra.equals("tituloa:") ){
+                                        if(palabra.contains("tituloa:") ){
                                             numero=1;
                                         }
-                                        if(palabra.equals("deskribapena:")){
+                                        if(palabra.contains("deskribapena:")){
                                             numero=2;
                                         }
                                         if(palabra.contains("sortzailea:")){
                                             substring = palabra.substring(13).replace(",", "").replace("]", "");
                                         }
-                                        if(palabra.equals("lekua:") ){
+                                        if(palabra.contains("lekua:") ){
                                             numero=4;
                                         }
-                                        if(palabra.equals("egune:") ){
+                                        if(palabra.contains("egune:") ){
                                             numero=5;
                                         }
                                         if(palabra.contains("pub_date:")){
@@ -412,19 +412,19 @@ public class DbEgokitua {
                                     }
                                     break;
                             }
-                            if(palabra.equals("tituloa:") ){
+                            if(palabra.contains("tituloa:") ){
                                 numero=1;
                             }
-                            if(palabra.equals("deskribapena:")){
+                            if(palabra.contains("deskribapena:")){
                                 numero=2;
                             }
                             if(palabra.contains("sortzailea:")){
                                 substring = palabra.substring(13).replace(",", "").replace("]", "");
                             }
-                            if(palabra.equals("lekua:") ){
+                            if(palabra.contains("lekua:") ){
                                 numero=4;
                             }
-                            if(palabra.equals("egune:") ){
+                            if(palabra.contains("egune:") ){
                                 numero=5;
                             }
                             if(palabra.contains("pub_date:")){
