@@ -39,6 +39,8 @@ public class DbEgokitua {
 	static final String KEY_PUB_DATE="pub_date"; //publikatutako data
 	static final String KEY_EGUNE="egune";		 // ekitaldian egune
 	static final String KEY_DESKRIBAPENA="deskribapena";
+    static final String KEY_link="link";
+    static final String KEY_kartela_link="kartela_link";
 	static final String KEY_JAKINARAZPENA1="jakinarazpena_1";
 	static final String KEY_JAKINARAZPENA2="jakinarazpena_2";
 	/*
@@ -71,10 +73,12 @@ public class DbEgokitua {
 									"tituloa varchar(100) NOT NULL,"+
                                     "lekua varchar(100) NOT NULL,"+
 									"egune datetime NOT NULL,"+
-									"deskribapena varchar(300) NOT NULL,"+
+									"deskribapena varchar(600) NOT NULL,"+
+                                    "link varchar(200)," +
+                                    "kartela_link varchar(100),"+
 									"pub_date datetime NOT NULL,"+
 									"jakinarazpena_1 bool NOT NULL,"+
-									"jakinarazpena_2 bool NOT NULL)";
+									"jakinarazpena_2 bool NOT NULL);";
 
     static final String DB_TAULA_ekintza_sortzailea = "CREATE TABLE principal_ekintza_sortzailea ("+
 						    	    "id integer NOT NULL PRIMARY KEY,"+
@@ -186,12 +190,14 @@ public class DbEgokitua {
                      *
                      */
                     numero=0;
-                    String egune=null;
+                    String egune = null;
                     String sortzailea;
-                    String tituloa=null;
+                    String tituloa = null;
+                    String link = null;
+                    String kartela_link = null;
+                    String deskribapena = null;
+                    String lekua = null;
                     String pub_date;
-                    String deskribapena=null;
-                    String lekua=null;
                     foo = 0;
                     String substring = null;
                     try {
@@ -220,13 +226,24 @@ public class DbEgokitua {
                                                     numero=0; break;
                                             case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z","");
                                                     numero=0; break;
-                                            case 6:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19);
+                                            case 6:link = null;
+                                                    if(palabra.replace("\"", "").replace(",", "").length()>6){
+                                                    link = palabra.replace("\"", "").replace(",", "");}
+                                                    numero=0; break;
+                                            case 7:kartela_link = null;
+                                                    if (palabra.replace("\"", "").replace(",", "").length()>4){
+                                                    kartela_link = "http://37.139.15.79/media/"+palabra.replace("\"", "").replace(",", "");
+                                                    }
+                                                    numero=0; break;
+                                            case 8:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19);
                                                     numero=0;
                                                 ContentValues initialValues = new ContentValues();
                                                 initialValues.put(KEY_EGUNE, egune);
                                                 initialValues.put(KEY_LEKUA,lekua);
                                                 initialValues.put(KEY_TITULOA, tituloa);
                                                 initialValues.put(KEY_PUB_DATE, pub_date);
+                                                initialValues.put(KEY_link,link);
+                                                initialValues.put(KEY_kartela_link,kartela_link);
                                                 initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                                                 initialValues.put(KEY_JAKINARAZPENA1, false);
                                                 initialValues.put(KEY_JAKINARAZPENA2, false);
@@ -263,8 +280,14 @@ public class DbEgokitua {
                                         if(palabra.contains("egune:") ){
                                             numero=5;
                                         }
-                                        if(palabra.contains("pub_date:")){
+                                        if(palabra.contains("link:") ){
                                             numero=6;
+                                        }
+                                        if(palabra.contains("kartela:") ){
+                                            numero=7;
+                                        }
+                                        if(palabra.contains("pub_date:")){
+                                            numero=8;
                                         }
 
                                         palabra="";
@@ -278,6 +301,8 @@ public class DbEgokitua {
                             initialValues.put(KEY_EGUNE, egune);
                             initialValues.put(KEY_LEKUA,lekua);
                             initialValues.put(KEY_TITULOA, tituloa);
+                            initialValues.put(KEY_link,link);
+                            initialValues.put(KEY_kartela_link,kartela_link);
                             initialValues.put(KEY_PUB_DATE, pub_date);
                             initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                             initialValues.put(KEY_JAKINARAZPENA1, false);
@@ -352,6 +377,8 @@ public class DbEgokitua {
         String egune=null;
         String sortzailea;
         String tituloa=null;
+        String link = null;
+        String kartela_link = null;
         String pub_date;
         String deskribapena=null;
         String lekua=null;
@@ -378,7 +405,13 @@ public class DbEgokitua {
                                 case 2:deskribapena = palabra.replace("\"", "").replace("}},", "").replace(",",""); numero=0; break;
                                 case 4:lekua = palabra.replace("[", "").replace("]", "").replace(",", "");          numero=0; break;
                                 case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z",""); numero=0; break;
-                                case 6:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19); numero=0;
+                                case 6:link = null;
+                                        if(palabra.replace("\"", "").replace(",", "").length()>6){
+                                        link = palabra.replace("\"", "").replace(",", "");}numero=0; break;
+                                case 7:kartela_link = null;
+                                       if (palabra.replace("\"", "").replace(",", "").length()>4){
+                                       kartela_link = "http://37.139.15.79/media/"+palabra.replace("\"", "").replace(",", "");}numero=0; break;
+                                case 8:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19); numero=0;
                                     try{
                                     fecha2 = sdf.parse(pub_date , new ParsePosition(0));
                                     }catch (Exception e){
@@ -389,6 +422,8 @@ public class DbEgokitua {
                                         initialValues.put(KEY_EGUNE, egune);
                                         initialValues.put(KEY_LEKUA,lekua);
                                         initialValues.put(KEY_TITULOA, tituloa);
+                                        initialValues.put(KEY_link,link);
+                                        initialValues.put(KEY_kartela_link,kartela_link);
                                         initialValues.put(KEY_PUB_DATE, pub_date);
                                         initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                                         initialValues.put(KEY_JAKINARAZPENA1, false);
@@ -427,8 +462,14 @@ public class DbEgokitua {
                             if(palabra.contains("egune:") ){
                                 numero=5;
                             }
-                            if(palabra.contains("pub_date:")){
+                            if(palabra.contains("link:") ){
                                 numero=6;
+                            }
+                            if(palabra.contains("kartela:") ){
+                                numero=7;
+                            }
+                            if(palabra.contains("pub_date:")){
+                                numero=8;
                             }
                             palabra="";
                         }
@@ -447,6 +488,8 @@ public class DbEgokitua {
                     initialValues.put(KEY_EGUNE, egune);
                     initialValues.put(KEY_LEKUA,lekua);
                     initialValues.put(KEY_TITULOA, tituloa);
+                    initialValues.put(KEY_link,link);
+                    initialValues.put(KEY_kartela_link,kartela_link);
                     initialValues.put(KEY_PUB_DATE, pub_date);
                     initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                     initialValues.put(KEY_JAKINARAZPENA1, false);
@@ -543,6 +586,15 @@ public class DbEgokitua {
                 c.moveToFirst();
             }
             return c;
+    }
+    public Cursor ekitaldiaLortuDana(int id) throws SQLException
+    {
+        String query = "SELECT tituloa,egune,lekua,deskribapena,link,kartela_link FROM "+TAULA_ekintza+" WHERE id = '"+id+"'";
+        Cursor c = db.rawQuery(query, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
     }
     public String blogazkendata(String blog)
     {

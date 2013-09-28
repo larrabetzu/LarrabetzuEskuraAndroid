@@ -5,48 +5,56 @@
   android:paddingBottom="5sp"
   android:paddingTop="5sp" >
  
-<TextView
-    android:id="@+id/egune"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_centerVertical="true"
-    android:text="22"
-    android:textSize="50sp"
-    android:textAppearance="?android:attr/textAppearanceSmall"
-    />
+    <TextView
+        android:id="@+id/egune"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="22"
+        android:textSize="50sp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        />
      
-  <TextView
-    android:id="@+id/tituloa_ekintzak"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginLeft="55sp"
-    android:layout_marginRight="25sp"
-    android:text="Large Text"
-    android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/tituloa_agenda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="55sp"
+        android:layout_marginRight="25sp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-  <TextView
-    android:id="@+id/ordue"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/tituloa_ekintzak"
-    android:layout_alignParentLeft="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginLeft="55sp"
-    android:layout_marginRight="25sp"
-    android:text="TextView" 
-    android:textAppearance="?android:attr/textAppearanceSmall"/>
-  
-  <TextView
-    android:id="@+id/lekua"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_toRightOf="@+id/ordue"
-    android:layout_below="@+id/tituloa_ekintzak"
-    android:text="TextView" 
-    android:textAppearance="?android:attr/textAppearanceSmall"/>
+    <TextView
+        android:id="@+id/ordue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloa_agenda"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="55sp"
+        android:layout_marginRight="25sp"
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <TextView
+        android:id="@+id/lekua"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/ordue"
+        android:layout_below="@+id/tituloa_agenda"
+        android:text="TextView"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <ImageView
+        android:id="@+id/imageIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/navigation_next_item" />
 
   
 </RelativeLayout>

@@ -1,14 +1,15 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -38,7 +39,7 @@ public class Agenda extends Activity {
                     Log.d("id ",id+"");
                     Cursor cursor1=db.ekitaldiaLortu(id);
                     do{
-                        datos.add(new List_Sarrera(cursor1.getString(0),cursor1.getString(1).substring(8,10) , cursor1.getString(1).substring(10,16),cursor1.getString(2),cursor1.getString(3)));
+                        datos.add(new List_Sarrera(cursor1.getString(0),cursor1.getString(1).substring(8,10) , cursor1.getString(1).substring(10, 16),cursor1.getString(2),id));
                     } while(cursor1.moveToNext());
 
 
@@ -51,7 +52,7 @@ public class Agenda extends Activity {
                 @Override
                 public void onEntrada(Object entrada, View view) {
                     if (entrada != null) {
-                        TextView tituloa = (TextView) view.findViewById(R.id.tituloa_ekintzak);
+                        TextView tituloa = (TextView) view.findViewById(R.id.tituloa_agenda);
                         if (tituloa != null)
                             tituloa.setText(((List_Sarrera) entrada).get_tituloa());
 
@@ -69,24 +70,19 @@ public class Agenda extends Activity {
                     }
                 }
             });
-            lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            db.zarratu();
+
+            lista.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> pariente, View view, int posicion, long id) {
                     List_Sarrera elegido = (List_Sarrera) pariente.getItemAtPosition(posicion);
-                    CharSequence texto;
-                    if (elegido.get_deskribapena()==null){
-                        texto = "Deskribapena: ez dago erabilgarri";
-                    }else{
-                        texto = "Deskribapena: " + elegido.get_deskribapena();
-                    }
-                    Toast toast = Toast.makeText(Agenda.this, texto, Toast.LENGTH_LONG);
-                    toast.show();
+                    Intent intent=new Intent("ekintza");
+                    Bundle bundle =new Bundle();
+                    bundle.putInt("posicion", elegido.get_id());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             });
-
-            //mirar si cambia algo y actualizar las notificaciones en la base de datos
-
-            db.zarratu();
 
     }
     @Override
