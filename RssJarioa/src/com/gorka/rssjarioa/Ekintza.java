@@ -1,9 +1,14 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -29,7 +34,10 @@ public class Ekintza extends Activity {
 
         db.zabaldu();
         Bundle bundle=getIntent().getExtras();
-        int id=bundle.getInt("posicion");
+        int id= 0;
+        if (bundle != null) {
+            id = bundle.getInt("posicion");
+        }
         Log.i("posicion",id+"");
         Cursor cursor=db.ekitaldiaLortuDana(id);
 
@@ -51,14 +59,18 @@ public class Ekintza extends Activity {
         } while(cursor.moveToNext());
 
         if(url!=null ){
-           kartela.setImageBitmap(downloadBitmap(url,100,500));
-
+            if(networkAvailable()){
+                kartela.setImageBitmap(downloadBitmap(url));
+            }else {
+                Drawable myDrawable = getResources().getDrawable(R.drawable.warning);
+                Bitmap anImage = ((BitmapDrawable) myDrawable).getBitmap();
+                kartela.setImageBitmap(anImage);
+            }
         }
         db.zarratu();
     }
-    private Bitmap downloadBitmap(String url, int width, int height) {
+    private Bitmap downloadBitmap(String url) {
         try {
-            //bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
             return BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -66,6 +78,12 @@ public class Ekintza extends Activity {
             e.printStackTrace();
         }
         return null;
+    }
+    public boolean networkAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     @Override

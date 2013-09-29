@@ -2,7 +2,9 @@ package com.gorka.rssjarioa;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,7 +33,7 @@ public class Menua extends Activity {
                     hilo1.run();
             }else{
                 // Ez dago internetik
-                    Toast.makeText(Menua.this,"EZ zaude intenetari konektatuta",Toast.LENGTH_LONG).show();
+                    networkNoAvailableDialog();
                     Log.d("INTERNET", "EZ dago");
                 }
 
@@ -41,7 +43,7 @@ public class Menua extends Activity {
             if (networkAvailable) {
                 startActivity(new Intent("berriak"));
             }else{
-                Toast.makeText(Menua.this,"EZ zaude intenetari konektatuta",Toast.LENGTH_LONG).show();
+                Toast.makeText(Menua.this,"EZ zaude internetari konektatuta",Toast.LENGTH_LONG).show();
             }
     }
 	    
@@ -91,27 +93,44 @@ public class Menua extends Activity {
         }
 
     });
-	    
-	    
+
     public boolean networkAvailable() {
-        Context context = getApplicationContext();
-        assert context != null;
-        ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectMgr != null) {
-                NetworkInfo[] netInfo = connectMgr.getAllNetworkInfo();
-                if (netInfo != null) {
-                    for (NetworkInfo net : netInfo) {
-                        if (net.getState() == NetworkInfo.State.CONNECTED) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            else {
-                Log.d("INTERNET", "EZ dago internetik");
-            }
-            return false;
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }else{
+            Log.d("INTERNET", "EZ dago internetik");
+        }
+        return false;
     }
+
+    /**
+     * public static String getConnectivityStatusString(Context context) {
+     int conn = NetworkUtil.getConnectivityStatus(context);
+     String status = null;
+     if (conn == NetworkUtil.TYPE_WIFI) {
+     status = "Wifi enabled";
+     } else if (conn == NetworkUtil.TYPE_MOBILE) {
+     status = "Mobile data enabled";
+     } else if (conn == NetworkUtil.TYPE_NOT_CONNECTED) {
+     status = "Not connected to Internet";
+     }
+     return status;
+     }
+     */
+
+    public void networkNoAvailableDialog(){
+        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+        alertbox.setIcon(R.drawable.warning);
+        alertbox.setTitle("EZ zaude internetari konektatuta");
+        alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {}
+        });
+        alertbox.show();
+    }
+
     @Override
     public void onStart() {
             super.onStart();

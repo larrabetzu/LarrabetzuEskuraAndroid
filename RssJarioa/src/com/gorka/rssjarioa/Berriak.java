@@ -77,7 +77,7 @@ public class Berriak extends Activity {
                 loadData();
                 Log.i("Arraylist", ""+arr_blogs.size());
             }catch (Exception ex) {
-                eleccion("Lehenengo zure hobespenak jarri behar dituzu");
+                eleccion("Lehenengo zure hobespenak jarri behar dozuz");
                 Log.e("patapan", ex.getMessage());
             }
             ListView lv = (ListView) findViewById(R.id.lstData);
@@ -163,16 +163,18 @@ public class Berriak extends Activity {
             Cursor cursor = db.linklortu();
             do {
                 String s = cursor.getString(0);
-                if (s.equals("larrabetzutik")) {
-                    logo = R.drawable.larrabetzutik;
-                }else if (s.equals("horibai")) {
-                    logo = R.drawable.horibai;
-                }else if (s.equals("eskola")) {
-                    logo = R.drawable.eskola;
-                }else if (s.equals("gaztelumendi")) {
-                    logo = R.drawable.iptx;
-                }else if (s.equals("udala")) {
-                    logo = R.drawable.udala;
+                if (s != null) {
+                    if (s.equals("larrabetzutik")) {
+                        logo = R.drawable.larrabetzutik;
+                    }else if (s.equals("horibai")) {
+                        logo = R.drawable.horibai;
+                    }else if (s.equals("eskola")) {
+                        logo = R.drawable.eskola;
+                    }else if (s.equals("gaztelumendi")) {
+                        logo = R.drawable.iptx;
+                    }else if (s.equals("udala")) {
+                        logo = R.drawable.udala;
+                    }
                 }
                 arr_data.add(new List_Sarrera(cursor.getString(1), cursor.getString(2), logo));
 
@@ -236,7 +238,7 @@ public class Berriak extends Activity {
 
 	public void eleccion(String cadena){
 	        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
-	        alertbox.setMessage(cadena);
+            alertbox.setTitle(cadena);
 	        alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface arg0, int arg1) {startActivity(new Intent("hobespenak"));finish();}
 	        	});
