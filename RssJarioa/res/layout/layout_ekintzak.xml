@@ -27,24 +27,37 @@
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <ImageView
+        android:id="@+id/imageIconEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@id/tituloa_agenda"
+        android:layout_toRightOf="@id/egune"
+        android:src="@drawable/event" />
+
     <TextView
         android:id="@+id/ordue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tituloa_agenda"
-        android:layout_alignParentLeft="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="55sp"
-        android:layout_marginRight="25sp"
+        android:layout_below="@id/tituloa_agenda"
+        android:layout_toRightOf="@id/imageIconEvent"
         android:text="TextView"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <ImageView
+        android:id="@+id/imageIconPlace"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@id/tituloa_agenda"
+        android:layout_toRightOf="@id/ordue"
+        android:src="@drawable/place" />
 
     <TextView
         android:id="@+id/lekua"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/ordue"
-        android:layout_below="@+id/tituloa_agenda"
+        android:layout_below="@id/tituloa_agenda"
+        android:layout_toRightOf="@id/imageIconPlace"
         android:text="TextView"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 

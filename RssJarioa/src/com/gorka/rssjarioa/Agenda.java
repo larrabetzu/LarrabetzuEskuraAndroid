@@ -47,7 +47,7 @@ public class Agenda extends Activity {
             }
 
             //listView sortu
-            lista = (ListView) findViewById(R.id.listviewAgenda);
+            lista = (ListView) findViewById(R.id.listview_Agenda);
             lista.setAdapter(new List_adaptador(this, R.layout.layout_ekintzak, datos){
                 @Override
                 public void onEntrada(Object entrada, View view) {

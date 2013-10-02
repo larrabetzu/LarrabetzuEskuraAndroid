@@ -7,13 +7,13 @@
     
 
     <TableRow
-        android:id="@+id/tableRow1"
+        android:id="@+id/kontaktua_tableRow1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:paddingBottom="10dp">
 
         <TextView
-            android:id="@+id/txtgaia"
+            android:id="@+id/kontaktua_txtgaia"
             android:layout_weight="0.1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             android:layout_gravity="bottom"/>
 
         <EditText
-            android:id="@+id/Gaia"
+            android:id="@+id/kontaktua_Gaia"
             android:layout_weight="9"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
@@ -34,7 +34,7 @@
    </TableRow>
    
     <EditText
-        android:id="@+id/testua"
+        android:id="@+id/kontaktua_testua"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
@@ -42,16 +42,25 @@
         android:width="300dp" 
          android:hint="Hemen idatzitako Testua garatzaileari bidaliko da....."/>
 
+    <CheckBox
+        android:id="@+id/kontaktua_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sistemaren Informazioa Gehitu"
+        android:layout_gravity="left|center_vertical"
+        android:padding="10dp"
+        />
+
     
     <TableRow
-        android:id="@+id/tableRow1"
+        android:id="@+id/kontaktua_tableRow2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:paddingBottom="10dp">
     
     
      <Button
-            android:id="@+id/deitu"
+            android:id="@+id/kontaktua_deitu"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,11 +70,10 @@
             />
     
      <Button
-            android:id="@+id/bidali"
+            android:id="@+id/kontaktua_bidali"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onclickenviar"
             android:text="Emaila bidali"
             android:layout_gravity="right"
             android:textSize="15dp"

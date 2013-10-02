@@ -77,7 +77,7 @@ public class Berriak extends Activity {
                 loadData();
                 Log.i("Arraylist", ""+arr_blogs.size());
             }catch (Exception ex) {
-                eleccion("Lehenengo zure hobespenak jarri behar dozuz");
+                eleccion();
                 Log.e("patapan", ex.getMessage());
             }
             ListView lv = (ListView) findViewById(R.id.lstData);
@@ -85,9 +85,9 @@ public class Berriak extends Activity {
             lv.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int position,
-                        long id) {
-                    String link =arr_data.get(position).get_link();
-                    Intent browserAction = new Intent(Intent.ACTION_VIEW,Uri.parse(link));
+                                        long id) {
+                    String link = arr_data.get(position).get_link();
+                    Intent browserAction = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                     startActivity(browserAction);
                 }
             });
@@ -159,7 +159,7 @@ public class Berriak extends Activity {
      */
     private void getDataDb(){
         try{
-            int logo = R.drawable.ic_launcher;
+            int logo = R.drawable.rsslogo;
             Cursor cursor = db.linklortu();
             do {
                 String s = cursor.getString(0);
@@ -191,7 +191,7 @@ public class Berriak extends Activity {
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
             for (HashMap<String, String> aData : data) {
-                int logo = R.drawable.ic_launcher;
+                int logo = R.drawable.rsslogo;
                 String blog = null;
                 if (aData.get("L").contains("larrabetzutik.org")) {
                     logo = R.drawable.larrabetzutik;
@@ -218,7 +218,6 @@ public class Berriak extends Activity {
 
     }
     private void lvsortu(){
-
         ListView lv = (ListView) findViewById(R.id.lstData);
         lv.setAdapter(new List_adaptador(this, R.layout.layout_items, arr_data){
             @Override
@@ -236,9 +235,9 @@ public class Berriak extends Activity {
         });
     }
 
-	public void eleccion(String cadena){
+	public void eleccion(){
 	        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
-            alertbox.setTitle(cadena);
+            alertbox.setTitle("Lehenengo zure hobespenak jarri behar dozuz");
 	        alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface arg0, int arg1) {startActivity(new Intent("hobespenak"));finish();}
 	        	});

@@ -1,69 +1,64 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class Kontaktua extends Activity {
-	private NotificationManager mNotificationManager;
-	private static int MOOD_NOTIFICATIONS = R.layout.kontaktua;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.kontaktua);
-	        Button bidali = (Button) findViewById(R.id.bidali);
+	        Button bidali = (Button) findViewById(R.id.kontaktua_bidali);
 	        bidali.setOnClickListener(new OnClickListener() {                      
-		@Override
-		public void onClick(View v) {
-	        EditText etSubject = (EditText) findViewById(R.id.Gaia);
-	        EditText etBody = (EditText) findViewById(R.id.testua);					        
-            Intent itSend = new Intent(android.content.Intent.ACTION_SEND);
-            if(etBody.getText().toString().equals("") || etSubject.getText().toString().equals("")){
-                Toast.makeText(Kontaktua.this, "Testua eta gaia beteta egon behar dira", Toast.LENGTH_SHORT).show();
-            }else{
-	            itSend.setType("message/rfc822");
-	            itSend.putExtra(android.content.Intent.EXTRA_EMAIL, "ercillagorka@gmail.com");                            
-	            itSend.putExtra(android.content.Intent.EXTRA_SUBJECT, etSubject.getText().toString());
-	            itSend.putExtra(android.content.Intent.EXTRA_TEXT, etBody.getText());
-	            try {
-		            startActivity(itSend);
-		            setDefault(Notification.DEFAULT_ALL);
-		            startActivity(Intent.createChooser(itSend, "Send mail...")); 
-	       	 	}catch (android.content.ActivityNotFoundException ex){ 
-	       	 		Toast.makeText(Kontaktua.this, "Posta bezeroa ez dago instalatuta.", Toast.LENGTH_SHORT).show(); 
-	       	 		}
-	       	 	finish();
-				}
-
-							}
-	                });
+                @Override
+                public void onClick(View v) {
+                    EditText etSubject = (EditText) findViewById(R.id.kontaktua_Gaia);
+                    EditText etBody = (EditText) findViewById(R.id.kontaktua_testua);
+                    CheckBox etBox = (CheckBox) findViewById(R.id.kontaktua_checkBox);
+                    String dana = "";
+                    if(etBox.isChecked()){
+                        try {
+                            dana = "\n \n Android API ="+Build.VERSION.SDK_INT +" APP VERSION ="+(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+                        } catch (PackageManager.NameNotFoundException e) {
+                            Log.e("ba",e.toString());
+                        }
+                    }
+                    Intent itSend = new Intent(Intent.ACTION_SEND,Uri.fromParts("mailto","ercillagorka@gmail.com", null));
+                    if(etBody.getText().toString().equals("") || etSubject.getText().toString().equals("")){
+                        Toast.makeText(Kontaktua.this, "Testua eta gaia beteta egon behar dira", Toast.LENGTH_SHORT).show();
+                    }else{
+                        itSend.setType("message/rfc822");
+                        itSend.putExtra(android.content.Intent.EXTRA_EMAIL, "ercillagorka@gmail.com");
+                        itSend.putExtra(android.content.Intent.EXTRA_SUBJECT, etSubject.getText().toString());
+                        itSend.putExtra(android.content.Intent.EXTRA_TEXT, etBody.getText()+"       "+dana);
+                        try {
+                            startActivity(itSend);
+                            startActivity(Intent.createChooser(itSend, "Send mail..."));
+                        }catch (android.content.ActivityNotFoundException ex){
+                            Toast.makeText(Kontaktua.this, "Posta bezeroa ez dago instalatuta.", Toast.LENGTH_SHORT).show();
+                            }
+                        finish();
+                    }
+                }
+	        });
 	    }
 
 	public void onclicktwitter(View view){
-            Intent browserAction = new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/ercillagorka"));
+            Intent browserAction = new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/larrabetzu"));
             startActivity(browserAction);
 	}
-	 
-	@SuppressWarnings("deprecation")
-	private void setDefault(int defaults) {
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,new Intent(this, Kontaktua.class), 0);
-            CharSequence text = "Emaila bidalia";
-            final Notification notification = new Notification( R.drawable.arrowright, text,  System.currentTimeMillis());
-            notification.setLatestEventInfo(this, "Email",text,  contentIntent);
-            notification.defaults = defaults;
-            mNotificationManager.notify(MOOD_NOTIFICATIONS,notification);
-	}
-	   
 	 
 }
 	    		

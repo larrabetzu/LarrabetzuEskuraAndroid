@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.StrictMode;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -116,6 +117,14 @@ public class DbEgokitua {
                     db.execSQL(DB_TAULA_ekintza);
                     db.execSQL(DB_TAULA_ekintza_sortzailea);
                     db.execSQL(DB_TAULA_blog_links);
+                    try{
+                       Cursor cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
+                        cursor.close();
+                    }catch (Exception e){
+                        Log.e("databases",e.toString());
+                    }
+                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+                    StrictMode.setThreadPolicy(policy);
                     /**
                      * db autor internetetik aktualizatu
                      *
@@ -189,7 +198,7 @@ public class DbEgokitua {
                      * db ekintza internetetik aktualizatu
                      *
                      */
-                    numero=0;
+                   numero=0;
                     String egune = null;
                     String sortzailea;
                     String tituloa = null;
@@ -526,6 +535,16 @@ public class DbEgokitua {
     public  DbEgokitua zabaldu() throws SQLException 
     {
             db = DBHelper.getWritableDatabase();
+            try{
+
+                if (db != null) {
+                    Cursor cursor = null;
+                    cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
+                    cursor.close();
+                }
+            }catch (Exception ex){
+                Log.e("zabaldu",ex.toString());
+            }
             return this;
     }
 

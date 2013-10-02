@@ -18,6 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10sp"
+            android:padding="7dp"
+            android:background="#808080"
             android:textSize="65sp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             />
@@ -25,6 +27,7 @@
         <TextView
             android:id="@+id/ekintza_tituloa"
             android:text="Tituloa agertan dan lekue"
+            android:maxLines="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -36,16 +39,31 @@
     <TableRow
         android:id="@+id/tableRow2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#808080">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:src="@drawable/event"
+            />
 
         <TextView
             android:id="@+id/ekintza_ordue"
             android:text="21:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10sp"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center"
             android:textSize="20sp"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:src="@drawable/place"
             />
 
         <TextView
@@ -53,7 +71,7 @@
             android:text="lekue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="right"
             android:textSize="20sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             />

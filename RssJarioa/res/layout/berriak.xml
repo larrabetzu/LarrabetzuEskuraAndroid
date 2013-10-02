@@ -8,21 +8,20 @@
   android:background="#E8E8E8">
 
     <LinearLayout
-            android:id="@+id/rss_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:scaleType="center"
-            android:paddingBottom="5sp"
-            android:background="@drawable/arss_header"
-            android:orientation="vertical"
-            >
+        android:id="@+id/rss_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:scaleType="center"
+        android:paddingBottom="5sp"
+        android:background="@drawable/arss_header"
+        android:orientation="vertical">
     </LinearLayout>
 	<ListView
-	  android:id="@+id/lstData"
-	  android:layout_width="wrap_content" 
-	  android:layout_height="wrap_content"
-	  android:padding="5dip">
+        android:id="@+id/lstData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip">
 	</ListView>	
 
 </LinearLayout>
