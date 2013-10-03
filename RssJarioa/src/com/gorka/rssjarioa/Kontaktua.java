@@ -35,17 +35,17 @@ public class Kontaktua extends Activity {
                             Log.e("ba",e.toString());
                         }
                     }
-                    Intent itSend = new Intent(Intent.ACTION_SEND,Uri.fromParts("mailto","ercillagorka@gmail.com", null));
+                    Intent itSend = new Intent(Intent.ACTION_SEND);
                     if(etBody.getText().toString().equals("") || etSubject.getText().toString().equals("")){
                         Toast.makeText(Kontaktua.this, "Testua eta gaia beteta egon behar dira", Toast.LENGTH_SHORT).show();
                     }else{
+                        String[] to = { "ercillagorka@gmail.com", "patxi@gaztelumendi.org" };
+                        itSend.putExtra(Intent.EXTRA_EMAIL, to);
+                        itSend.putExtra(Intent.EXTRA_SUBJECT, etSubject.getText().toString());
+                        itSend.putExtra(Intent.EXTRA_TEXT, etBody.getText()+" "+dana);
                         itSend.setType("message/rfc822");
-                        itSend.putExtra(android.content.Intent.EXTRA_EMAIL, "ercillagorka@gmail.com");
-                        itSend.putExtra(android.content.Intent.EXTRA_SUBJECT, etSubject.getText().toString());
-                        itSend.putExtra(android.content.Intent.EXTRA_TEXT, etBody.getText()+"       "+dana);
                         try {
-                            startActivity(itSend);
-                            startActivity(Intent.createChooser(itSend, "Send mail..."));
+                            startActivity(Intent.createChooser(itSend, "Aukeratu e-posta bezeroa"));
                         }catch (android.content.ActivityNotFoundException ex){
                             Toast.makeText(Kontaktua.this, "Posta bezeroa ez dago instalatuta.", Toast.LENGTH_SHORT).show();
                             }
