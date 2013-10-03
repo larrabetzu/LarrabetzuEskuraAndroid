@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="55sp"
+        android:layout_marginLeft="60sp"
         android:layout_marginRight="25sp"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />

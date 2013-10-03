@@ -74,17 +74,17 @@ public class Menua extends Activity {
             int mDay = c.get(Calendar.DAY_OF_MONTH);
             int mhour = c.get(Calendar.HOUR_OF_DAY);
 
-            Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + mDay +" "+mhour);
+            Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + String.format("%02d",mDay)  +" "+mhour);
             db.zabaldu();
-            try{
-                db.garbitu(mYear, String.format("%02d",mMonth), mDay, mhour);
-                }catch (Exception e){
-                Log.e("garbitu",e.toString());
-            }
             try{
                 db.eguneratuEkintzak();
                 }catch (Exception e){
                 Log.e("eguneratu",e.toString());
+            }
+            try{
+                db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), mhour);
+                }catch (Exception e){
+                Log.e("garbitu",e.toString());
             }
             try {
                 int id= db.azkenId();

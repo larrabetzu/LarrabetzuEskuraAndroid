@@ -369,7 +369,16 @@ public class DbEgokitua {
         Cursor cursor = db.rawQuery(query, null);
         String azken_pub_date = null;
         if (cursor.moveToFirst()) {
-            do { azken_pub_date = cursor.getString(0);
+            do {
+                try{
+                azken_pub_date = cursor.getString(0);
+                if (azken_pub_date == null){
+                    azken_pub_date =  "2013-01-21 12:00:00";
+                }
+                }catch (Exception e){
+                    Log.e("DbEgokitua-azken_pub_date",e.toString());
+                    azken_pub_date = "2013-01-21 12:00:00";
+                }
             } while(cursor.moveToNext());
         }
         Log.e("azken_pub_date",azken_pub_date);
@@ -538,8 +547,7 @@ public class DbEgokitua {
             try{
 
                 if (db != null) {
-                    Cursor cursor = null;
-                    cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
+                    Cursor cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
                     cursor.close();
                 }
             }catch (Exception ex){
@@ -574,9 +582,9 @@ public class DbEgokitua {
             return cursor;
     }
 
-    public boolean garbitu(int urtea,String hilabetea,int egune, int ordue)
+    public boolean garbitu(int urtea,String hilabetea,String egune, int ordue)
     {
-            String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <='"+urtea+"-"+hilabetea+"-"+egune+" "+ordue+"' order by egune";
+            String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <='"+urtea+"-"+hilabetea+"-"+egune+" "+ordue+":00:00 'order by egune";
             Cursor c = db.rawQuery(query, null);
             int id;
             if (c != null) {
