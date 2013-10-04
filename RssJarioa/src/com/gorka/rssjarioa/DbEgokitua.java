@@ -627,7 +627,7 @@ public class DbEgokitua {
     {
             final Calendar ca = Calendar.getInstance();
             int mYear = ca.get(Calendar.YEAR);
-            int mMonth = ca.get(Calendar.MONTH)+1-1;   //urtarrila=0 ,bat kenduko dotzet orain dela hilabeteko data lortzeko
+            int mMonth = ca.get(Calendar.MONTH)+1-2;   //urtarrila=0 ,bi kenduko dotzet orain dela bi hilabeteko data lortzeko
             int mDay = ca.get(Calendar.DAY_OF_MONTH);
             int mhour = ca.get(Calendar.HOUR_OF_DAY);
             String data = null;
@@ -666,7 +666,7 @@ public class DbEgokitua {
     }
     public Cursor linklortu ()
     {
-            String query = "SELECT blog,tituloa,link FROM "+TAULA_blog_links+" order by blog_pub_date DESC";
+            String query = "SELECT blog,tituloa,link FROM "+TAULA_blog_links+" order by blog_pub_date ASC";
             Cursor c = db.rawQuery(query, null);
             if (c != null) {
                 c.moveToFirst();

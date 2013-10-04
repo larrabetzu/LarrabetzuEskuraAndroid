@@ -49,7 +49,7 @@ public class XMLParser {
             SimpleDateFormat sdf2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
             final Calendar ca = Calendar.getInstance();
             int mYear = ca.get(Calendar.YEAR);
-            int mMonth = ca.get(Calendar.MONTH)+1-1;   //urtarrila=0 ,bat kenduko dotzet orain dela hilabeteko data lortzeko
+            int mMonth = ca.get(Calendar.MONTH)+1-2;   //urtarrila=0 ,bi kenduko dotzet orain dela bi hilabeteko data lortzeko
             int mDay = ca.get(Calendar.DAY_OF_MONTH);
             int mhour = ca.get(Calendar.HOUR_OF_DAY);
             String oraindelahilebat = mYear+"-"+mMonth+"-"+mDay+" "+mhour+":00:00";//yyyy-MM-dd hh:mm:ss
@@ -61,6 +61,7 @@ public class XMLParser {
                     URL BlogUrl = this.url[x];
                     DocumentBuilder builder = factory.newDocumentBuilder();
                     Document dom = builder.parse(BlogUrl.openConnection().getInputStream());
+
                     Element root = dom.getDocumentElement();
                     NodeList items = root.getElementsByTagName("item");
                     NodeList avatar = root.getChildNodes();
@@ -140,7 +141,7 @@ public class XMLParser {
                 }
             }catch (Exception e) {
                 Log.e("XML",e.toString());
-                }
+            }
             return entries;
 	}		
 }

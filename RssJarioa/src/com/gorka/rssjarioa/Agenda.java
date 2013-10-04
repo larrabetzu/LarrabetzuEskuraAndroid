@@ -3,6 +3,7 @@ package com.gorka.rssjarioa;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,14 +76,38 @@ public class Agenda extends Activity {
             lista.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> pariente, View view, int posicion, long id) {
-                    List_Sarrera elegido = (List_Sarrera) pariente.getItemAtPosition(posicion);
+                    List_Sarrera hautatua = (List_Sarrera) pariente.getItemAtPosition(posicion);
                     Intent intent=new Intent("ekintza");
                     Bundle bundle =new Bundle();
-                    bundle.putInt("posicion", elegido.get_id());
+                    if (hautatua != null) {
+                        bundle.putInt("posicion", hautatua.get_id());
+                    }
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
             });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> pariente, View arg1, int pos, long id) {
+                        List_Sarrera hautatua = (List_Sarrera) pariente.getItemAtPosition(pos);
+                        String testua = "";
+                        if (hautatua != null) {
+                            testua = hautatua.get_tituloa()+"\n"+hautatua.get_egune()+" "+hautatua.get_ordue()+" "+hautatua.get_lekua()+ " @larrabetzu #eskura";
+                            if (testua.length()>120){
+                                testua = hautatua.get_tituloa()+"\n"+hautatua.get_egune()+" "+hautatua.get_ordue();
+                            }
+                        }
+                        String title = "Aukeratu aplikazioa Ekintza elkarbanatzeko";
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, testua );
+                        sendIntent.setType("text/plain");
+                        startActivity(Intent.createChooser(sendIntent, title));
+                        return true;
+                    }
+                });
+            }
 
     }
     @Override

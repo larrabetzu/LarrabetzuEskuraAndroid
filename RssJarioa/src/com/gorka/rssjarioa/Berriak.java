@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -91,6 +92,21 @@ public class Berriak extends Activity {
                     startActivity(browserAction);
                 }
             });
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int pos, long id) {
+                        String link = arr_data.get(pos).get_link();
+                        String title = "Aukeratu aplikazioa berria elkarbanatzeko";
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, link+" @larrabetzu");
+                        sendIntent.setType("text/plain");
+                        startActivity(Intent.createChooser(sendIntent, title));
+                        return true;
+                    }
+                });
+            }
     }
 
     /**
