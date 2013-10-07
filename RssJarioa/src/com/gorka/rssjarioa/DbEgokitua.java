@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -631,7 +632,7 @@ public class DbEgokitua {
             int mDay = ca.get(Calendar.DAY_OF_MONTH);
             int mhour = ca.get(Calendar.HOUR_OF_DAY);
             String data = null;
-            String oraindelahilebat = mYear+"-"+mMonth+"-"+mDay+" "+mhour+":00:00";//yyyy-MM-dd hh:mm:ss
+            String oraindelahilebat = mYear+"-"+mMonth+"-"+mDay+" "+mhour+":00:00";//yyyy-MM-dd HH:mm:ss
 
             try {
                 String query = "SELECT MAX(blog_pub_date) FROM blog_links WHERE blog ='"+blog+"'";
@@ -646,17 +647,27 @@ public class DbEgokitua {
                 }
             }catch (Exception ex){
                 Log.e("blogakendata-dbEgokitua"+blog,ex.toString());
-                data = oraindelahilebat;
             }
             return data;
     }
     public void linkjarri(String blog,String tituloa,String link,String date)
     {
+            String w = "";
+            try{
+
+                DateFormat dffrom = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+                DateFormat dfto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                java.util.Date day = dffrom.parse(date);
+                w = dfto.format(day);
+            }catch (Exception e){
+                Log.e("data",e.toString());
+            }
+
             ContentValues initialValues = new ContentValues();
             initialValues.put(LINK_BLOG, blog);
             initialValues.put(LINK_TITULOA, tituloa);
             initialValues.put(LINK_LINK, link);
-            initialValues.put(LINK_PUB_DATE,date);
+            initialValues.put(LINK_PUB_DATE,w);
             long id =db.insert(TAULA_blog_links, null, initialValues);
             if (id==-1) {
                 Log.e("link-dbEgokitua", "Ez da gehitu linka");
@@ -666,7 +677,7 @@ public class DbEgokitua {
     }
     public Cursor linklortu ()
     {
-            String query = "SELECT blog,tituloa,link FROM "+TAULA_blog_links+" order by blog_pub_date ASC";
+            String query = "SELECT blog,tituloa,link FROM "+TAULA_blog_links+" order by blog_pub_date DESC";
             Cursor c = db.rawQuery(query, null);
             if (c != null) {
                 c.moveToFirst();
@@ -691,6 +702,16 @@ public class DbEgokitua {
                 }
             }
     }
+    public void linkgarbitu(String blog)
+    {
+        try {
+            db.execSQL("DELETE FROM "+TAULA_blog_links+" WHERE blog NOT IN ("+blog+")");
+        }catch (Exception e){
+            Log.e("linkgarbitu-DBEgokitua",e.toString());
+        }
+    }
+
+
 
     /*
     // para alarma :SELECT * FROM mytable WHERE strftime('%m-%d', 'now') = strftime('%m-%d', birthday)

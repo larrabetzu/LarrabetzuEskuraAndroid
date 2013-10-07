@@ -121,37 +121,43 @@ public class Berriak extends Activity {
                     HashMap mblog = new HashMap();
                     int i = arr_blogs.size();
                     String [] arr = arr_blogs.toArray(new String[i]);
+                    String blogak ="";
                     try{
                         for (String getblog : arr_blogs) {
                             if (getblog.contains("larrabetzutik.org")) {
                                 String data = db.blogazkendata("larrabetzutik");
                                 mblog.put("larrabetzutik", data);
+                                blogak=blogak+"'larrabetzutik',";
 
                             } else if (getblog.contains("horibai.org")) {
                                 String data = db.blogazkendata("horibai");
                                 mblog.put("horibai", data);
+                                blogak=blogak+"'horibai',";
 
                             } else if (getblog.contains("larrabetzukoeskola.org")) {
                                 String data = db.blogazkendata("eskola");
                                 mblog.put("eskola", data);
+                                blogak=blogak+"'eskola',";
 
                             } else if (getblog.contains("larrabetzu.org/gaztelumendi")) {
                                 String data = db.blogazkendata("gaztelumendi");
                                 mblog.put("gaztelumendi", data);
+                                blogak=blogak+"'gaztelumendi',";
 
                             } else if (getblog.contains("larrabetzuko-udala")) {
                                 String data = db.blogazkendata("udala");
                                 mblog.put("udala", data);
+                                blogak=blogak+"'udala',";
                             }
                         }
                     }catch (Exception ex){
                         Log.e("loaddata-Berriak",ex.toString());
                     }
+                    db.linkgarbitu(blogak.substring(0,blogak.length()-1));
                     XMLParser parser = new XMLParser(arr,post,mblog);
                     Message msg = progressHandler.obtainMessage();
                     msg.obj = parser.parse();
                     progressHandler.sendMessage(msg);
-
                 }}).start();
     }
 
@@ -207,25 +213,18 @@ public class Berriak extends Activity {
      * */
     private void setData(LinkedList<HashMap<String, String>> data){
             for (HashMap<String, String> aData : data) {
-                int logo = R.drawable.rsslogo;
                 String blog = null;
                 if (aData.get("L").contains("larrabetzutik.org")) {
-                    logo = R.drawable.larrabetzutik;
                     blog = "larrabetzutik";
                 }else if (aData.get("L").contains("horibai.org")) {
-                    logo = R.drawable.horibai;
                     blog = "horibai";
                 }else if (aData.get("L").contains("larrabetzukoeskola.org")) {
-                    logo = R.drawable.eskola;
                     blog = "eskola";
                 }else if (aData.get("L").contains("larrabetzu.org/gaztelumendi")) {
-                    logo = R.drawable.iptx;
                     blog = "gaztelumendi";
                 }else if (aData.get("L").contains("larrabetzuko-udala")) {
-                    logo = R.drawable.udala;
                     blog = "udala";
                 }
-                arr_data.add(new List_Sarrera(aData.get("T"), aData.get("L"), logo));
                 if (blog!=null){
                     db.linkjarri(blog,aData.get("T"),aData.get("L"),aData.get("D"));
                     db.linkkendu(blog,post);

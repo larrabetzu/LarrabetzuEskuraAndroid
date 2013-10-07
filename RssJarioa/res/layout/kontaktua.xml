@@ -40,15 +40,16 @@
         android:gravity="top"
         android:lines="5"
         android:width="300dp" 
-         android:hint="Hemen idatzitako Testua garatzaileari bidaliko da....."/>
+        android:hint="Hemen idatzitako Testua garatzaileari bidaliko da....."/>
 
     <CheckBox
         android:id="@+id/kontaktua_checkBox"
-        android:layout_width="wrap_content"
+        android:checked="true"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sistemaren Informazioa Gehitu"
-        android:layout_gravity="left|center_vertical"
         android:padding="10dp"
+        android:gravity="center"
         />
 
     

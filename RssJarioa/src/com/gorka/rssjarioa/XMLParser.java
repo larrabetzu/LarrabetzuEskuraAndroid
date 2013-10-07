@@ -12,7 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -45,14 +44,8 @@ public class XMLParser {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             LinkedList<HashMap<String, String>> entries = new LinkedList<HashMap<String, String>>();
             HashMap<String, String> entry;
-            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat sdf2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
-            final Calendar ca = Calendar.getInstance();
-            int mYear = ca.get(Calendar.YEAR);
-            int mMonth = ca.get(Calendar.MONTH)+1-2;   //urtarrila=0 ,bi kenduko dotzet orain dela bi hilabeteko data lortzeko
-            int mDay = ca.get(Calendar.DAY_OF_MONTH);
-            int mhour = ca.get(Calendar.HOUR_OF_DAY);
-            String oraindelahilebat = mYear+"-"+mMonth+"-"+mDay+" "+mhour+":00:00";//yyyy-MM-dd hh:mm:ss
 
         try {
                 for (int x = 0; x < len; x++){
@@ -61,7 +54,6 @@ public class XMLParser {
                     URL BlogUrl = this.url[x];
                     DocumentBuilder builder = factory.newDocumentBuilder();
                     Document dom = builder.parse(BlogUrl.openConnection().getInputStream());
-
                     Element root = dom.getDocumentElement();
                     NodeList items = root.getElementsByTagName("item");
                     NodeList avatar = root.getChildNodes();
@@ -84,18 +76,9 @@ public class XMLParser {
                     }
                     try{
                         String prueba = mblog.get(blog).toString();
-                        fecha1 = sdf2.parse(prueba, new ParsePosition(0));
+                        fecha1 = sdf1.parse(prueba, new ParsePosition(0));
                     }catch (Exception e){
                         Log.e("String to date mblog",e.toString());
-                    }
-                    if (fecha1==null){
-                        try {
-                            String prueba = mblog.get(blog).toString();
-                            fecha1 = sdf1.parse(prueba, new ParsePosition(0));
-                        }catch (Exception ex){
-                            fecha1 = sdf1.parse(oraindelahilebat, new ParsePosition(0));
-                            Log.e("String to date mblog",ex.toString());
-                        }
                     }
                     int numpost=this.post;
                     if (numpost>items.getLength()) {
@@ -143,5 +126,5 @@ public class XMLParser {
                 Log.e("XML",e.toString());
             }
             return entries;
-	}		
+	}
 }
