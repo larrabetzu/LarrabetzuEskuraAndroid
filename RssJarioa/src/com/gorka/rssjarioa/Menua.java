@@ -34,7 +34,7 @@ public class Menua extends Activity {
             if(networkAvailable) {
                 // Badago Interneta
                     Log.d("INTERNET", "Badago");
-                    hilo1.run();
+                    haria();
             }else{
                 // Ez dago internetik
                     networkNoAvailableDialog();
@@ -62,41 +62,42 @@ public class Menua extends Activity {
     public void onclickbtnhobespenak(View view){
             startActivity(new Intent("hobespenak"));
     }
-	    
-    Thread hilo1 = new Thread(new Runnable(){
 
-        @Override
-        public void run() {
-            Log.e("hilo1", "on");
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR);
-            int mMonth = c.get(Calendar.MONTH)+1;   //urtarrila=0
-            int mDay = c.get(Calendar.DAY_OF_MONTH);
-            int mhour = c.get(Calendar.HOUR_OF_DAY);
+    private void haria(){
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                Log.e("hilo1", "on");
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR);
+                int mMonth = c.get(Calendar.MONTH)+1;   //urtarrila=0
+                int mDay = c.get(Calendar.DAY_OF_MONTH);
+                int mhour = c.get(Calendar.HOUR_OF_DAY);
 
-            Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + String.format("%02d",mDay)  +" "+mhour);
-            db.zabaldu();
-            try{
-                db.eguneratuEkintzak();
-                }catch (Exception e){
-                Log.e("eguneratu",e.toString());
+                Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + String.format("%02d",mDay)  +" "+mhour);
+                db.zabaldu();
+                try{
+                    db.eguneratuEkintzak();
+                    }catch (Exception e){
+                    Log.e("eguneratu",e.toString());
+                }
+                try{
+                    db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), mhour);
+                    }catch (Exception e){
+                    Log.e("garbitu",e.toString());
+                }
+                try {
+                    int id= db.azkenId();
+                    Log.d("azkenID",id+"");
+                    }catch (Exception e){
+                    Log.e("azkenID",e.toString());
+                }
+                db.zarratu();
+                Log.e("hilo1", "off");
             }
-            try{
-                db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), mhour);
-                }catch (Exception e){
-                Log.e("garbitu",e.toString());
-            }
-            try {
-                int id= db.azkenId();
-                Log.d("azkenID",id+"");
-                }catch (Exception e){
-                Log.e("azkenID",e.toString());
-            }
-            db.zarratu();
-            Log.e("hilo1", "off");
-        }
 
-    });
+        }).start();
+    }
 
     public boolean networkAvailable() {
         ConnectivityManager cm =

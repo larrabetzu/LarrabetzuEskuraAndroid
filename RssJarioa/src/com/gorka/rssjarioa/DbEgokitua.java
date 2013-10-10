@@ -382,12 +382,12 @@ public class DbEgokitua {
                 }
             } while(cursor.moveToNext());
         }
-        Log.e("azken_pub_date",azken_pub_date);
+        Log.e("azken_pub_date-DbEgokitua",azken_pub_date);
 
         try{
             fecha1 = sdf.parse(azken_pub_date , new ParsePosition(0));
         }catch (Exception e){
-            Log.e("String to date",e.toString());
+            Log.e("String to date-DbEgokitua",e.toString());
         }
         /**
          * db ekintza internetetik aktualizatu

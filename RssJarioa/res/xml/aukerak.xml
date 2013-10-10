@@ -17,16 +17,15 @@
 	        android:defaultValue="true" />
 	 	<CheckBoxPreference
 	        android:key="2"
-	        android:title="hori bai" />
+	        android:title="Hori bai" />
 	 	<CheckBoxPreference
 	        android:key="3"
-	        android:title="eskola" />
+	        android:title="Eskola" />
 	 	<CheckBoxPreference
 	        android:key="4"
 	        android:title="iPtx" />
         <CheckBoxPreference
             android:key="5"
-            android:title="udala" />
-	 	
+            android:title="Udala" />
     </PreferenceCategory>
 </PreferenceScreen>

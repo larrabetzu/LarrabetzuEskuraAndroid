@@ -78,7 +78,7 @@ public class XMLParser {
                         String prueba = mblog.get(blog).toString();
                         fecha1 = sdf1.parse(prueba, new ParsePosition(0));
                     }catch (Exception e){
-                        Log.e("String to date mblog",e.toString());
+                        Log.e("String to date mblog-XMLParse",e.toString());
                     }
                     int numpost=this.post;
                     if (numpost>items.getLength()) {

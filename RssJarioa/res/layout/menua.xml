@@ -87,7 +87,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="center"
-	        android:text="Larrabetzuko Agenda 2013"
+	        android:text="Larrabetzu Eskura"
 	         />
 	 
 	    <TextView
