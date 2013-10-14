@@ -8,7 +8,7 @@
 
 
   <ImageView
-    android:id="@+id/logo"
+    android:id="@+id/layout_items_logo"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
@@ -17,7 +17,7 @@
     />
 
   <TextView
-    android:id="@+id/tituloa_berriak"
+    android:id="@+id/layout_items_tituloa"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
@@ -29,7 +29,7 @@
     android:textAppearance="?android:attr/textAppearanceMedium" />
 
   <ImageView
-    android:id="@+id/imageIcon"
+    android:id="@+id/layout_items_imageIcon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentRight="true"

@@ -81,7 +81,7 @@ public class Berriak extends Activity {
                 eleccion();
                 Log.e("patapan", ex.getMessage());
             }
-            ListView lv = (ListView) findViewById(R.id.lstData);
+            ListView lv = (ListView) findViewById(R.id.berriak_lstData);
             //linka nabigatzailean ireki
             lv.setOnItemClickListener(new OnItemClickListener() {
                 @Override
@@ -233,16 +233,16 @@ public class Berriak extends Activity {
 
     }
     private void lvsortu(){
-        ListView lv = (ListView) findViewById(R.id.lstData);
+        ListView lv = (ListView) findViewById(R.id.berriak_lstData);
         lv.setAdapter(new List_adaptador(this, R.layout.layout_items, arr_data){
             @Override
             public void onEntrada(Object entrada, View view) {
                 if (entrada != null) {
-                    TextView tituloa = (TextView) view.findViewById(R.id.tituloa_berriak);
+                    TextView tituloa = (TextView) view.findViewById(R.id.layout_items_tituloa);
                     if (tituloa != null)
                         tituloa.setText(((List_Sarrera) entrada).get_tituloa());
 
-                    ImageView imagen = (ImageView) view.findViewById(R.id.logo);
+                    ImageView imagen = (ImageView) view.findViewById(R.id.layout_items_logo);
                     if (imagen != null)
                         imagen.setImageResource(((List_Sarrera) entrada).get_idImagen());
                 }
