@@ -48,24 +48,24 @@ public class Agenda extends Activity {
             }
 
             //listView sortu
-            lista = (ListView) findViewById(R.id.listview_Agenda);
+            lista = (ListView) findViewById(R.id.Agenda_listview);
             lista.setAdapter(new List_adaptador(this, R.layout.layout_ekintzak, datos){
                 @Override
                 public void onEntrada(Object entrada, View view) {
                     if (entrada != null) {
-                        TextView tituloa = (TextView) view.findViewById(R.id.tituloa_agenda);
+                        TextView tituloa = (TextView) view.findViewById(R.id.layout_ekintzak_tituloa_agenda);
                         if (tituloa != null)
                             tituloa.setText(((List_Sarrera) entrada).get_tituloa());
 
-                        TextView lekua = (TextView) view.findViewById(R.id.lekua);
+                        TextView lekua = (TextView) view.findViewById(R.id.layout_ekintzak_lekua);
                         if (lekua != null)
                             lekua.setText(((List_Sarrera) entrada).get_lekua());
 
-                        TextView ordue = (TextView) view.findViewById(R.id.ordue);
+                        TextView ordue = (TextView) view.findViewById(R.id.layout_ekintzak_ordue);
                         if (ordue != null)
                             ordue.setText(((List_Sarrera) entrada).get_ordue());
 
-                        TextView egune= (TextView) view.findViewById(R.id.egune);
+                        TextView egune= (TextView) view.findViewById(R.id.layout_ekintzak_egune);
                         if (egune != null)
                             egune.setText(((List_Sarrera) entrada).get_egune());
                     }
@@ -96,6 +96,11 @@ public class Agenda extends Activity {
                             testua = hautatua.get_tituloa()+"\n"+hautatua.get_egune()+" "+hautatua.get_ordue()+" "+hautatua.get_lekua()+ " @larrabetzu #eskura";
                             if (testua.length()>120){
                                 testua = hautatua.get_tituloa()+"\n"+hautatua.get_egune()+" "+hautatua.get_ordue();
+                                try{
+                                    testua = testua.substring(0,120);
+                                }catch (Exception e){
+                                    Log.e("testua-Agenda",e.toString());
+                                }
                             }
                         }
                         String title = "Aukeratu aplikazioa Ekintza elkarbanatzeko";

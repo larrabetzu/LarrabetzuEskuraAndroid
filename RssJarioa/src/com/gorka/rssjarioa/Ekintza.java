@@ -49,7 +49,6 @@ public class Ekintza extends Activity {
         TextView ekintza_deskribapena= (TextView)findViewById(R.id.ekintza_deskribapena);
 
         do{
-
             ekintza_tituloa.setText(cursor.getString(0));
             ekintza_egune.setText(cursor.getString(1).substring(8, 10));
             ekintza_ordue.setText(cursor.getString(1).substring(10, 16));
@@ -80,8 +79,7 @@ public class Ekintza extends Activity {
         return null;
     }
     public boolean networkAvailable() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }

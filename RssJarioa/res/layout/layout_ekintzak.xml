@@ -6,7 +6,7 @@
   android:paddingTop="5sp" >
  
     <TextView
-        android:id="@+id/egune"
+        android:id="@+id/layout_ekintzak_egune"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -17,7 +17,7 @@
         />
      
     <TextView
-        android:id="@+id/tituloa_agenda"
+        android:id="@+id/layout_ekintzak_tituloa_agenda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -28,41 +28,41 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
-        android:id="@+id/imageIconEvent"
+        android:id="@+id/layout_ekintzak_imageIconEvent"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_below="@id/tituloa_agenda"
-        android:layout_toRightOf="@id/egune"
+        android:layout_below="@id/layout_ekintzak_tituloa_agenda"
+        android:layout_toRightOf="@id/layout_ekintzak_egune"
         android:src="@drawable/event" />
 
     <TextView
-        android:id="@+id/ordue"
+        android:id="@+id/layout_ekintzak_ordue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tituloa_agenda"
-        android:layout_toRightOf="@id/imageIconEvent"
+        android:layout_below="@id/layout_ekintzak_tituloa_agenda"
+        android:layout_toRightOf="@id/layout_ekintzak_imageIconEvent"
         android:text="TextView"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <ImageView
-        android:id="@+id/imageIconPlace"
+        android:id="@+id/layout_ekintzak_imageIconPlace"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_below="@id/tituloa_agenda"
-        android:layout_toRightOf="@id/ordue"
+        android:layout_below="@id/layout_ekintzak_tituloa_agenda"
+        android:layout_toRightOf="@id/layout_ekintzak_ordue"
         android:src="@drawable/place" />
 
     <TextView
-        android:id="@+id/lekua"
+        android:id="@+id/layout_ekintzak_lekua"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tituloa_agenda"
-        android:layout_toRightOf="@id/imageIconPlace"
+        android:layout_below="@id/layout_ekintzak_tituloa_agenda"
+        android:layout_toRightOf="@id/layout_ekintzak_imageIconPlace"
         android:text="TextView"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     <ImageView
-        android:id="@+id/imageIcon"
+        android:id="@+id/layout_ekintzak_imageIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
