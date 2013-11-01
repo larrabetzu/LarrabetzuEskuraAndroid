@@ -30,7 +30,7 @@ public class Kontaktua extends Activity {
                     String dana = "";
                     if(etBox.isChecked()){
                         try {
-                            dana = "\n \n Android API ="+Build.VERSION.SDK_INT +" APP VERSION ="+(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+                            dana = "\n \n Android API ="+Build.VERSION.SDK_INT +"\n APP VERSION ="+(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
                         } catch (PackageManager.NameNotFoundException e) {
                             Log.e("ba",e.toString());
                         }
@@ -39,7 +39,7 @@ public class Kontaktua extends Activity {
                     if(etBody.getText().toString().equals("") || etSubject.getText().toString().equals("")){
                         Toast.makeText(Kontaktua.this, "Testua eta gaia beteta egon behar dira", Toast.LENGTH_SHORT).show();
                     }else{
-                        String[] to = { "ercillagorka@gmail.com", "patxi@gaztelumendi.org" };
+                        String[] to = { "larrabetzueskura@gmail.com" };
                         itSend.putExtra(Intent.EXTRA_EMAIL, to);
                         itSend.putExtra(Intent.EXTRA_SUBJECT, etSubject.getText().toString());
                         itSend.putExtra(Intent.EXTRA_TEXT, etBody.getText()+" "+dana);

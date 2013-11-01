@@ -73,11 +73,14 @@ public class Menua extends Activity {
                 int mMonth = c.get(Calendar.MONTH)+1;   //urtarrila=0
                 int mDay = c.get(Calendar.DAY_OF_MONTH);
                 int mhour = c.get(Calendar.HOUR_OF_DAY);
+                int numdbekitaldi = 0;
+                int numwebekitaldi = 0;
 
                 Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + String.format("%02d",mDay)  +" "+mhour);
                 db.zabaldu();
                 try{
-                    db.eguneratuEkintzak();
+                    numwebekitaldi = db.eguneratuEkintzak();
+                    Log.e("numwebekitaldi",numwebekitaldi+"");
                     }catch (Exception e){
                     Log.e("eguneratu",e.toString());
                 }
@@ -85,6 +88,21 @@ public class Menua extends Activity {
                     db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), mhour);
                     }catch (Exception e){
                     Log.e("garbitu",e.toString());
+                }
+                try{
+                    numdbekitaldi = db.ekitaldikzenbat();
+                    Log.e("numdbekitaldi",numdbekitaldi+"");
+                }catch (Exception e){
+                    Log.e("ekitaldikzenbat",e.toString());
+                }
+                if(numwebekitaldi<numdbekitaldi){
+                    try {
+                        db.ekitaldiguztiakkendu();
+                        db.eguneratuEkintzak();
+                        db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), mhour);
+                    }catch (Exception e){
+                        Log.e("ekitaldiguztiakkendu",e.toString());
+                    }
                 }
                 try {
                     int id= db.azkenId();
@@ -110,21 +128,6 @@ public class Menua extends Activity {
         }
         return false;
     }
-
-    /**
-     * public static String getConnectivityStatusString(Context context) {
-     int conn = NetworkUtil.getConnectivityStatus(context);
-     String status = null;
-     if (conn == NetworkUtil.TYPE_WIFI) {
-     status = "Wifi enabled";
-     } else if (conn == NetworkUtil.TYPE_MOBILE) {
-     status = "Mobile data enabled";
-     } else if (conn == NetworkUtil.TYPE_NOT_CONNECTED) {
-     status = "Not connected to Internet";
-     }
-     return status;
-     }
-     */
 
     public void networkNoAvailableDialog(){
         AlertDialog.Builder alertbox = new AlertDialog.Builder(this);

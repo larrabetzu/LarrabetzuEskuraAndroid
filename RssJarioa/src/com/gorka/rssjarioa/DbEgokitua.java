@@ -199,7 +199,7 @@ public class DbEgokitua {
                      * db ekintza internetetik aktualizatu
                      *
                      */
-                   numero=0;
+                    numero=0;
                     String egune = null;
                     String sortzailea;
                     String tituloa = null;
@@ -282,7 +282,7 @@ public class DbEgokitua {
                                             numero=2;
                                         }
                                         if(palabra.contains("sortzailea:")){
-                                            substring = palabra.substring(13).replace(",", "").replace("]", "");
+                                            substring = palabra.substring(13).replace(",", "").replace("]", "").replace(" ","");
                                         }
                                         if(palabra.contains("lekua:") ){
                                             numero=4;
@@ -325,7 +325,6 @@ public class DbEgokitua {
 
                                 for (int i = 0; i < substring.length(); i++){
                                     if(substring.charAt(i)!=' '){
-
                                         sortzailea = substring.charAt(i)+"";
                                         ContentValues initialValuesSortzailea = new ContentValues();
                                         initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
@@ -360,8 +359,30 @@ public class DbEgokitua {
 
             }
     }
-    public void eguneratuEkintzak()
+
+    public  DbEgokitua zabaldu() throws SQLException
     {
+            db = DBHelper.getWritableDatabase();
+            try{
+
+                if (db != null) {
+                    Cursor cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
+                    cursor.close();
+                }
+            }catch (Exception ex){
+                Log.e("zabaldu",ex.toString());
+            }
+            return this;
+    }
+
+    public void zarratu()
+    {
+            DBHelper.close();
+    }
+
+    public int eguneratuEkintzak()
+    {
+        int zenbat = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         java.util.Date fecha1 = null;
         java.util.Date fecha2 = null;
@@ -464,6 +485,7 @@ public class DbEgokitua {
                                             }
                                         }
                                     }
+                                    zenbat++;
                                     break;
                             }
                             if(palabra.contains("tituloa:") ){
@@ -533,33 +555,14 @@ public class DbEgokitua {
                         }
                     }
                 }
+                zenbat++;
                 inputLine=in.readLine();
             }
             in.close();
         } catch (Exception e) {
             Log.e("ekintzasortu", e.toString());
         }
-    }
-
-
-    public  DbEgokitua zabaldu() throws SQLException 
-    {
-            db = DBHelper.getWritableDatabase();
-            try{
-
-                if (db != null) {
-                    Cursor cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
-                    cursor.close();
-                }
-            }catch (Exception ex){
-                Log.e("zabaldu",ex.toString());
-            }
-            return this;
-    }
-
-    public void zarratu() 
-    {
-            DBHelper.close();
+        return zenbat;
     }
 
 	public int azkenId() 
@@ -603,6 +606,27 @@ public class DbEgokitua {
                 }while (c.moveToNext());
             }
         return true;
+    }
+
+    public void ekitaldiguztiakkendu(){
+        try {
+            db.execSQL("DELETE FROM "+TAULA_ekintza_sortzailea);
+            db.execSQL("DELETE FROM "+TAULA_ekintza);
+
+        }catch (Exception e){
+            Log.e("DBEgokitua-ekitaldiakkendu",e.toString());
+        }
+
+    }
+
+    public int ekitaldikzenbat(){
+        String query = "Select Count (*) From "+TAULA_ekintza;
+        Cursor cursor = db.rawQuery(query, null);
+        int id = 0;
+        if (cursor.moveToFirst()) {
+            do { id = cursor.getInt(0);
+            } while(cursor.moveToNext());
+        } return id;
     }
 
 

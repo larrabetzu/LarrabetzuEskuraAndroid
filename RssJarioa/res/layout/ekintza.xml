@@ -12,14 +12,34 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/ekintza_hilea"
+            android:layout_width="76.5dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="3dp"
+            android:text="urtarrilak"
+            android:background="#808080"
+            android:gravity="center"
+            />
+
+    </TableRow>
+
+
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
             android:id="@+id/ekintza_egune"
             android:text="21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10sp"
-            android:padding="7dp"
+            android:paddingRight="7dp"
+            android:paddingLeft="7dp"
             android:background="#808080"
-            android:textSize="65sp"
+            android:textSize="57sp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             />
 
@@ -36,7 +56,7 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/tableRow2"
+        android:id="@+id/tableRow3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#808080">
@@ -88,6 +108,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        />
+    <TextView
+        android:id="@+id/ekintza_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         />
 
 </LinearLayout>
