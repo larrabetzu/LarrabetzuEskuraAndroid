@@ -46,7 +46,7 @@ public class Agenda extends Activity {
 
                 } while(cursor.moveToNext());
             }
-
+            db.zarratu();
             //listView sortu
             lista = (ListView) findViewById(R.id.Agenda_listview);
             lista.setAdapter(new List_adaptador(this, R.layout.layout_ekintzak, datos){
@@ -71,7 +71,6 @@ public class Agenda extends Activity {
                     }
                 }
             });
-            db.zarratu();
 
             lista.setOnItemClickListener(new OnItemClickListener() {
                 @Override

@@ -32,6 +32,7 @@ public class Ekintza extends Activity {
     String url = null;
     String link = null;
     ImageView kartela = null;
+    Bitmap kartelabitmap = null;
     private ProgressDialog progressDialog;
 
 
@@ -47,8 +48,9 @@ public class Ekintza extends Activity {
         }
         Log.i("posicion",id+"");
         Cursor cursor=db.ekitaldiaLortuDana(id);
+        db.zarratu();
 
-        kartela=(ImageView)findViewById(R.id.ekintza_kartela);
+        kartela = (ImageView)findViewById(R.id.ekintza_kartela);
         TextView ekintza_hilea = (TextView)findViewById(R.id.ekintza_hilea);
         TextView ekintza_egune = (TextView)findViewById(R.id.ekintza_egune);
         TextView ekintza_tituloa = (TextView)findViewById(R.id.ekintza_tituloa);
@@ -80,7 +82,13 @@ public class Ekintza extends Activity {
         }
         if(url != null ){
             if(networkAvailable()){
-                dowsnloadbitmap();
+                try {
+                    Log.i("Kartela-url",url);
+                    dowsnloadbitmap();
+                    kartela.setImageBitmap(kartelabitmap);
+                } catch (Exception e) {
+                    Log.e("kartela",e.toString());
+                }
             }else {
                 Drawable myDrawable = getResources().getDrawable(R.drawable.warning);
                 Bitmap anImage = ((BitmapDrawable) myDrawable).getBitmap();
@@ -88,7 +96,6 @@ public class Ekintza extends Activity {
                 Toast.makeText(Ekintza.this, "EZ zaude internetari konektatuta. Kartela ezin da deskargatu.", Toast.LENGTH_LONG).show();
             }
         }
-        db.zarratu();
     }
 
     private void dowsnloadbitmap(){
@@ -96,6 +103,11 @@ public class Ekintza extends Activity {
         new Thread(new Runnable(){
             @Override
             public void run() {
+                try{
+                    kartelabitmap= BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+                }catch (Exception e){
+                    Log.e("Ekintza",e.toString());
+                }
                 Message msg = progressHandler.obtainMessage();
                 progressHandler.sendMessage(msg);
             }
@@ -104,11 +116,6 @@ public class Ekintza extends Activity {
     private final Handler progressHandler = new Handler() {
         @SuppressWarnings("unchecked")
         public void handleMessage(Message msg) {
-            try{
-            kartela.setImageBitmap(BitmapFactory.decodeStream((InputStream) new URL(url).getContent()));
-            }catch (Exception e){
-                Log.e("Ekintza",e.toString());
-            }
                 progressDialog.dismiss();
         }
     };
