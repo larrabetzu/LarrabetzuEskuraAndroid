@@ -32,6 +32,7 @@ public class Ekintza extends Activity {
     String url = null;
     String link = null;
     ImageView kartela = null;
+    TextView ekintza_link = null;
     Bitmap kartelabitmap = null;
     private ProgressDialog progressDialog;
 
@@ -57,7 +58,7 @@ public class Ekintza extends Activity {
         TextView ekintza_ordue = (TextView)findViewById(R.id.ekintza_ordue);
         TextView ekintza_lekue = (TextView)findViewById(R.id.ekintza_lekue);
         TextView ekintza_deskribapena = (TextView)findViewById(R.id.ekintza_deskribapena);
-        TextView ekintza_link = (TextView)findViewById(R.id.ekintza_link);
+        ekintza_link = (TextView)findViewById(R.id.ekintza_link);
 
         do{
             ekintza_hilea.setText(hilea(Integer.parseInt(cursor.getString(1).substring(5,7))));
@@ -71,6 +72,7 @@ public class Ekintza extends Activity {
         } while(cursor.moveToNext());
 
         if (link != null){
+            Log.i("link", " "+link);
             ekintza_link.setText(link);
             ekintza_link.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,7 +87,7 @@ public class Ekintza extends Activity {
                 try {
                     Log.i("Kartela-url",url);
                     dowsnloadbitmap();
-                    kartela.setImageBitmap(kartelabitmap);
+
                 } catch (Exception e) {
                     Log.e("kartela",e.toString());
                 }
@@ -116,6 +118,7 @@ public class Ekintza extends Activity {
     private final Handler progressHandler = new Handler() {
         @SuppressWarnings("unchecked")
         public void handleMessage(Message msg) {
+            kartela.setImageBitmap(kartelabitmap);
                 progressDialog.dismiss();
         }
     };
