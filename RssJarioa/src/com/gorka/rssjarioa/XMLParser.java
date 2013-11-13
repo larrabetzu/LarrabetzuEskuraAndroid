@@ -73,6 +73,9 @@ public class XMLParser {
 
                     }else if (BlogUrl.toString().contains("larrabetzuko-udala")){
                         blog = "udala";
+
+                    }else if (BlogUrl.toString().contains("literaturaeskola")){
+                        blog = "literaturaeskola";
                     }
                     try{
                         String prueba = mblog.get(blog).toString();

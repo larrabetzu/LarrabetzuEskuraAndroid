@@ -27,5 +27,8 @@
         <CheckBoxPreference
             android:key="5"
             android:title="Udala" />
+        <CheckBoxPreference
+            android:key="6"
+            android:title="Literatura eskola" />
     </PreferenceCategory>
 </PreferenceScreen>

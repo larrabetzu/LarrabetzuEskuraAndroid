@@ -48,7 +48,7 @@ public class Berriak extends Activity {
             try {
                 this.post =Integer.parseInt(sharedPrefs.getString("post","Null"));
                 arr_blogs.clear();
-                for (int i = 1; i <= 5; i++) {
+                for (int i = 1; i <= 6; i++) {
                     boolean posi=sharedPrefs.getBoolean(""+i, false);
                     if (posi) {
                         switch (i) {
@@ -71,6 +71,10 @@ public class Berriak extends Activity {
                         case 5:
                             arr_blogs.add("http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
                             Log.i("array-Berriak", "http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
+                            break;
+                        case 6:
+                            arr_blogs.add("http://www.literaturaeskola.org/?feed=rss2");
+                            Log.i("array-Berriak", "http://www.literaturaeskola.org/?feed=rss2");
                             break;
                         }
                     }
@@ -148,6 +152,10 @@ public class Berriak extends Activity {
                                 String data = db.blogazkendata("udala");
                                 mblog.put("udala", data);
                                 blogak=blogak+"'udala',";
+                            }else if (getblog.contains("literaturaeskola")) {
+                                String data = db.blogazkendata("literaturaeskola");
+                                mblog.put("literaturaeskola", data);
+                                blogak=blogak+"'literaturaeskola',";
                             }
                         }
                     }catch (Exception ex){
@@ -196,6 +204,8 @@ public class Berriak extends Activity {
                         logo = R.drawable.iptx;
                     }else if (s.equals("udala")) {
                         logo = R.drawable.udala;
+                    }else if (s.equals("literaturaeskola")) {
+                        logo = R.drawable.literatura;
                     }
                 }
                 arr_data.add(new List_Sarrera(cursor.getString(1), cursor.getString(2), logo));
@@ -224,6 +234,8 @@ public class Berriak extends Activity {
                     blog = "gaztelumendi";
                 }else if (aData.get("L").contains("larrabetzuko-udala")) {
                     blog = "udala";
+                }else if (aData.get("L").contains("literaturaeskola")) {
+                    blog = "literaturaeskola";
                 }
                 if (blog!=null){
                     db.linkjarri(blog,aData.get("T"),aData.get("L"),aData.get("D"));
