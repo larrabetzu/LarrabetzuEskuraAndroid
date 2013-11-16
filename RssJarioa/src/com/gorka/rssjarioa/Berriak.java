@@ -65,8 +65,8 @@ public class Berriak extends Activity {
                                 Log.i("array-Berriak", "http://www.larrabetzukoeskola.org/feed/");
                             break;
                         case 4:
-                            arr_blogs.add("http://www.larrabetzu.org/gaztelumendi/?feed=rss2");
-                                Log.i("array-Berriak", "http://www.larrabetzu.org/gaztelumendi/?feed=rss2");
+                            arr_blogs.add("http://gaztelumendi.tumblr.com/rss");
+                                Log.i("array-Berriak", "http://gaztelumendi.tumblr.com/rss");
                             break;
                         case 5:
                             arr_blogs.add("http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
@@ -143,7 +143,7 @@ public class Berriak extends Activity {
                                 mblog.put("eskola", data);
                                 blogak=blogak+"'eskola',";
 
-                            } else if (getblog.contains("larrabetzu.org/gaztelumendi")) {
+                            } else if (getblog.contains("gaztelumendi")) {
                                 String data = db.blogazkendata("gaztelumendi");
                                 mblog.put("gaztelumendi", data);
                                 blogak=blogak+"'gaztelumendi',";
@@ -185,6 +185,32 @@ public class Berriak extends Activity {
 	};
 
     /**
+     * Mapan lista bat jaso eta ListView-a sortu
+     * */
+    private void setData(LinkedList<HashMap<String, String>> data){
+            for (HashMap<String, String> aData : data) {
+                String blog = null;
+                if (aData.get("L").contains("larrabetzutik.org")) {
+                    blog = "larrabetzutik";
+                }else if (aData.get("L").contains("horibai.org")) {
+                    blog = "horibai";
+                }else if (aData.get("L").contains("larrabetzukoeskola.org")) {
+                    blog = "eskola";
+                }else if (aData.get("L").contains("gaztelumendi")) {
+                    blog = "gaztelumendi";
+                }else if (aData.get("L").contains("larrabetzuko-udala")) {
+                    blog = "udala";
+                }else if (aData.get("L").contains("literaturaeskola")) {
+                    blog = "literaturaeskola";
+                }
+                if (blog!=null){
+                    db.linkjarri(blog,aData.get("T"),aData.get("L"),aData.get("D"));
+                    db.linkkendu(blog,post);
+                }
+            }
+
+    }
+    /**
      * Datu basetik informazioa hartu eta arr_data-n sartu
      */
     private void getDataDb(){
@@ -218,32 +244,6 @@ public class Berriak extends Activity {
         db.zarratu();
 
     }
-    /**
-     * Mapan lista bat jaso eta ListView-a sortu
-     * */
-    private void setData(LinkedList<HashMap<String, String>> data){
-            for (HashMap<String, String> aData : data) {
-                String blog = null;
-                if (aData.get("L").contains("larrabetzutik.org")) {
-                    blog = "larrabetzutik";
-                }else if (aData.get("L").contains("horibai.org")) {
-                    blog = "horibai";
-                }else if (aData.get("L").contains("larrabetzukoeskola.org")) {
-                    blog = "eskola";
-                }else if (aData.get("L").contains("larrabetzu.org/gaztelumendi")) {
-                    blog = "gaztelumendi";
-                }else if (aData.get("L").contains("larrabetzuko-udala")) {
-                    blog = "udala";
-                }else if (aData.get("L").contains("literaturaeskola")) {
-                    blog = "literaturaeskola";
-                }
-                if (blog!=null){
-                    db.linkjarri(blog,aData.get("T"),aData.get("L"),aData.get("D"));
-                    db.linkkendu(blog,post);
-                }
-            }
-
-    }
     private void lvsortu(){
         ListView lv = (ListView) findViewById(R.id.berriak_lstData);
         lv.setAdapter(new List_adaptador(this, R.layout.layout_items, arr_data){
@@ -265,7 +265,7 @@ public class Berriak extends Activity {
 	public void eleccion(){
 	        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
             alertbox.setTitle("Lehenengo zure hobespenak jarri behar dozuz");
-	        alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
+	        alertbox.setPositiveButton("Bai", new DialogInterface.OnClickListener() {
 	            public void onClick(DialogInterface arg0, int arg1) {startActivity(new Intent("hobespenak"));finish();}
 	        	});
 	        alertbox.setNegativeButton("Ez", new DialogInterface.OnClickListener() {

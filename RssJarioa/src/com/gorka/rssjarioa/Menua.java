@@ -22,6 +22,7 @@ public class Menua extends Activity {
 
 	DbEgokitua db=new DbEgokitua(this);
 	boolean networkAvailable=false;
+    boolean hariaEginda = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class Menua extends Activity {
 
     }
 
-    public void onclickbtnberriak(View view){
+    public void onclickbtnberriak(@SuppressWarnings("UnusedParameters")View view){
             if (networkAvailable) {
                 startActivity(new Intent("berriak"));
             }else{
@@ -51,15 +52,19 @@ public class Menua extends Activity {
             }
     }
 	    
-    public void onclickbtnagenda(View view){
+    public void onclickbtnagenda(@SuppressWarnings("UnusedParameters")View view){
+        if(hariaEginda){
             startActivity(new Intent("agenda"));
+        }else {
+            Toast.makeText(this,"zerbitzariarekin konektatzean",Toast.LENGTH_LONG).show();
+        }
     }
 
-    public void onclickbtnkontaktua(View view){
+    public void onclickbtnkontaktua(@SuppressWarnings("UnusedParameters")View view){
             startActivity(new Intent("kontaktua"));
     }
 
-    public void onclickbtnhobespenak(View view){
+    public void onclickbtnhobespenak(@SuppressWarnings("UnusedParameters")View view){
             startActivity(new Intent("hobespenak"));
     }
 
@@ -80,7 +85,7 @@ public class Menua extends Activity {
                 db.zabaldu();
                 try{
                     numwebekitaldi = db.eguneratuEkintzak();
-                    Log.e("numwebekitaldi",numwebekitaldi+"");
+                    Log.i("numwebekitaldi",numwebekitaldi+"");
                     }catch (Exception e){
                     Log.e("eguneratu",e.toString());
                 }
@@ -91,7 +96,7 @@ public class Menua extends Activity {
                 }
                 try{
                     numdbekitaldi = db.ekitaldikzenbat();
-                    Log.e("numdbekitaldi",numdbekitaldi+"");
+                    Log.i("numdbekitaldi",numdbekitaldi+"");
                 }catch (Exception e){
                     Log.e("ekitaldikzenbat",e.toString());
                 }
@@ -112,6 +117,7 @@ public class Menua extends Activity {
                 }
                 db.zarratu();
                 Log.e("hilo1", "off");
+                hariaEginda = true;
             }
 
         }).start();

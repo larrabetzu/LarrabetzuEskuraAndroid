@@ -68,7 +68,7 @@ public class XMLParser {
                     }else if (BlogUrl.toString().contains("larrabetzukoeskola.org")){
                         blog = "eskola";
 
-                    }else if (BlogUrl.toString().contains("larrabetzu.org/gaztelumendi")){
+                    }else if (BlogUrl.toString().contains("gaztelumendi")){
                         blog = "gaztelumendi";
 
                     }else if (BlogUrl.toString().contains("larrabetzuko-udala")){

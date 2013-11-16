@@ -3,6 +3,7 @@ package com.gorka.rssjarioa;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -60,7 +61,7 @@ public class DbEgokitua {
     static final String LINK_LINK = "link";
     static final String LINK_PUB_DATE = "blog_pub_date";
 
-	static final int DB_BERTSIOA = 4;
+	static final int DB_BERTSIOA = 5;
     static final String DB_IZENA = "NireDB";
     
     
@@ -377,7 +378,11 @@ public class DbEgokitua {
 
     public void zarratu()
     {
+        try{
             DBHelper.close();
+        }catch (Exception e){
+            Log.e("DbEgokitua",e.toString());
+        }
     }
 
     public int eguneratuEkintzak()
@@ -588,6 +593,8 @@ public class DbEgokitua {
 
     public boolean garbitu(int urtea,String hilabetea,String egune, int ordue)
     {
+        boolean garbiketa;
+        try {
             String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <='"+urtea+"-"+hilabetea+"-"+egune+" "+ordue+":00:00 'order by egune";
             Cursor c = db.rawQuery(query, null);
             int id;
@@ -605,7 +612,15 @@ public class DbEgokitua {
                     }
                 }while (c.moveToNext());
             }
-        return true;
+            garbiketa = true;
+        }catch (CursorIndexOutOfBoundsException e){
+            Log.i("DbEgokitua-garbitu",e.toString());
+            garbiketa = false;
+        }catch (Exception e){
+            Log.e("DbEgokitua-garbitu",e.toString());
+            garbiketa = false;
+        }
+        return garbiketa;
     }
 
     public void ekitaldiguztiakkendu(){
