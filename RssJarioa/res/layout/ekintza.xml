@@ -63,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:src="@drawable/event"
+            android:paddingRight="-5dp"
             />
 
         <TextView
@@ -81,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:src="@drawable/place"
+            android:paddingRight="-5dp"
             />
 
         <TextView

@@ -11,6 +11,7 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -564,8 +565,10 @@ public class DbEgokitua {
                 inputLine=in.readLine();
             }
             in.close();
+        }catch (FileNotFoundException e){
+            Log.e("DbEgokitua-ekintzasortu","ezin da serbitzariarekin konektatu");
         } catch (Exception e) {
-            Log.e("ekintzasortu", e.toString());
+            Log.e("DbEgokitua-ekintzasortu", e.toString());
         }
         return zenbat;
     }
@@ -614,7 +617,7 @@ public class DbEgokitua {
             }
             garbiketa = true;
         }catch (CursorIndexOutOfBoundsException e){
-            Log.i("DbEgokitua-garbitu",e.toString());
+            Log.i("DbEgokitua-garbitu","ez dago ezer garbitako");
             garbiketa = false;
         }catch (Exception e){
             Log.e("DbEgokitua-garbitu",e.toString());

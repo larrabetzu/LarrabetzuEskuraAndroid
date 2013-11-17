@@ -56,7 +56,7 @@ public class Menua extends Activity {
         if(hariaEginda){
             startActivity(new Intent("agenda"));
         }else {
-            Toast.makeText(this,"zerbitzariarekin konektatzean",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"zerbitzariarekin konektatzen",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -100,7 +100,7 @@ public class Menua extends Activity {
                 }catch (Exception e){
                     Log.e("ekitaldikzenbat",e.toString());
                 }
-                if(numwebekitaldi<numdbekitaldi){
+                if(numwebekitaldi<numdbekitaldi && numwebekitaldi!=0){
                     try {
                         db.ekitaldiguztiakkendu();
                         db.eguneratuEkintzak();
