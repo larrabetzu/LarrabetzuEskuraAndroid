@@ -81,7 +81,7 @@ public class Menua extends Activity {
                 int numdbekitaldi = 0;
                 int numwebekitaldi = 0;
 
-                Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + String.format("%02d",mDay)  +" "+mhour);
+                Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + String.format("%02d",mDay)  +" "+String.format("%02d",mhour));
                 db.zabaldu();
                 try{
                     numwebekitaldi = db.eguneratuEkintzak();
@@ -90,7 +90,7 @@ public class Menua extends Activity {
                     Log.e("eguneratu",e.toString());
                 }
                 try{
-                    db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), mhour);
+                    db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), String.format("%02d",mhour));
                     }catch (Exception e){
                     Log.e("garbitu",e.toString());
                 }
@@ -102,9 +102,10 @@ public class Menua extends Activity {
                 }
                 if(numwebekitaldi<numdbekitaldi && numwebekitaldi!=0){
                     try {
+                        Log.e("berAktualizatu","");
                         db.ekitaldiguztiakkendu();
                         db.eguneratuEkintzak();
-                        db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), mhour);
+                        db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), String.format("%02d",mhour));
                     }catch (Exception e){
                         Log.e("ekitaldiguztiakkendu",e.toString());
                     }

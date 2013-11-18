@@ -594,7 +594,7 @@ public class DbEgokitua {
             return cursor;
     }
 
-    public boolean garbitu(int urtea,String hilabetea,String egune, int ordue)
+    public boolean garbitu(int urtea,String hilabetea,String egune, String ordue)
     {
         boolean garbiketa;
         try {
