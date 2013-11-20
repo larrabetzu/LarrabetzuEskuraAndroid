@@ -263,15 +263,20 @@ public class DbEgokitua {
                                                 Log.i("id",""+id);
                                                 if (id==-1) {Log.d(tituloa, "Ez da ekintzarik gehitu");
                                                 }else {Log.d(tituloa, "+ ekintza");
-                                                    for (int i = 0; i < substring.length(); i++){
-                                                        if(substring.charAt(i)!=' '){
-                                                            sortzailea = substring.charAt(i)+"";
+                                                    for (int i = 0; i < substring.replace(",", "").length(); i++){
+                                                        if(substring.charAt(i)!=','){
+                                                            if(substring.charAt(i+1)!=','){
+                                                                sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
+                                                                i++;
+                                                            }else{
+                                                                sortzailea = substring.charAt(i)+"";
+                                                            }
                                                             ContentValues initialValuesSortzailea = new ContentValues();
                                                             initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
                                                             initialValuesSortzailea.put(SOR_EKINTZA, id);
                                                             long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-                                                            if (idsor==-1) {Log.d(sortzailea, "Ez da sortzailea gehitu");
-                                                            }else {Log.d(sortzailea,"+ sortzailea");}
+                                                            if (idsor==-1) {Log.e(sortzailea, "Ez da sortzailea gehitu");
+                                                            }else {Log.i(sortzailea,"+ sortzailea");}
                                                         }
                                                    }
                                                 }
@@ -284,7 +289,7 @@ public class DbEgokitua {
                                             numero=2;
                                         }
                                         if(palabra.contains("sortzailea:")){
-                                            substring = palabra.substring(13).replace(",", "").replace("]", "").replace(" ","");
+                                            substring = palabra.substring(13).replace("]", "").replace(" ","");
                                         }
                                         if(palabra.contains("lekua:") ){
                                             numero=4;
@@ -325,15 +330,20 @@ public class DbEgokitua {
                             }else{
                                 Log.d(tituloa, "+ ekintza");
 
-                                for (int i = 0; i < substring.length(); i++){
-                                    if(substring.charAt(i)!=' '){
-                                        sortzailea = substring.charAt(i)+"";
+                                for (int i = 0; i < substring.replace(",", "").length(); i++){
+                                    if(substring.charAt(i)!=','){
+                                        if(substring.charAt(i+1)!=','){
+                                            sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
+                                            i++;
+                                        }else{
+                                            sortzailea = substring.charAt(i)+"";
+                                        }
                                         ContentValues initialValuesSortzailea = new ContentValues();
                                         initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
                                         initialValuesSortzailea.put(SOR_EKINTZA, id);
                                         long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-                                        if (idsor==-1) {Log.d(sortzailea, "Ez da sortzailea gehitu");
-                                        }else {Log.d(sortzailea,"+ sortzailea");}
+                                        if (idsor==-1) {Log.e(sortzailea, "Ez da sortzailea gehitu");
+                                        }else {Log.i(sortzailea,"+ sortzailea");}
                                     }
                                 }
                             }
@@ -478,15 +488,20 @@ public class DbEgokitua {
                                         Log.i("id",""+id);
                                         if (id==-1) {Log.d(tituloa, "Ez da ekintzarik gehitu");
                                         }else {Log.d(tituloa, "+ ekintza");
-                                            for (int i = 0; i < substring.length(); i++){
-                                                if(substring.charAt(i)!=' '){
-                                                    sortzailea = substring.charAt(i)+"";
+                                            for (int i = 0; i < substring.replace(",", "").length(); i++){
+                                                if(substring.charAt(i)!=','){
+                                                    if(substring.charAt(i+1)!=','){
+                                                        sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
+                                                        i++;
+                                                    }else{
+                                                        sortzailea = substring.charAt(i)+"";
+                                                    }
                                                     ContentValues initialValuesSortzailea = new ContentValues();
                                                     initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
                                                     initialValuesSortzailea.put(SOR_EKINTZA, id);
                                                     long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-                                                    if (idsor==-1) {Log.d(sortzailea, "Ez da sortzailea gehitu");
-                                                    }else {Log.d(sortzailea,"+ sortzailea");}
+                                                    if (idsor==-1) {Log.e(sortzailea, "Ez da sortzailea gehitu");
+                                                    }else {Log.i(sortzailea,"+ sortzailea");}
                                                 }
                                             }
                                         }
@@ -501,7 +516,7 @@ public class DbEgokitua {
                                 numero=2;
                             }
                             if(palabra.contains("sortzailea:")){
-                                substring = palabra.substring(13).replace(",", "").replace("]", "");
+                                substring = palabra.substring(13).replace("]", "");
                             }
                             if(palabra.contains("lekua:") ){
                                 numero=4;
@@ -547,10 +562,14 @@ public class DbEgokitua {
                     }else{
                         Log.d(tituloa, "+ ekintza");
 
-                        for (int i = 0; i < substring.length(); i++){
-                            if(substring.charAt(i)!=' '){
-
-                                sortzailea = substring.charAt(i)+"";
+                        for (int i = 0; i < substring.replace(",", "").length(); i++){
+                            if(substring.charAt(i)!=','){
+                                if(substring.charAt(i+1)!=','){
+                                    sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
+                                    i++;
+                                }else{
+                                    sortzailea = substring.charAt(i)+"";
+                                }
                                 ContentValues initialValuesSortzailea = new ContentValues();
                                 initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
                                 initialValuesSortzailea.put(SOR_EKINTZA, id);
