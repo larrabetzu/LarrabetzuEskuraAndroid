@@ -53,7 +53,7 @@ public class Menua extends Activity {
     }
 	    
     public void onclickbtnagenda(@SuppressWarnings("UnusedParameters")View view){
-        if(hariaEginda){
+        if(hariaEginda || !networkAvailable){
             startActivity(new Intent("agenda"));
         }else {
             Toast.makeText(this,"zerbitzariarekin konektatzen",Toast.LENGTH_LONG).show();
