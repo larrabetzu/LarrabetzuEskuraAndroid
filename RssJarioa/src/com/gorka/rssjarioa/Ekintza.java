@@ -106,7 +106,20 @@ public class Ekintza extends Activity {
             @Override
             public void run() {
                 try{
-                    kartelabitmap= BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+                    Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+                    final int maxSize = 600;
+                    int outWidth;
+                    int outHeight;
+                    int inWidth = bitmap.getWidth();
+                    int inHeight = bitmap.getHeight();
+                    if(inWidth > inHeight){
+                        outWidth = maxSize;
+                        outHeight = (inHeight * maxSize) / inWidth;
+                    } else {
+                        outHeight = maxSize;
+                        outWidth = (inWidth * maxSize) / inHeight;
+                    }
+                    kartelabitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
                 }catch (Exception e){
                     Log.e("Ekintza",e.toString());
                 }

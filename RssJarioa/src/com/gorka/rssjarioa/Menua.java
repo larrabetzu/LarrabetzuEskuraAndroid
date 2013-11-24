@@ -21,7 +21,6 @@ import java.util.Calendar;
 public class Menua extends Activity {
 
 	DbEgokitua db=new DbEgokitua(this);
-	boolean networkAvailable=false;
     boolean hariaEginda = false;
 
     @Override
@@ -31,8 +30,7 @@ public class Menua extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
             StrictMode.setThreadPolicy(policy);
 
-            networkAvailable=networkAvailable();
-            if(networkAvailable) {
+            if(networkAvailable()) {
                 // Badago Interneta
                     Log.d("INTERNET", "Badago");
                     haria();
@@ -45,7 +43,7 @@ public class Menua extends Activity {
     }
 
     public void onclickbtnberriak(@SuppressWarnings("UnusedParameters")View view){
-            if (networkAvailable) {
+            if (networkAvailable()) {
                 startActivity(new Intent("berriak"));
             }else{
                 Toast.makeText(Menua.this,"EZ zaude internetari konektatuta",Toast.LENGTH_LONG).show();
@@ -53,7 +51,7 @@ public class Menua extends Activity {
     }
 	    
     public void onclickbtnagenda(@SuppressWarnings("UnusedParameters")View view){
-        if(hariaEginda || !networkAvailable){
+        if(hariaEginda || !networkAvailable()){
             startActivity(new Intent("agenda"));
         }else {
             Toast.makeText(this,"zerbitzariarekin konektatzen",Toast.LENGTH_LONG).show();
