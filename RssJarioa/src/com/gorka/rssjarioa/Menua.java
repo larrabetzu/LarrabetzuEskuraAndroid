@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -16,12 +17,18 @@ import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 
 public class Menua extends Activity {
 
 	DbEgokitua db=new DbEgokitua(this);
     boolean hariaEginda = false;
+    boolean bertsioZaharra = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,9 @@ public class Menua extends Activity {
                 // Badago Interneta
                     Log.d("INTERNET", "Badago");
                     haria();
+                    if(bertsioaBegitu()){
+                        bertsioaEguneratu();
+                    }
             }else{
                 // Ez dago internetik
                     networkNoAvailableDialog();
@@ -122,6 +132,35 @@ public class Menua extends Activity {
         }).start();
     }
 
+    private boolean bertsioaBegitu(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL("http://37.139.15.79/Bertsioa/");
+                    URLConnection uc = url.openConnection();
+                    uc.connect();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+                    String inputLine=in.readLine();
+                    if(inputLine != null ) {
+                        if(inputLine.contentEquals(getPackageManager().getPackageInfo(getPackageName(), 0).versionName)){
+                            Log.e("bertsio","berdinak");
+                            bertsioZaharra = false;
+                        }else {
+                            bertsioZaharra = true;
+                        }
+                    }
+                    in.close();
+                }catch (FileNotFoundException e){
+                    Log.e("Menua-bertsioaBegitu","ezin da serbitzariarekin konektatu");
+                } catch (Exception e) {
+                    Log.e("Menua-bertsioaBegitu", e.toString());
+                }
+            }
+        }).start();
+        return bertsioZaharra;
+    }
+
     public boolean networkAvailable() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -140,6 +179,29 @@ public class Menua extends Activity {
         alertbox.setTitle("EZ zaude internetari konektatuta");
         alertbox.setPositiveButton("Bale", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {}
+        });
+        alertbox.show();
+    }
+
+    private void bertsioaEguneratu(){
+        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+        alertbox.setTitle("Aplikazioan eguneraketa bat dago");
+        alertbox.setMessage("Eguneratu nahi dozu?");
+        alertbox.setIcon(R.drawable.info);
+        alertbox.setPositiveButton("Bai", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                final String appName = "com.gorka.rssjarioa";
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+appName)));
+                }
+                finish();
+            }
+        });
+        alertbox.setNegativeButton("Ez", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+            }
         });
         alertbox.show();
     }
