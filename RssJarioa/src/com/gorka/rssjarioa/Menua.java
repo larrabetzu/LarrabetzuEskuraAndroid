@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class Menua extends Activity {
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.menua);
+
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
             StrictMode.setThreadPolicy(policy);
 
@@ -68,12 +71,35 @@ public class Menua extends Activity {
         }
     }
 
-    public void onclickbtnkontaktua(@SuppressWarnings("UnusedParameters")View view){
-            startActivity(new Intent("kontaktua"));
+    public void onclickbtnelkarteak(@SuppressWarnings("UnusedParameters")View view){
+            startActivity(new Intent("elkarteak"));
     }
 
-    public void onclickbtnhobespenak(@SuppressWarnings("UnusedParameters")View view){
-            startActivity(new Intent("hobespenak"));
+    public void onclickbtnzerbitzuak(@SuppressWarnings("UnusedParameters")View view){
+            startActivity(new Intent("zerbitzuak"));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_menua, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_hobespenak:
+                startActivity(new Intent("hobespenak"));
+                return true;
+            case R.id.menu_kontaktua:
+                startActivity(new Intent("kontaktua"));
+                return true;
+            case R.id.menu_nortzuk:
+                startActivity(new Intent("nortzuk"));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void haria(){
@@ -187,7 +213,6 @@ public class Menua extends Activity {
         AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
         alertbox.setTitle("Aplikazioan eguneraketa bat dago");
         alertbox.setMessage("Eguneratu nahi dozu?");
-        alertbox.setIcon(R.drawable.info);
         alertbox.setPositiveButton("Bai", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 final String appName = "com.gorka.rssjarioa";

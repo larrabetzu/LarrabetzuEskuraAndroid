@@ -22,7 +22,7 @@
 	    android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:orientation="vertical"
-    	android:padding="7sp" 
+    	android:padding="7sp"
     	android:layout_weight="1"
 	    >  
 	   <Button
@@ -49,31 +49,31 @@
 	        android:text="Agenda"
 	        android:textSize="25sp"
 	          />
-	    <Button
-	        android:drawableLeft="@drawable/read"
+       <Button
+            android:drawableLeft="@drawable/elkarteak"
+            android:drawablePadding="35dp"
+            android:gravity="left"
+            android:id="@+id/btnelkarteak"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:onClick="onclickbtnelkarteak"
+            android:paddingLeft="50dp"
+            android:text="Elkarteak"
+            android:textSize="25sp"
+            />
+       <Button
+	        android:drawableLeft="@drawable/zerbitzuak"
 	        android:drawablePadding="35dp"
 	        android:gravity="left"
-	        android:id="@+id/btnkontaktua"
+	        android:id="@+id/btnzerbitzuak"
 	        android:layout_height="wrap_content"
 	        android:layout_width="fill_parent"
-	        android:onClick="onclickbtnkontaktua"
+	        android:onClick="onclickbtnzerbitzuak"
 	        android:paddingLeft="50dp"
-	        android:text="Kontaktua"
+	        android:text="Zerbitzuak"
 	        android:textSize="25sp"
 	        />
-	    <Button
-	        android:drawableLeft="@drawable/settings"
-	        android:drawablePadding="35dp"
-	        android:gravity="left"
-	        android:id="@+id/btnhobespenak"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:onClick="onclickbtnhobespenak"
-	        android:paddingLeft="50dp"
-	        android:text="Hobespenak"
-	        android:textSize="25sp"
-	        />
-	    </LinearLayout>  
+	   </LinearLayout>
     
 	<LinearLayout 
 	    android:layout_width="match_parent"

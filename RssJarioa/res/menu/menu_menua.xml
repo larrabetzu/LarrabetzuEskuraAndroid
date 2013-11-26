@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_hobespenak"
+        android:title="Hobespenak"
+        android:icon="@drawable/settings_light"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_kontaktua"
+        android:title="Kontaktua"
+        android:icon="@drawable/email_light"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_nortzuk"
+        android:title="Nortzuk"
+        android:icon="@drawable/about_light"
+        android:showAsAction="never" />
+</menu>
