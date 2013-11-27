@@ -48,24 +48,24 @@ public class Agenda extends Activity {
             }
             db.zarratu();
             //listView sortu
-            lista = (ListView) findViewById(R.id.Agenda_listview);
+            lista = (ListView) findViewById(R.id.agenda_listview);
             lista.setAdapter(new List_adaptador(this, R.layout.layout_ekintzak, datos){
                 @Override
                 public void onEntrada(Object entrada, View view) {
                     if (entrada != null) {
-                        TextView tituloa = (TextView) view.findViewById(R.id.layout_ekintzak_tituloa_agenda);
+                        TextView tituloa = (TextView) view.findViewById(R.id.ekintzak_tituloa_agenda);
                         if (tituloa != null)
                             tituloa.setText(((List_Sarrera) entrada).get_tituloa());
 
-                        TextView lekua = (TextView) view.findViewById(R.id.layout_ekintzak_lekua);
+                        TextView lekua = (TextView) view.findViewById(R.id.ekintzak_lekua);
                         if (lekua != null)
                             lekua.setText(((List_Sarrera) entrada).get_lekua());
 
-                        TextView ordue = (TextView) view.findViewById(R.id.layout_ekintzak_ordue);
+                        TextView ordue = (TextView) view.findViewById(R.id.ekintzak_ordue);
                         if (ordue != null)
                             ordue.setText(((List_Sarrera) entrada).get_ordue());
 
-                        TextView egune= (TextView) view.findViewById(R.id.layout_ekintzak_egune);
+                        TextView egune= (TextView) view.findViewById(R.id.ekintzak_egune);
                         if (egune != null)
                             egune.setText(((List_Sarrera) entrada).get_egune());
                     }

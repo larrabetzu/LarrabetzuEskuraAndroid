@@ -30,7 +30,7 @@ public class Menua extends Activity {
 
 	DbEgokitua db=new DbEgokitua(this);
     boolean hariaEginda = false;
-    boolean bertsioZaharra = true;
+    boolean bertsioZaharra = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class Menua extends Activity {
                 startActivity(new Intent("kontaktua"));
                 return true;
             case R.id.menu_nortzuk:
-                startActivity(new Intent("nortzuk"));
+                startActivity(new Intent("eskura"));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -169,10 +169,14 @@ public class Menua extends Activity {
                     BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
                     String inputLine=in.readLine();
                     if(inputLine != null ) {
-                        if(inputLine.contentEquals(getPackageManager().getPackageInfo(getPackageName(), 0).versionName)){
-                            Log.e("bertsio","berdinak");
-                            bertsioZaharra = false;
-                        }else {
+                        int webversionCode = 0;
+                        try{
+                            webversionCode = Integer.parseInt(inputLine);
+                        }catch (Exception ex){
+                            Log.e("Menua-bertsiobegitu",ex.toString());
+                        }
+                        if(webversionCode>(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode)){
+                            Log.e("bertsio","ezberdinak");
                             bertsioZaharra = true;
                         }
                     }

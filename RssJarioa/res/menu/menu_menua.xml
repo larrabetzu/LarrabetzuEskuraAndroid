@@ -13,7 +13,7 @@
         android:showAsAction="never" />
     <item
         android:id="@+id/menu_nortzuk"
-        android:title="Nortzuk"
+        android:title="Larrabetzu Eskura"
         android:icon="@drawable/about_light"
         android:showAsAction="never" />
 </menu>

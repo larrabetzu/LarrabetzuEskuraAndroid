@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +34,12 @@ public class Ekintza extends Activity {
     String url = null;
     String link = null;
     ImageView kartela = null;
+    TextView ekintza_hilea = null;
+    TextView ekintza_egune = null;
+    TextView ekintza_tituloa = null;
+    TextView ekintza_ordue = null;
+    TextView ekintza_lekue = null;
+    TextView ekintza_deskribapena = null;
     TextView ekintza_link = null;
     Bitmap kartelabitmap = null;
     private ProgressDialog progressDialog;
@@ -52,12 +60,12 @@ public class Ekintza extends Activity {
         db.zarratu();
 
         kartela = (ImageView)findViewById(R.id.ekintza_kartela);
-        TextView ekintza_hilea = (TextView)findViewById(R.id.ekintza_hilea);
-        TextView ekintza_egune = (TextView)findViewById(R.id.ekintza_egune);
-        TextView ekintza_tituloa = (TextView)findViewById(R.id.ekintza_tituloa);
-        TextView ekintza_ordue = (TextView)findViewById(R.id.ekintza_ordue);
-        TextView ekintza_lekue = (TextView)findViewById(R.id.ekintza_lekue);
-        TextView ekintza_deskribapena = (TextView)findViewById(R.id.ekintza_deskribapena);
+        ekintza_hilea = (TextView)findViewById(R.id.ekintza_hilea);
+        ekintza_egune = (TextView)findViewById(R.id.ekintza_egune);
+        ekintza_tituloa = (TextView)findViewById(R.id.ekintza_tituloa);
+        ekintza_ordue = (TextView)findViewById(R.id.ekintza_ordue);
+        ekintza_lekue = (TextView)findViewById(R.id.ekintza_lekue);
+        ekintza_deskribapena = (TextView)findViewById(R.id.ekintza_deskribapena);
         ekintza_link = (TextView)findViewById(R.id.ekintza_link);
 
         do{
@@ -97,6 +105,26 @@ public class Ekintza extends Activity {
                 kartela.setImageBitmap(anImage);
                 Toast.makeText(Ekintza.this, "EZ zaude internetari konektatuta. Kartela ezin da deskargatu.", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_ekintzak, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_elkarbanatu:
+                elkarbanatu();
+                return true;
+            case R.id.menu_alarma:
+                Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -161,6 +189,16 @@ public class Ekintza extends Activity {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    private void elkarbanatu(){
+        String testua = ekintza_tituloa.getText()+"\n"+ekintza_egune.getText()+" "+ekintza_ordue.getText()+" @larrabetzu #eskura";
+        // TODO if (testua.length()>120){   }
+        String title = "Aukeratu aplikazioa Ekintza elkarbanatzeko";
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, testua );
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, title));
+    }
     @Override
     public void onStart() {
         super.onStart();

@@ -5,7 +5,7 @@
               android:orientation="vertical"
               android:padding="10dp" >
     <ListView 
-        android:id="@+id/Agenda_listview"
+        android:id="@+id/agenda_listview"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
         />
