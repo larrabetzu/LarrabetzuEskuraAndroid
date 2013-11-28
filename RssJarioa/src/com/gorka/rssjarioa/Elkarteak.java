@@ -6,6 +6,6 @@ import android.os.Bundle;
 public class Elkarteak extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.elkarteak);
+        setContentView(R.layout.list_elkarteak);
     }
 }

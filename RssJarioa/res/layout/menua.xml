@@ -1,102 +1,103 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#E8E8E8"
-              android:orientation="vertical">
-    
-    <LinearLayout 
-        android:id="@+id/menua_andramari"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="top"
-        android:scaleType="center"
-        android:paddingBottom="5sp"
-        android:background="@drawable/andramari"
-        android:orientation="vertical"
-        android:layout_weight="50"
-        >
-    </LinearLayout>
-    
-    
-	<LinearLayout
-	    android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical"
-    	android:padding="7sp"
-    	android:layout_weight="1"
-	    >  
-	   <Button
-	        android:drawableLeft="@drawable/paste"
-	        android:drawablePadding="35dp"
-	        android:gravity="left"
-	        android:id="@+id/btnberriak"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:onClick="onclickbtnberriak"
-	        android:paddingLeft="50dp"
-	        android:text="Berriak"
-	        android:textSize="25sp"
-	          />
-	   <Button
-	        android:drawableLeft="@drawable/today"
-	        android:drawablePadding="35dp"
-	        android:gravity="left"
-	        android:id="@+id/btnagenda"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:onClick="onclickbtnagenda"
-	        android:paddingLeft="50dp"
-	        android:text="Agenda"
-	        android:textSize="25sp"
-	          />
-       <Button
-            android:drawableLeft="@drawable/elkarteak"
-            android:drawablePadding="35dp"
-            android:gravity="left"
-            android:id="@+id/btnelkarteak"
-            android:layout_height="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/zuria"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/menua_andramari"
             android:layout_width="fill_parent"
-            android:onClick="onclickbtnelkarteak"
-            android:paddingLeft="50dp"
-            android:text="Elkarteak"
-            android:textSize="25sp"
-            />
-       <Button
-	        android:drawableLeft="@drawable/zerbitzuak"
-	        android:drawablePadding="35dp"
-	        android:gravity="left"
-	        android:id="@+id/btnzerbitzuak"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:onClick="onclickbtnzerbitzuak"
-	        android:paddingLeft="50dp"
-	        android:text="Zerbitzuak"
-	        android:textSize="25sp"
-	        />
-	   </LinearLayout>
-    
-	<LinearLayout 
-	    android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical"
-    	android:padding="7sp"
-    	android:layout_weight="1"
-	    >  
-    
-	     <TextView
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center"
-	        android:text="Larrabetzu Eskura"
-	         />
-	 
-	    <TextView
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center"
-	        android:text="Gorka Ercilla"
-	         />
-  	</LinearLayout>
-    
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:scaleType="center"
+            android:paddingBottom="5sp"
+            android:background="@drawable/andramari"
+            android:orientation="vertical"
+            android:layout_weight="50"
+            >
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="7sp"
+            android:layout_weight="1"
+            >
+           <Button
+                android:drawableLeft="@drawable/paste"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnberriak"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnberriak"
+                android:paddingLeft="50dp"
+                android:text="Berriak"
+                android:textSize="25sp"
+                  />
+           <Button
+                android:drawableLeft="@drawable/today"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnagenda"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnagenda"
+                android:paddingLeft="50dp"
+                android:text="Agenda"
+                android:textSize="25sp"
+                  />
+           <Button
+                android:drawableLeft="@drawable/elkarteak"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnelkarteak"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnelkarteak"
+                android:paddingLeft="50dp"
+                android:text="Elkarteak"
+                android:textSize="25sp"
+                />
+           <Button
+                android:drawableLeft="@drawable/zerbitzuak"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnzerbitzuak"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnzerbitzuak"
+                android:paddingLeft="50dp"
+                android:text="Zerbitzuak"
+                android:textSize="25sp"
+                />
+           </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="7sp"
+            android:layout_weight="1"
+            >
+
+             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Larrabetzu Eskura"
+                 />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Gorka Ercilla"
+                 />
+        </LinearLayout>
+
 
 </LinearLayout>
