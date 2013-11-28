@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -34,33 +35,41 @@ public class Menua extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.menua);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.menua);
 
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
-            StrictMode.setThreadPolicy(policy);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+        StrictMode.setThreadPolicy(policy);
 
-            if(networkAvailable()) {
-                // Badago Interneta
-                    Log.d("INTERNET", "Badago");
-                    haria();
-                    if(bertsioaBegitu()){
-                        bertsioaEguneratu();
-                    }
-            }else{
-                // Ez dago internetik
-                    networkNoAvailableDialog();
-                    Log.d("INTERNET", "EZ dago");
+        if(networkAvailable()) {
+            // Badago Interneta
+                Log.d("INTERNET", "Badago");
+                haria();
+                if(bertsioaBegitu()){
+                    bertsioaEguneratu();
                 }
+        }else{
+            // Ez dago internetik
+                networkNoAvailableDialog();
+                Log.d("INTERNET", "EZ dago");
+            }
+        LinearLayout info = (LinearLayout) findViewById(R.id.menua_info);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Menua.this.openOptionsMenu();
+            }
+        });
+
 
     }
 
     public void onclickbtnberriak(@SuppressWarnings("UnusedParameters")View view){
-            if (networkAvailable()) {
-                startActivity(new Intent("berriak"));
-            }else{
-                Toast.makeText(Menua.this,"EZ zaude internetari konektatuta",Toast.LENGTH_LONG).show();
-            }
+        if (networkAvailable()) {
+            startActivity(new Intent("berriak"));
+        }else{
+            Toast.makeText(Menua.this,"EZ zaude internetari konektatuta",Toast.LENGTH_LONG).show();
+        }
     }
 	    
     public void onclickbtnagenda(@SuppressWarnings("UnusedParameters")View view){
@@ -237,15 +246,15 @@ public class Menua extends Activity {
 
     @Override
     public void onStart() {
-            super.onStart();
-            // The rest of your onStart() code.
-            EasyTracker.getInstance(this).activityStart(this);
+        super.onStart();
+        // The rest of your onStart() code.
+        EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
     public void onStop() {
-            super.onStop();
-            // The rest of your onStop() code.
-            EasyTracker.getInstance(this).activityStop(this);
+        super.onStop();
+        // The rest of your onStop() code.
+        EasyTracker.getInstance(this).activityStop(this);
     }
 }
