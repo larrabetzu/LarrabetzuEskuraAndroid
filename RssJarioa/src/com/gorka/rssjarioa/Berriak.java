@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -89,11 +88,15 @@ public class Berriak extends Activity {
             //linka nabigatzailean ireki
             lv.setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> av, View v, int position,
-                                        long id) {
+                public void onItemClick(AdapterView<?> av, View v, int position,long id) {
                     String link = arr_data.get(position).get_link();
-                    Intent browserAction = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                    startActivity(browserAction);
+                    //Intent browserAction = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                    //startActivity(browserAction);
+                    Intent intent=new Intent("webnavigation");
+                    Bundle bundle =new Bundle();
+                    bundle.putString("weblink", link);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             });
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -127,37 +130,36 @@ public class Berriak extends Activity {
                     String [] arr = arr_blogs.toArray(new String[i]);
                     String blogak ="";
                     try{
-                        for (String getblog : arr_blogs) {
+                        for (String getblog : arr_blogs)
                             if (getblog.contains("larrabetzutik.org")) {
                                 String data = db.blogazkendata("larrabetzutik");
                                 mblog.put("larrabetzutik", data);
-                                blogak=blogak+"'larrabetzutik',";
+                                blogak = blogak + "'larrabetzutik',";
 
                             } else if (getblog.contains("horibai.org")) {
                                 String data = db.blogazkendata("horibai");
                                 mblog.put("horibai", data);
-                                blogak=blogak+"'horibai',";
+                                blogak = blogak + "'horibai',";
 
                             } else if (getblog.contains("larrabetzukoeskola.org")) {
                                 String data = db.blogazkendata("eskola");
                                 mblog.put("eskola", data);
-                                blogak=blogak+"'eskola',";
+                                blogak = blogak + "'eskola',";
 
                             } else if (getblog.contains("gaztelumendi")) {
                                 String data = db.blogazkendata("gaztelumendi");
                                 mblog.put("gaztelumendi", data);
-                                blogak=blogak+"'gaztelumendi',";
+                                blogak = blogak + "'gaztelumendi',";
 
                             } else if (getblog.contains("larrabetzuko-udala")) {
                                 String data = db.blogazkendata("udala");
                                 mblog.put("udala", data);
-                                blogak=blogak+"'udala',";
-                            }else if (getblog.contains("literaturaeskola")) {
+                                blogak = blogak + "'udala',";
+                            } else if (getblog.contains("literaturaeskola")) {
                                 String data = db.blogazkendata("literaturaeskola");
                                 mblog.put("literaturaeskola", data);
-                                blogak=blogak+"'literaturaeskola',";
+                                blogak = blogak + "'literaturaeskola',";
                             }
-                        }
                     }catch (Exception ex){
                         Log.e("loaddata-Berriak",ex.toString());
                     }
