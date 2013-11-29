@@ -10,6 +10,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -49,6 +50,16 @@ public class WebNavigation extends Activity {
                     progressBar.setVisibility(View.GONE);
                 }
             }
+        });
+
+        browser.setWebViewClient(new WebViewClient()
+        {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url)
+            {
+                return false;
+            }
+
         });
     }
 
