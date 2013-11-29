@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/zuria"
+    android:paddingBottom="5sp"
+    android:paddingTop="5sp"
+    android:paddingLeft="5sp" >
+
+
+    <ImageView
+        android:id="@+id/layout_elkarteak_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/rsslogo"
+        />
+
+    <TextView
+        android:id="@+id/layout_elkarteak_tituloa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="25sp"
+        android:layout_toRightOf="@id/layout_elkarteak_logo"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/layout_elkarteak_email_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/email"
+        android:layout_below="@id/layout_elkarteak_tituloa"
+        android:layout_toRightOf="@id/layout_elkarteak_logo"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:id="@+id/layout_elkarteak_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_elkarteak_tituloa"
+        android:layout_toRightOf="@id/layout_elkarteak_email_logo"
+        android:text="Email"
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_alignParentTop="false"
+        android:layout_alignWithParentIfMissing="false" />
+
+    <ImageView
+        android:id="@+id/layout_elkarteak_web_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/web"
+        android:layout_below="@id/layout_elkarteak_tituloa"
+        android:layout_toRightOf="@id/layout_elkarteak_email"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:id="@+id/layout_elkarteak_web"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_elkarteak_tituloa"
+        android:layout_toRightOf="@id/layout_elkarteak_web_logo"
+        android:text="web"
+        android:padding="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+</RelativeLayout>

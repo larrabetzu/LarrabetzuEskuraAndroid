@@ -123,6 +123,9 @@ public class Ekintza extends Activity {
             case R.id.menu_alarma:
                 Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.menu_sortzaileak:
+                Toast.makeText(this,"sortzaileak",Toast.LENGTH_LONG).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

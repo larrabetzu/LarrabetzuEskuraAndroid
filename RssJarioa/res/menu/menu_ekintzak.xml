@@ -11,5 +11,9 @@
         android:title="Alarma"
         android:icon="@drawable/add_alarm_light"
         android:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/menu_sortzaileak"
+        android:title="Sotzaileak"
+        android:icon="@drawable/elkarteak_light"
+        android:showAsAction="ifRoom" />
 </menu>
