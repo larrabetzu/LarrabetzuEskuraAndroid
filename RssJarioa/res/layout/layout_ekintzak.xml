@@ -44,6 +44,7 @@
             android:layout_below="@id/ekintzak_tituloa_agenda"
             android:layout_toRightOf="@id/ekintzak_imageIconEvent"
             android:text="TextView"
+            android:padding="5dp"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <ImageView
@@ -62,6 +63,7 @@
             android:layout_below="@id/ekintzak_tituloa_agenda"
             android:layout_toRightOf="@id/ekintzak_imageIconPlace"
             android:text="TextView"
+            android:padding="5dp"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <ImageView

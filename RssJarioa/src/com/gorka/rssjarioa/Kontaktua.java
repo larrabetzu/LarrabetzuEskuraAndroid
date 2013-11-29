@@ -14,6 +14,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 public class Kontaktua extends Activity {
 
 	@Override
@@ -55,10 +57,24 @@ public class Kontaktua extends Activity {
 	        });
 	    }
 
-	public void onclicktwitter(View view){
+	public void onclicktwitter(@SuppressWarnings("UnusedParameters")View view){
             Intent browserAction = new Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/larrabetzu"));
             startActivity(browserAction);
 	}
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // The rest of your onStart() code.
+        EasyTracker.getInstance(this).activityStart(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // The rest of your onStop() code.
+        EasyTracker.getInstance(this).activityStop(this);
+    }
 	 
 }
 	    		

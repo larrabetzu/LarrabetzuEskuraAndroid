@@ -63,7 +63,7 @@
                 android:textSize="25sp"
                 />
            <Button
-                android:drawableLeft="@drawable/zerbitzuak"
+                android:drawableLeft="@drawable/web"
                 android:drawablePadding="35dp"
                 android:gravity="left"
                 android:id="@+id/btnzerbitzuak"
