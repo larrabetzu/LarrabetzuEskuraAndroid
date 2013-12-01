@@ -10,6 +10,10 @@ public class List_Sarrera {
     private int id;
     private int idImagen;
 
+    private String nor;
+    private String email;
+    private String web;
+
     public List_Sarrera( String tituloa,String egune, String ordue, String lekua,int id) {
 	    this.egune = egune;
 	    this.tituloa = tituloa; 
@@ -21,6 +25,13 @@ public class List_Sarrera {
     public List_Sarrera(String tituloa, String link, int idImagen) {
         this.tituloa = tituloa;
         this.link = link;
+        this.idImagen = idImagen;
+    }
+
+    public List_Sarrera(int idImagen,String nor, String email,String web ) {
+        this.nor = nor;
+        this.email = email;
+        this.web = web;
         this.idImagen = idImagen;
     }
 	
@@ -51,4 +62,17 @@ public class List_Sarrera {
     public int get_idImagen() {
         return idImagen;
     }
+
+    public String get_nor(){
+        return nor;
+    }
+
+    public String get_email(){
+        return email;
+    }
+
+    public String get_web(){
+        return web;
+    }
+
 }

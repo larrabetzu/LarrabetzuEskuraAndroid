@@ -62,7 +62,7 @@ public class DbEgokitua {
     static final String LINK_LINK = "link";
     static final String LINK_PUB_DATE = "blog_pub_date";
 
-	static final int DB_BERTSIOA = 5;
+	static final int DB_BERTSIOA = 6;
     static final String DB_IZENA = "NireDB";
     
     
@@ -590,6 +590,36 @@ public class DbEgokitua {
             Log.e("DbEgokitua-ekintzasortu", e.toString());
         }
         return zenbat;
+    }
+
+    public Cursor autorLortuDanak()
+    {
+        String query = "SELECT nor,email,webgunea FROM "+TAULA_autor;
+        Cursor c = db.rawQuery(query, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    public Cursor autorLortuId(int ekintza_id) throws SQLException
+    {
+        String query = "SELECT autor_id FROM "+TAULA_ekintza_sortzailea+" WHERE ekintza_id = '"+ekintza_id+"'";
+        Cursor c = db.rawQuery(query, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    public Cursor autorLortu(int id)
+    {
+        String query = "SELECT nor,email,webgunea FROM "+TAULA_autor+" WHERE id = '"+id+"'";
+        Cursor c = db.rawQuery(query, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
     }
 
 	public int azkenId() 

@@ -42,6 +42,7 @@ public class Ekintza extends Activity {
     TextView ekintza_deskribapena = null;
     TextView ekintza_link = null;
     Bitmap kartelabitmap = null;
+    int id= -1;
     private ProgressDialog progressDialog;
 
 
@@ -51,7 +52,6 @@ public class Ekintza extends Activity {
 
         db.zabaldu();
         Bundle bundle=getIntent().getExtras();
-        int id= 0;
         if (bundle != null) {
             id = bundle.getInt("posicion");
         }
@@ -124,7 +124,14 @@ public class Ekintza extends Activity {
                 Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_sortzaileak:
-                Toast.makeText(this,"sortzaileak",Toast.LENGTH_LONG).show();
+
+                if(id>0){
+                    Intent intent = new Intent("elkarteak");
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("ekintza_id", id);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
