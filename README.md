@@ -9,19 +9,7 @@ Larrabetzuko agenda digitala
 ![APP Home](https://github.com/ercillagorka/LarrabetzukoAgenda/blob/master/hobespenak.png?raw=true)
 
 
-
-Copyright (C) <2013>  <gorka ercilla>
-
 ==================
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    Hemen eskaintzen den edozein informazio kopiatu, banatu eta jendaurrean hedatzen ahal da, eta lan eratorriak egin daitezke, hurrengo baldintzak betetzen badira:
+    Aitortu — Lanaren kredituak aitortu behar dituzu, egileak edo baimendunak zehaztutako eran (baina ez aditzera emanez haien babesa duzunik edo haiek obraren erabilera hori babesten dutenik).
+    Partekatu baimen beraren arabera — Obra hau itxuraldatu edo bestelakotzen baduzu lan eratorri bat sortzeko, emaitza hori banatzerik izango duzu soilik baimen berberaz, antzeko baimen batez, edo harekin bateragarria den baimen batez.
