@@ -1,13 +1,18 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 
@@ -77,19 +82,56 @@ public class Elkarteak extends Activity {
                     if (nor != null) {
                         nor.setText(((List_Sarrera) entrada).get_nor());
                     }
-                    TextView email = (TextView) view.findViewById(R.id.layout_elkarteak_email);
-                    if (email != null) {
-                        email.setText(((List_Sarrera) entrada).get_email());
-                    }
-                    TextView web = (TextView) view.findViewById(R.id.layout_elkarteak_web);
-                    if (web != null) {
-                        web.setText(((List_Sarrera) entrada).get_web());
-                    }
-
                 }
             }
         });
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dialogWebEmail(position);
+            }
+        });
 
+    }
+
+    private void dialogWebEmail(final int position){
+        final CharSequence[] items = {"Email", "web"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Make your selection");
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                switch (item) {
+                    case 0:
+                        Log.i("email", arr_data.get(position).get_email());
+                        String[] to = { arr_data.get(position).get_email()};
+                        Intent itSend = new Intent(Intent.ACTION_SEND);
+                        itSend.putExtra(Intent.EXTRA_EMAIL,to);
+                        itSend.setType("message/rfc822");
+                        try {
+                            startActivity(Intent.createChooser(itSend, "Aukeratu e-posta bezeroa"));
+                        }catch (android.content.ActivityNotFoundException ex){
+                            Toast.makeText(Elkarteak.this, "Posta bezeroa ez dago instalatuta.", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case 1:
+                        String link = arr_data.get(position).get_web();
+                        Intent intent=new Intent("webnavigation");
+                        Bundle bundle =new Bundle();
+                        bundle.putString("weblink", link);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 

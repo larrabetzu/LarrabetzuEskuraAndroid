@@ -90,8 +90,6 @@ public class Berriak extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int position,long id) {
                     String link = arr_data.get(position).get_link();
-                    //Intent browserAction = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-                    //startActivity(browserAction);
                     Intent intent=new Intent("webnavigation");
                     Bundle bundle =new Bundle();
                     bundle.putString("weblink", link);

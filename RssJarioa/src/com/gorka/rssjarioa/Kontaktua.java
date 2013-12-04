@@ -41,7 +41,7 @@ public class Kontaktua extends Activity {
                     if(etBody.getText().toString().equals("") || etSubject.getText().toString().equals("")){
                         Toast.makeText(Kontaktua.this, "Testua eta gaia beteta egon behar dira", Toast.LENGTH_SHORT).show();
                     }else{
-                        String[] to = { "larrabetzueskura@gmail.com" };
+                        final String[] to = { "larrabetzueskura@gmail.com" };
                         itSend.putExtra(Intent.EXTRA_EMAIL, to);
                         itSend.putExtra(Intent.EXTRA_SUBJECT, etSubject.getText().toString());
                         itSend.putExtra(Intent.EXTRA_TEXT, etBody.getText()+" "+dana);
