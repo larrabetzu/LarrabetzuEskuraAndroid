@@ -2,7 +2,16 @@
 <resources>
 
     <string name="app_name">Larrabetzu</string>
-    <string name="title_activity_hobespenak">Hobespenak</string>
-    <string name="action_settings">Settings</string>
+    <string name="tituloa_activity_agenda">Agenda</string>
+    <string name="tituloa_activity_berriak">Eguneko Berriak</string>
+    <string name="tituloa_activity_elkarteak">Elkarteak</string>
+    <string name="tituloa_activity_ekintzak">Ekintzak</string>
+    <string name="tituloa_activity_eskura">Eskura</string>
+    <string name="tituloa_activity_hobespenak">Hobespenak</string>
+    <string name="tituloa_activity_kontaktua">Gugaz Kontaktatu</string>
+    <string name="tituloa_activity_menua">larrabetzu</string>
+    <string name="tituloa_activity_webnavigation">Web</string>
+    <string name="tituloa_activity_zerbitzuak">Zerbitzuak</string>
+
 
 </resources>

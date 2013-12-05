@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
@@ -31,7 +33,6 @@ public class Menua extends Activity {
 
 	DbEgokitua db=new DbEgokitua(this);
     boolean hariaEginda = false;
-    boolean bertsioZaharra = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,9 +46,7 @@ public class Menua extends Activity {
             // Badago Interneta
                 Log.d("INTERNET", "Badago");
                 haria();
-                if(bertsioaBegitu()){
-                    bertsioaEguneratu();
-                }
+                bertsioaBegitu();
         }else{
             // Ez dago internetik
                 networkNoAvailableDialog();
@@ -167,10 +166,11 @@ public class Menua extends Activity {
         }).start();
     }
 
-    private boolean bertsioaBegitu(){
+    private void bertsioaBegitu(){
         new Thread(new Runnable() {
             @Override
             public void run() {
+                boolean bertsiozaharra = false;
                 try {
                     URL url = new URL("http://37.139.15.79/Bertsioa/");
                     URLConnection uc = url.openConnection();
@@ -186,7 +186,7 @@ public class Menua extends Activity {
                         }
                         if(webversionCode>(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode)){
                             Log.e("bertsio","ezberdinak");
-                            bertsioZaharra = true;
+                            bertsiozaharra = true;
                         }
                     }
                     in.close();
@@ -195,10 +195,20 @@ public class Menua extends Activity {
                 } catch (Exception e) {
                     Log.e("Menua-bertsioaBegitu", e.toString());
                 }
+                Message msg = bertsioHandler.obtainMessage();
+                msg.obj = bertsiozaharra;
+                bertsioHandler.sendMessage(msg);
             }
         }).start();
-        return bertsioZaharra;
     }
+
+    private final Handler bertsioHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            if((Boolean)msg.obj){
+                bertsioaEguneratu();
+            }
+        }
+    };
 
     public boolean networkAvailable() {
         ConnectivityManager cm =
