@@ -120,9 +120,10 @@ public class Ekintza extends Activity {
             case R.id.menu_elkarbanatu:
                 elkarbanatu();
                 return true;
+            /**
             case R.id.menu_alarma:
                 Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
-                return true;
+                return true;**/
             case R.id.menu_sortzaileak:
 
                 if(id>0){

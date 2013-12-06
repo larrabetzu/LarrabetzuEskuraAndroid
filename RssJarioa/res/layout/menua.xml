@@ -62,6 +62,7 @@
                 android:text="Elkarteak"
                 android:textSize="25sp"
                 />
+            <!--
            <Button
                 android:drawableLeft="@drawable/about"
                 android:drawablePadding="35dp"
@@ -74,6 +75,7 @@
                 android:text="Zerbitzuak"
                 android:textSize="25sp"
                 />
+                -->
            </LinearLayout>
 
         <LinearLayout
