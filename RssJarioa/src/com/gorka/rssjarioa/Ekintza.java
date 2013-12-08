@@ -120,12 +120,12 @@ public class Ekintza extends Activity {
             case R.id.menu_elkarbanatu:
                 elkarbanatu();
                 return true;
-            /**
+
             case R.id.menu_alarma:
                 Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
-                return true;**/
-            case R.id.menu_sortzaileak:
+                return true;
 
+            case R.id.menu_sortzaileak:
                 if(id>0){
                     Intent intent = new Intent("elkarteak");
                     Bundle bundle = new Bundle();
@@ -203,7 +203,7 @@ public class Ekintza extends Activity {
     private void elkarbanatu(){
         String testua = ekintza_tituloa.getText()+"\n"+ekintza_egune.getText()+" "+ekintza_ordue.getText()+" @larrabetzu #eskura";
         // TODO if (testua.length()>120){   }
-        String title = "Aukeratu aplikazioa Ekintza elkarbanatzeko";
+        final String title = "Aukeratu aplikazioa Ekintza elkarbanatzeko";
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, testua );

@@ -97,7 +97,7 @@ public class Elkarteak extends Activity {
     private void dialogWebEmail(final int position){
         final CharSequence[] items = {"Email", "web"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Make your selection");
+        builder.setTitle("Aukeratu nahi dozuna");
         builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
