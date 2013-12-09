@@ -201,8 +201,11 @@ public class Ekintza extends Activity {
     }
 
     private void elkarbanatu(){
-        String testua = ekintza_tituloa.getText()+"\n"+ekintza_egune.getText()+" "+ekintza_ordue.getText()+" @larrabetzu #eskura";
-        // TODO if (testua.length()>120){   }
+        String tituloa = ekintza_tituloa.getText().toString();
+        if (tituloa.length()>76){
+            tituloa = tituloa.substring(0,73)+"...";
+        }
+        String testua = tituloa+"\n"+ekintza_hilea.getText()+ekintza_egune.getText()+", "+ekintza_ordue.getText()+"-etan @larrabetzu #eskura";
         final String title = "Aukeratu aplikazioa Ekintza elkarbanatzeko";
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
