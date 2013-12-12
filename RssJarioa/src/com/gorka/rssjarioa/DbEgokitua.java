@@ -719,9 +719,15 @@ public class DbEgokitua {
     {
             final Calendar ca = Calendar.getInstance();
             int mYear = ca.get(Calendar.YEAR);
-            int mMonth = ca.get(Calendar.MONTH)+1-2;   //urtarrila=0 ,bi kenduko dotzet orain dela bi hilabeteko data lortzeko
+            int mMonth = ca.get(Calendar.MONTH)+1;   //urtarrila=0
             int mDay = ca.get(Calendar.DAY_OF_MONTH);
             int mhour = ca.get(Calendar.HOUR_OF_DAY);
+            if(mMonth==1){
+                mYear = mYear-1;
+                mMonth = 12;
+            }else{
+                mMonth = mMonth-1;//bat kenduko dotzet pasadan hilabeteko data lortzeko
+            }
             String data = null;
             String oraindelahilebat = mYear+"-"+mMonth+"-"+mDay+" "+mhour+":00:00";//yyyy-MM-dd HH:mm:ss
 

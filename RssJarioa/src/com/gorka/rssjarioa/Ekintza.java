@@ -95,6 +95,21 @@ public class Ekintza extends Activity {
                 try {
                     Log.i("Kartela-url",url);
                     dowsnloadbitmap();
+                    /**kartela.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            final String title = "Aukeratu aplikazioa Kartela elkarbanatzeko";
+                            Intent sendIntent = new Intent();
+                            sendIntent.setAction(Intent.ACTION_SEND);
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+                            kartelabitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                            sendIntent.putExtra(Intent.EXTRA_STREAM, bytes.toByteArray());
+                            sendIntent.setType("image/jpeg");
+                            startActivity(Intent.createChooser(sendIntent, title));
+                            return false;
+                        }
+                    });**/
 
                 } catch (Exception e) {
                     Log.e("kartela",e.toString());
