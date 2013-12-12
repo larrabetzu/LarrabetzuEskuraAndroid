@@ -594,7 +594,7 @@ public class DbEgokitua {
 
     public Cursor autorLortuDanak()
     {
-        String query = "SELECT nor,email,webgunea FROM "+TAULA_autor;
+        String query = "SELECT nor,email,webgunea FROM "+TAULA_autor+" order by nor";
         Cursor c = db.rawQuery(query, null);
         if (c != null) {
             c.moveToFirst();

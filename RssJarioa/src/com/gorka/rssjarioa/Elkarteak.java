@@ -36,10 +36,24 @@ public class Elkarteak extends Activity {
         db.zabaldu();
         if(ekintza_id<0){
             try{
-                int logo = R.drawable.rsslogo;
                 Cursor cursor = db.autorLortuDanak();
                 do {
-                    arr_data.add(new List_Sarrera(logo, cursor.getString(0), cursor.getString(1), cursor.getString(2)));
+                    int logo = R.drawable.rsslogo;
+                    String izena = cursor.getString(0);
+                    if (izena.replace(" ","").equalsIgnoreCase("gurpide")) {
+                        logo = R.drawable.gurpide;
+                    }else if (izena.replace(" ","").equalsIgnoreCase("intxurretajaibatzordea")) {
+                        logo = R.drawable.intxurreta;
+                    }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoeskola")) {
+                        logo = R.drawable.eskola;
+                    }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoudala")) {
+                        logo = R.drawable.udala;
+                    }else if (izena.replace(" ","").equalsIgnoreCase("horibai")) {
+                        logo = R.drawable.horibai;
+                    }else if (izena.replace(" ","").equalsIgnoreCase("kukubel")) {
+                        logo = R.drawable.kukubel;
+                    }
+                    arr_data.add(new List_Sarrera(logo, izena, cursor.getString(1), cursor.getString(2)));
 
                 } while(cursor.moveToNext());
 
@@ -48,12 +62,26 @@ public class Elkarteak extends Activity {
             }
         }else {
             try{
-                int logo = R.drawable.rsslogo;
                 Cursor c = db.autorLortuId(ekintza_id);
                 do{
                     Cursor cautor = db.autorLortu(Integer.parseInt(c.getString(0)));
                     do {
-                        arr_data.add(new List_Sarrera(logo, cautor.getString(0), cautor.getString(1), cautor.getString(2)));
+                        int logo = R.drawable.rsslogo;
+                        String izena = cautor.getString(0);
+                        if (izena.replace(" ","").equalsIgnoreCase("gurpide")) {
+                            logo = R.drawable.gurpide;
+                        }else if (izena.replace(" ","").equalsIgnoreCase("intxurretajaibatzordea")) {
+                            logo = R.drawable.intxurreta;
+                        }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoeskola")) {
+                            logo = R.drawable.eskola;
+                        }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoudala")) {
+                            logo = R.drawable.udala;
+                        }else if (izena.replace(" ","").equalsIgnoreCase("horibai")) {
+                            logo = R.drawable.horibai;
+                        }else if (izena.replace(" ","").equalsIgnoreCase("kukubel")) {
+                            logo = R.drawable.kukubel;
+                        }
+                        arr_data.add(new List_Sarrera(logo, izena, cautor.getString(1), cautor.getString(2)));
 
                     } while(cautor.moveToNext());
                 }while (c.moveToNext());
@@ -91,7 +119,6 @@ public class Elkarteak extends Activity {
                 dialogWebEmail(position);
             }
         });
-
     }
 
     private void dialogWebEmail(final int position){
