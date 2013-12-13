@@ -39,21 +39,21 @@ public class Elkarteak extends Activity {
                 Cursor cursor = db.autorLortuDanak();
                 do {
                     int logo = R.drawable.rsslogo;
-                    String izena = cursor.getString(0);
-                    if (izena.replace(" ","").equalsIgnoreCase("gurpide")) {
+                    String izena = cursor.getString(0).replace(" ","");
+                    if (izena.equalsIgnoreCase("gurpide")) {
                         logo = R.drawable.gurpide;
-                    }else if (izena.replace(" ","").equalsIgnoreCase("intxurretajaibatzordea")) {
+                    }else if (izena.equalsIgnoreCase("intxurretajaibatzordea")) {
                         logo = R.drawable.intxurreta;
-                    }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoeskola")) {
+                    }else if (izena.equalsIgnoreCase("larrabetzukoeskola")) {
                         logo = R.drawable.eskola;
-                    }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoudala")) {
+                    }else if (izena.equalsIgnoreCase("larrabetzukoudala")) {
                         logo = R.drawable.udala;
-                    }else if (izena.replace(" ","").equalsIgnoreCase("horibai")) {
+                    }else if (izena.equalsIgnoreCase("horibai")) {
                         logo = R.drawable.horibai;
-                    }else if (izena.replace(" ","").equalsIgnoreCase("kukubel")) {
+                    }else if (izena.equalsIgnoreCase("kukubel")) {
                         logo = R.drawable.kukubel;
                     }
-                    arr_data.add(new List_Sarrera(logo, izena, cursor.getString(1), cursor.getString(2)));
+                    arr_data.add(new List_Sarrera(logo, cursor.getString(0), cursor.getString(1), cursor.getString(2)));
 
                 } while(cursor.moveToNext());
 
@@ -67,22 +67,21 @@ public class Elkarteak extends Activity {
                     Cursor cautor = db.autorLortu(Integer.parseInt(c.getString(0)));
                     do {
                         int logo = R.drawable.rsslogo;
-                        String izena = cautor.getString(0);
-                        if (izena.replace(" ","").equalsIgnoreCase("gurpide")) {
+                        String izena = cautor.getString(0).replace(" ","");
+                        if (izena.equalsIgnoreCase("gurpide")) {
                             logo = R.drawable.gurpide;
-                        }else if (izena.replace(" ","").equalsIgnoreCase("intxurretajaibatzordea")) {
+                        }else if (izena.equalsIgnoreCase("intxurretajaibatzordea")) {
                             logo = R.drawable.intxurreta;
-                        }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoeskola")) {
+                        }else if (izena.equalsIgnoreCase("larrabetzukoeskola")) {
                             logo = R.drawable.eskola;
-                        }else if (izena.replace(" ","").equalsIgnoreCase("larrabetzukoudala")) {
+                        }else if (izena.equalsIgnoreCase("larrabetzukoudala")) {
                             logo = R.drawable.udala;
-                        }else if (izena.replace(" ","").equalsIgnoreCase("horibai")) {
+                        }else if (izena.equalsIgnoreCase("horibai")) {
                             logo = R.drawable.horibai;
-                        }else if (izena.replace(" ","").equalsIgnoreCase("kukubel")) {
+                        }else if (izena.equalsIgnoreCase("kukubel")) {
                             logo = R.drawable.kukubel;
                         }
-                        arr_data.add(new List_Sarrera(logo, izena, cautor.getString(1), cautor.getString(2)));
-
+                        arr_data.add(new List_Sarrera(logo, cautor.getString(0), cautor.getString(1), cautor.getString(2)));
                     } while(cautor.moveToNext());
                 }while (c.moveToNext());
 
