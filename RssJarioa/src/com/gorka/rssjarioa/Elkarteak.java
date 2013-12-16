@@ -40,18 +40,34 @@ public class Elkarteak extends Activity {
                 do {
                     int logo = R.drawable.rsslogo;
                     String izena = cursor.getString(0).replace(" ","");
-                    if (izena.equalsIgnoreCase("gurpide")) {
+                    if (izena.equalsIgnoreCase("aretxabala")) {
+                        logo = R.drawable.aretxabala;
+                    }else if (izena.equalsIgnoreCase("arrekikili")) {
+                        logo = R.drawable.arrekikili;
+                    }else if (izena.equalsIgnoreCase("garmitxa")) {
+                        logo = R.drawable.garmitxa;
+                    }else if (izena.equalsIgnoreCase("gaztelumendiabesbatza")) {
+                        logo = R.drawable.gaztelumendiabesbatza;
+                    }else if (izena.equalsIgnoreCase("gureetxea")) {
+                        logo = R.drawable.guretxea;
+                    }else if (izena.equalsIgnoreCase("gurpide")) {
                         logo = R.drawable.gurpide;
                     }else if (izena.equalsIgnoreCase("intxurretajaibatzordea")) {
                         logo = R.drawable.intxurreta;
+                    }else if (izena.equalsIgnoreCase("itallenbertsoeskola")) {
+                        logo = R.drawable.itallen;
                     }else if (izena.equalsIgnoreCase("larrabetzukoeskola")) {
                         logo = R.drawable.eskola;
                     }else if (izena.equalsIgnoreCase("larrabetzukoudala")) {
                         logo = R.drawable.udala;
+                    }else if (izena.equalsIgnoreCase("literaturia")) {
+                        logo = R.drawable.literaturia;
                     }else if (izena.equalsIgnoreCase("horibai")) {
                         logo = R.drawable.horibai;
                     }else if (izena.equalsIgnoreCase("kukubel")) {
                         logo = R.drawable.kukubel;
+                    }else if (izena.equalsIgnoreCase("tantaztanta")) {
+                        logo = R.drawable.tantaztanta;
                     }
                     arr_data.add(new List_Sarrera(logo, cursor.getString(0), cursor.getString(1), cursor.getString(2)));
 
@@ -68,18 +84,34 @@ public class Elkarteak extends Activity {
                     do {
                         int logo = R.drawable.rsslogo;
                         String izena = cautor.getString(0).replace(" ","");
-                        if (izena.equalsIgnoreCase("gurpide")) {
+                        if (izena.equalsIgnoreCase("aretxabala")) {
+                            logo = R.drawable.aretxabala;
+                        }else if (izena.equalsIgnoreCase("arrekikili")) {
+                            logo = R.drawable.arrekikili;
+                        }else if (izena.equalsIgnoreCase("garmitxa")) {
+                            logo = R.drawable.garmitxa;
+                        }else if (izena.equalsIgnoreCase("gaztelumendiabesbatza")) {
+                            logo = R.drawable.gaztelumendiabesbatza;
+                        }else if (izena.equalsIgnoreCase("gureetxea")) {
+                            logo = R.drawable.guretxea;
+                        }else if (izena.equalsIgnoreCase("gurpide")) {
                             logo = R.drawable.gurpide;
                         }else if (izena.equalsIgnoreCase("intxurretajaibatzordea")) {
                             logo = R.drawable.intxurreta;
+                        }else if (izena.equalsIgnoreCase("itallenbertsoeskola")) {
+                            logo = R.drawable.itallen;
                         }else if (izena.equalsIgnoreCase("larrabetzukoeskola")) {
                             logo = R.drawable.eskola;
                         }else if (izena.equalsIgnoreCase("larrabetzukoudala")) {
                             logo = R.drawable.udala;
+                        }else if (izena.equalsIgnoreCase("literaturia")) {
+                            logo = R.drawable.literaturia;
                         }else if (izena.equalsIgnoreCase("horibai")) {
                             logo = R.drawable.horibai;
                         }else if (izena.equalsIgnoreCase("kukubel")) {
                             logo = R.drawable.kukubel;
+                        }else if (izena.equalsIgnoreCase("tantaztanta")) {
+                            logo = R.drawable.tantaztanta;
                         }
                         arr_data.add(new List_Sarrera(logo, cautor.getString(0), cautor.getString(1), cautor.getString(2)));
                     } while(cautor.moveToNext());
