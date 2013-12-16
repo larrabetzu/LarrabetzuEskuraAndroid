@@ -9,7 +9,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 public class Eskura extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nortzuk);
+        setContentView(R.layout.eskura);
     }
 
     @Override
