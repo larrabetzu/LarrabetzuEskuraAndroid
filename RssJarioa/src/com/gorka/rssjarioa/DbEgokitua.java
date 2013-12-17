@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class DbEgokitua {
     
@@ -751,13 +752,12 @@ public class DbEgokitua {
     {
             String w = "";
             try{
-
-                DateFormat dffrom = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+                DateFormat dffrom = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
                 DateFormat dfto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 java.util.Date day = dffrom.parse(date);
                 w = dfto.format(day);
             }catch (Exception e){
-                Log.e("data",e.toString());
+                Log.e("DbEgokitua-data",e.toString());
             }
 
             ContentValues initialValues = new ContentValues();

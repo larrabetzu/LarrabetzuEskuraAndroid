@@ -14,8 +14,8 @@
         android:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/menu_sortzaileak"
-        android:title="Sotzaileak"
+        android:id="@+id/menu_antolatzaileak"
+        android:title="Antolatzaileak"
         android:icon="@drawable/elkarteak_light"
         android:showAsAction="ifRoom" />
 </menu>

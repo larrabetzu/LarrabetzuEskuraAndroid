@@ -126,7 +126,7 @@ public class XMLParser {
                     }
                 }
             }catch (Exception e) {
-                Log.e("XML",e.toString());
+                Log.e("XMLParser",e.toString());
             }
             return entries;
 	}

@@ -3,17 +3,24 @@ package com.gorka.rssjarioa;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,8 +61,8 @@ public class Menua extends Activity {
         if(networkAvailable()) {
             // Badago Interneta
                 Log.d("INTERNET", "Badago");
-                haria();
                 bertsioaBegitu();
+                haria();
         }else{
             // Ez dago internetik
                 networkNoAvailableDialog();
@@ -68,8 +75,6 @@ public class Menua extends Activity {
                 Menua.this.openOptionsMenu();
             }
         });
-
-
     }
 
     public void onclickbtnberriak(@SuppressWarnings("UnusedParameters")View view){
@@ -179,34 +184,47 @@ public class Menua extends Activity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Log.e("hilo2", "on");
                 boolean bertsiozaharra = false;
-                try {
-                    URL url = new URL("http://37.139.15.79/Bertsioa/");
-                    URLConnection uc = url.openConnection();
-                    uc.connect();
-                    BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-                    String inputLine=in.readLine();
-                    if(inputLine != null ) {
-                        int webversionCode = 0;
-                        try{
-                            webversionCode = Integer.parseInt(inputLine);
-                        }catch (Exception ex){
-                            Log.e("Menua-bertsiobegitu",ex.toString());
+                final Calendar c = Calendar.getInstance();
+                int mWeek = c.get(Calendar.WEEK_OF_YEAR);
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(Menua.this);
+                if(mWeek>sharedPrefs.getInt("bertsioaBegituData",0)){
+                    try {
+                        URL url = new URL("http://37.139.15.79/Bertsioa/");
+                        URLConnection uc = url.openConnection();
+                        uc.connect();
+                        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+                        String inputLine=in.readLine();
+                        Log.e("",inputLine);
+                        if(inputLine != null ) {
+                            int webversionCode = 0;
+                            try{
+                                webversionCode = Integer.parseInt(inputLine);
+                            }catch (Exception ex){
+                                Log.e("Menua-bertsiobegitu",ex.toString());
+                            }
+                            if(webversionCode>(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode)){
+                                Log.e("bertsio","ezberdinak");
+                                bertsiozaharra = true;
+                            }else{
+                                Log.e("bertsio","berdinak");
+                            }
                         }
-                        if(webversionCode>(getPackageManager().getPackageInfo(getPackageName(), 0).versionCode)){
-                            Log.e("bertsio","ezberdinak");
-                            bertsiozaharra = true;
-                        }
+                        SharedPreferences.Editor editor = sharedPrefs.edit();
+                        editor.putInt("bertsioaBegituData",mWeek);
+                        editor.commit();
+                        in.close();
+                    }catch (FileNotFoundException e){
+                        Log.e("Menua-bertsioaBegitu","ezin da serbitzariarekin konektatu");
+                    } catch (Exception e) {
+                        Log.e("Menua-bertsioaBegitu", e.toString());
                     }
-                    in.close();
-                }catch (FileNotFoundException e){
-                    Log.e("Menua-bertsioaBegitu","ezin da serbitzariarekin konektatu");
-                } catch (Exception e) {
-                    Log.e("Menua-bertsioaBegitu", e.toString());
                 }
                 Message msg = bertsioHandler.obtainMessage();
                 msg.obj = bertsiozaharra;
                 bertsioHandler.sendMessage(msg);
+                Log.e("hilo2", "off");
             }
         }).start();
     }
@@ -214,7 +232,33 @@ public class Menua extends Activity {
     private final Handler bertsioHandler = new Handler() {
         public void handleMessage(Message msg) {
             if((Boolean)msg.obj){
-                bertsioaEguneratu();
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(Menua.this)
+                                .setSmallIcon(android.R.drawable.stat_sys_warning)
+                                .setLargeIcon((((BitmapDrawable) getResources().getDrawable(R.drawable.rsslogo)).getBitmap()))
+                                .setContentTitle("Aplikazioan eguneraketa bat dago")
+                                .setContentText("Eguneratu nahi dozu?")
+                                .setTicker("Eguneratu!");
+
+                Intent notIntent;
+                PendingIntent contIntent;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    try {
+                        notIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.gorka.rssjarioa"));
+                        contIntent = PendingIntent.getActivity(Menua.this, 0, notIntent, 0);
+                        mBuilder.setContentIntent(contIntent);
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        notIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id="+"com.gorka.rssjarioa"));
+                        contIntent = PendingIntent.getActivity(Menua.this, 0, notIntent, 0);
+                        mBuilder.setContentIntent(contIntent);
+                    }
+                }else {
+                    notIntent =  new Intent(Menua.this, Menua.class);
+                    contIntent = PendingIntent.getActivity(Menua.this, 0, notIntent, 0);
+                    mBuilder.setContentIntent(contIntent);
+                    bertsioaEguneratu();
+                }
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                mNotificationManager.notify(1 ,mBuilder.build());
             }
         }
     };

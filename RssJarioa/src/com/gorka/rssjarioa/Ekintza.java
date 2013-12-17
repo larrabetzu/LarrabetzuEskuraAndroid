@@ -140,7 +140,7 @@ public class Ekintza extends Activity {
                 Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
                 return true;
 
-            case R.id.menu_sortzaileak:
+            case R.id.menu_antolatzaileak:
                 if(id>0){
                     Intent intent = new Intent("elkarteak");
                     Bundle bundle = new Bundle();
