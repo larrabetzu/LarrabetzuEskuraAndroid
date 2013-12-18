@@ -4,5 +4,5 @@
         android:id="@+id/menu_elkarbanatu"
         android:title="Elkarbanatu"
         android:icon="@drawable/share_light"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="always" />
 </menu>

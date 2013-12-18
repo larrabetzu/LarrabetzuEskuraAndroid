@@ -189,7 +189,7 @@ public class Menua extends Activity {
                 final Calendar c = Calendar.getInstance();
                 int mWeek = c.get(Calendar.WEEK_OF_YEAR);
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(Menua.this);
-                if(mWeek>sharedPrefs.getInt("bertsioaBegituData",0)){
+                if(mWeek != sharedPrefs.getInt("bertsioaBegituData",0)){
                     try {
                         URL url = new URL("http://37.139.15.79/Bertsioa/");
                         URLConnection uc = url.openConnection();

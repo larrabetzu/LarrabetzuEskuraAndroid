@@ -135,11 +135,11 @@ public class Ekintza extends Activity {
             case R.id.menu_elkarbanatu:
                 elkarbanatu();
                 return true;
-
+/**
             case R.id.menu_alarma:
                 Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
                 return true;
-
+**/
             case R.id.menu_antolatzaileak:
                 if(id>0){
                     Intent intent = new Intent("elkarteak");
