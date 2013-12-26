@@ -11,9 +11,9 @@
         android:title="Kontaktua"
         android:icon="@drawable/email_light"
         android:showAsAction="never" />
-    <item
+ <!--   <item
         android:id="@+id/menu_nortzuk"
         android:title="Larrabetzu Eskura"
         android:icon="@drawable/phone_light"
-        android:showAsAction="never" />
+        android:showAsAction="never" />-->
 </menu>
