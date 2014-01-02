@@ -70,9 +70,7 @@ public class Elkarteak extends Activity {
                         logo = R.drawable.tantaztanta;
                     }
                     arr_data.add(new List_Sarrera(logo, cursor.getString(0), cursor.getString(1), cursor.getString(2)));
-
                 } while(cursor.moveToNext());
-
             }catch (Exception ex){
                 Log.e("arr_data-datubasetik-Elkarteak", ex.toString());
             }
@@ -116,15 +114,10 @@ public class Elkarteak extends Activity {
                         arr_data.add(new List_Sarrera(logo, cautor.getString(0), cautor.getString(1), cautor.getString(2)));
                     } while(cautor.moveToNext());
                 }while (c.moveToNext());
-
-
-
             }catch (Exception ex){
                 Log.e("arr_data-datubasetik-Elkarteak",ex.toString());
             }
         }
-
-
 
         db.zarratu();
 

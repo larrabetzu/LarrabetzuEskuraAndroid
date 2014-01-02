@@ -26,9 +26,9 @@ public class Kontaktua extends Activity {
 	        bidali.setOnClickListener(new OnClickListener() {                      
                 @Override
                 public void onClick(View v) {
-                    EditText etSubject = (EditText) findViewById(R.id.kontaktua_Gaia);
-                    EditText etBody = (EditText) findViewById(R.id.kontaktua_testua);
-                    CheckBox etBox = (CheckBox) findViewById(R.id.kontaktua_checkBox);
+                    final EditText etSubject = (EditText) findViewById(R.id.kontaktua_Gaia);
+                    final EditText etBody = (EditText) findViewById(R.id.kontaktua_testua);
+                    final CheckBox etBox = (CheckBox) findViewById(R.id.kontaktua_checkBox);
                     String dana = "";
                     if(etBox.isChecked()){
                         try {

@@ -48,7 +48,7 @@ public class Menua extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menua);
 
-        TextView bertsioa = (TextView) findViewById(R.id.menua_bertsioa);
+        final TextView bertsioa = (TextView) findViewById(R.id.menua_bertsioa);
         try {
             bertsioa.setText(getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
         } catch (PackageManager.NameNotFoundException e) {
@@ -68,7 +68,7 @@ public class Menua extends Activity {
                 networkNoAvailableDialog();
                 Log.d("INTERNET", "EZ dago");
             }
-        LinearLayout info = (LinearLayout) findViewById(R.id.menua_info);
+        final LinearLayout info = (LinearLayout) findViewById(R.id.menua_info);
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

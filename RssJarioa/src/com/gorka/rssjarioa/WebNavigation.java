@@ -25,7 +25,7 @@ public class WebNavigation extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.web_navigation);
 
-        Bundle bundle=getIntent().getExtras();
+        final Bundle bundle=getIntent().getExtras();
         String link = bundle.getString("weblink");
         Log.e("link",link);
         browser = (WebView) findViewById(R.id.webview);
