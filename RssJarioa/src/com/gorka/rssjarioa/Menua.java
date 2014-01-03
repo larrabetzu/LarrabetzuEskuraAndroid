@@ -30,6 +30,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.StandardExceptionParser;
+import com.google.analytics.tracking.android.Tracker;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -144,17 +147,26 @@ public class Menua extends Activity {
                     Log.i("numwebekitaldi",numwebekitaldi+"");
                     }catch (Exception e){
                     Log.e("eguneratu",e.toString());
+                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
+                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                            .getDescription(Thread.currentThread().getName(), e), false).build());
                 }
                 try{
                     db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), String.format("%02d",mhour));
                     }catch (Exception e){
                     Log.e("garbitu",e.toString());
+                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
+                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                            .getDescription(Thread.currentThread().getName(), e), false).build());
                 }
                 try{
                     numdbekitaldi = db.ekitaldikzenbat();
                     Log.i("numdbekitaldi",numdbekitaldi+"");
                 }catch (Exception e){
                     Log.e("ekitaldikzenbat",e.toString());
+                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
+                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                            .getDescription(Thread.currentThread().getName(), e), false).build());
                 }
                 if(numwebekitaldi<numdbekitaldi && numwebekitaldi!=0){
                     try {
@@ -164,6 +176,9 @@ public class Menua extends Activity {
                         db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), String.format("%02d",mhour));
                     }catch (Exception e){
                         Log.e("ekitaldiguztiakkendu",e.toString());
+                        Tracker myTracker = EasyTracker.getInstance(Menua.this);
+                        myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                                .getDescription(Thread.currentThread().getName(), e), false).build());
                     }
                 }
                 try {
@@ -171,6 +186,9 @@ public class Menua extends Activity {
                     Log.d("azkenID",id+"");
                     }catch (Exception e){
                     Log.e("azkenID",e.toString());
+                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
+                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                            .getDescription(Thread.currentThread().getName(), e), false).build());
                 }
                 db.zarratu();
                 Log.e("hilo1", "off");
@@ -217,8 +235,14 @@ public class Menua extends Activity {
                         in.close();
                     }catch (FileNotFoundException e){
                         Log.e("Menua-bertsioaBegitu","ezin da serbitzariarekin konektatu");
+                        Tracker myTracker = EasyTracker.getInstance(Menua.this);
+                        myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                                .getDescription(Thread.currentThread().getName(), e), false).build());
                     } catch (Exception e) {
                         Log.e("Menua-bertsioaBegitu", e.toString());
+                        Tracker myTracker = EasyTracker.getInstance(Menua.this);
+                        myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                                .getDescription(Thread.currentThread().getName(), e), false).build());
                     }
                 }
                 Message msg = bertsioHandler.obtainMessage();

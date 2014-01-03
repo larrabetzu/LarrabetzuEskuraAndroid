@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.StandardExceptionParser;
+import com.google.analytics.tracking.android.Tracker;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -176,6 +179,9 @@ public class Ekintza extends Activity {
                     kartelabitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
                 }catch (Exception e){
                     Log.e("Ekintza",e.toString());
+                    Tracker myTracker = EasyTracker.getInstance(Ekintza.this);
+                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Ekintza.this, null)
+                            .getDescription(Thread.currentThread().getName(), e), false).build());
                 }
                 Message msg = progressHandler.obtainMessage();
                 progressHandler.sendMessage(msg);

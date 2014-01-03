@@ -23,6 +23,8 @@ import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.StandardExceptionParser;
+import com.google.analytics.tracking.android.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -181,8 +183,11 @@ public class Berriak extends Activity {
                                 mblog.put("literaturaeskola", data);
                                 blogak = blogak + "'literaturaeskola',";
                             }
-                    }catch (Exception ex){
-                        Log.e("loaddata-Berriak",ex.toString());
+                    }catch (Exception e){
+                        Log.e("loaddata-Berriak",e.toString());
+                        Tracker myTracker = EasyTracker.getInstance(Berriak.this);
+                        myTracker.send(MapBuilder.createException(new StandardExceptionParser(Berriak.this, null)
+                                                        .getDescription(Thread.currentThread().getName(),e), false).build());
                     }
                     db.linkgarbitu(blogak.substring(0,blogak.length()-1));
                     XMLParser parser = new XMLParser(arr,post,mblog);
