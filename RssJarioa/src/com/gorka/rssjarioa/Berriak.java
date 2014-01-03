@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,6 +79,8 @@ public class Berriak extends Activity {
                         }
                     }
                 }
+                EasyTracker tracker = EasyTracker.getInstance(this);
+                tracker.send(MapBuilder.createEvent("Berriak","blogs numeroa","blogs numeroa" ,(long) arr_blogs.size()).build());
                 loadData();
                 Log.i("Arraylist", ""+arr_blogs.size());
             }catch (Exception ex) {
@@ -90,6 +93,26 @@ public class Berriak extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int position,long id) {
                     String link = arr_data.get(position).get_link();
+
+                    Log.e("link",link);
+                    String blog = "ez dafo";
+                    if (link.contains("larrabetzutik.org")) {
+                        blog = "larrabetzutik";
+                    }else if (link.contains("horibai.org")) {
+                        blog = "horibai";
+                    }else if (link.contains("larrabetzukoeskola.org")) {
+                        blog = "eskola";
+                    }else if (link.contains("gaztelumendi")) {
+                        blog = "gaztelumendi";
+                    }else if (link.contains("larrabetzuko-udala")) {
+                        blog = "udala";
+                    }else if (link.contains("literaturaeskola")) {
+                        blog = "literaturaeskola";
+                    }
+
+                    EasyTracker tracker = EasyTracker.getInstance(Berriak.this);
+                    tracker.send(MapBuilder.createEvent("web", "navigation", blog, (long) position).build());
+
                     Intent intent=new Intent("webnavigation");
                     Bundle bundle =new Bundle();
                     bundle.putString("weblink", link);
