@@ -32,6 +32,9 @@ import com.google.analytics.tracking.android.Tracker;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 
 public class Ekintza extends Activity {
 
@@ -48,6 +51,7 @@ public class Ekintza extends Activity {
     TextView ekintza_link = null;
     Bitmap kartelabitmap = null;
     int id= -1;
+    int hilea = 0;
     private ProgressDialog progressDialog;
 
 
@@ -74,7 +78,8 @@ public class Ekintza extends Activity {
         ekintza_link = (TextView)findViewById(R.id.ekintza_link);
 
         do{
-            ekintza_hilea.setText(hilea(Integer.parseInt(cursor.getString(1).substring(5,7))));
+            hilea = Integer.parseInt(cursor.getString(1).substring(5,7));
+            ekintza_hilea.setText(hilea());
             ekintza_tituloa.setText(cursor.getString(0));
             ekintza_egune.setText(cursor.getString(1).substring(8, 10));
             ekintza_ordue.setText(cursor.getString(1).substring(10, 16));
@@ -196,7 +201,7 @@ public class Ekintza extends Activity {
         }
     };
 
-    public String hilea (int hilea){
+    public String hilea (){
         String hileanizena = " ";
         switch (hilea){
             case 1: hileanizena="Urtarrilak"; break;
@@ -236,10 +241,23 @@ public class Ekintza extends Activity {
     }
 
     private void startalert(){
+        long denboradiferentzia = 0;
+        try{
+            final String ekitaldiegune = "2014-"+hilea+"-"+ekintza_egune.getText()+" "+ekintza_ordue.getText();
+            Log.i("ekitaldiegune",ekitaldiegune);
+            DateFormat formatoa = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            java.util.Date noz = formatoa.parse(ekitaldiegune , new ParsePosition(0));
+            denboradiferentzia = noz.getTime()-System.currentTimeMillis();
+            Log.i("denboradiferentzia",denboradiferentzia+"");
+        }catch (Exception e){
+            Log.e("ekitaldieguna",e.toString());
+        }
         Intent intent=new Intent(this, Alarma.class);
         PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
         AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+10000, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis()+10000, //denboradiferentzia
+                pendingIntent);
         Toast.makeText(this,"Ekitaldiaren alarma jarrita",Toast.LENGTH_SHORT).show();
     }
 

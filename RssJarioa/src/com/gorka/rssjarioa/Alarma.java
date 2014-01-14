@@ -19,7 +19,7 @@ public class Alarma extends BroadcastReceiver {
             Toast.makeText(context,"Alarma",Toast.LENGTH_LONG).show();
             Vibrator vibrator= (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             long[] vibra= {1000,1000,1000,1000,1000,1000};
-            vibrator.vibrate(vibra,5);
+            vibrator.vibrate(vibra,-1);
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(context, notification);
             r.play();
