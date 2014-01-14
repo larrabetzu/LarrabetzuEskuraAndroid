@@ -6,13 +6,11 @@
         android:title="Elkarbanatu"
         android:icon="@drawable/share_light"
         android:showAsAction="always" />
-<!--
     <item
         android:id="@+id/menu_alarma"
         android:title="Alarma"
         android:icon="@drawable/add_alarm_light"
         android:showAsAction="ifRoom" />
--->
     <item
         android:id="@+id/menu_antolatzaileak"
         android:title="Antolatzaileak"

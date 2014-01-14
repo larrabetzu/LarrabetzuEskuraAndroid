@@ -1,6 +1,8 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -138,11 +140,9 @@ public class Ekintza extends Activity {
             case R.id.menu_elkarbanatu:
                 elkarbanatu();
                 return true;
-/**
             case R.id.menu_alarma:
-                Toast.makeText(this,"alarma konfiguratuta",Toast.LENGTH_LONG).show();
+                startalert();
                 return true;
-**/
             case R.id.menu_antolatzaileak:
                 if(id>0){
                     Intent intent = new Intent("elkarteak");
@@ -234,6 +234,15 @@ public class Ekintza extends Activity {
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, title));
     }
+
+    private void startalert(){
+        Intent intent=new Intent(this, Alarma.class);
+        PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
+        AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+10000, pendingIntent);
+        Toast.makeText(this,"Ekitaldiaren alarma jarrita",Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
