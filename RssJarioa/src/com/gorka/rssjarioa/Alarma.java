@@ -15,6 +15,8 @@ public class Alarma extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
 
+        //TODO =>> NotificationCompat "Gogoratu XXXXXX ekitaldia dauela"
+
         try {
             Toast.makeText(context,"Alarma",Toast.LENGTH_LONG).show();
             Vibrator vibrator= (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);

@@ -241,24 +241,36 @@ public class Ekintza extends Activity {
     }
 
     private void startalert(){
-        long denboradiferentzia = 0;
-        try{
-            final String ekitaldiegune = "2014-"+hilea+"-"+ekintza_egune.getText()+" "+ekintza_ordue.getText();
-            Log.i("ekitaldiegune",ekitaldiegune);
-            DateFormat formatoa = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            java.util.Date noz = formatoa.parse(ekitaldiegune , new ParsePosition(0));
-            denboradiferentzia = noz.getTime()-System.currentTimeMillis();
-            Log.i("denboradiferentzia",denboradiferentzia+"");
-        }catch (Exception e){
-            Log.e("ekitaldieguna",e.toString());
+
+        EasyTracker tracker = EasyTracker.getInstance(this);
+        tracker.send(MapBuilder.createEvent("Ekintzak","alarma","alarma" ,(long) id).build());
+        db.zabaldu();
+        boolean aktibatuta = db.ekitaldiaAlarmaLortu(id);
+
+        if(aktibatuta){
+            Toast.makeText(this,"Ekitaldiaren alarma aktibatuta daukazu", Toast.LENGTH_SHORT).show();
+        }else{
+            long denboradiferentzia = 0;
+            try{
+                final String ekitaldiegune = "2014-"+hilea+"-"+ekintza_egune.getText()+" "+ekintza_ordue.getText();
+                Log.i("ekitaldiegune", ekitaldiegune);
+                DateFormat formatoa = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                java.util.Date noz = formatoa.parse(ekitaldiegune , new ParsePosition(0));
+                denboradiferentzia = noz.getTime()-System.currentTimeMillis();
+                Log.i("denboradiferentzia", denboradiferentzia + "");
+            }catch (Exception e){
+                Log.e("ekitaldieguna", e.toString());
+            }
+            Intent intent=new Intent(this, Alarma.class);
+            PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
+            AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + 10000, //denboradiferentzia
+                    pendingIntent);
+            Toast.makeText(this,"Ekitaldiaren alarma jarrita",Toast.LENGTH_SHORT).show();
+            db.ekitaldiaAlarmaAktualizatu(id);
         }
-        Intent intent=new Intent(this, Alarma.class);
-        PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
-        AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis()+10000, //denboradiferentzia
-                pendingIntent);
-        Toast.makeText(this,"Ekitaldiaren alarma jarrita",Toast.LENGTH_SHORT).show();
+        db.zarratu();
     }
 
     @Override

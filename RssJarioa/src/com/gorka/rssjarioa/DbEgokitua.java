@@ -716,6 +716,21 @@ public class DbEgokitua {
         }
         return c;
     }
+    public boolean ekitaldiaAlarmaLortu(int id) throws SQLException
+    {
+        boolean aktibatuta = false;
+        String query = "SELECT jakinarazpena_1 FROM "+TAULA_ekintza+" WHERE id = '"+id+"'";
+        Cursor c = db.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            do {aktibatuta = c.getInt(0)>0;
+            } while(c.moveToNext());
+        } return aktibatuta;
+    }
+    public void ekitaldiaAlarmaAktualizatu(int id) throws SQLException
+    {
+        db.execSQL("UPDATE "+TAULA_ekintza+" SET jakinarazpena_1 = true WHERE id = '"+id+"'");
+
+    }
     public String blogazkendata(String blog)
     {
             final Calendar ca = Calendar.getInstance();
