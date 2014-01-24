@@ -5,15 +5,15 @@
         android:id="@+id/menu_elkarbanatu"
         android:title="Elkarbanatu"
         android:icon="@drawable/share_light"
-        android:showAsAction="always" />
+        android:showAsAction="never" />
     <item
         android:id="@+id/menu_alarma"
         android:title="Alarma"
         android:icon="@drawable/add_alarm_light"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="never" />
     <item
         android:id="@+id/menu_antolatzaileak"
         android:title="Antolatzaileak"
         android:icon="@drawable/elkarteak_light"
-        android:showAsAction="always" />
+        android:showAsAction="never" />
 </menu>

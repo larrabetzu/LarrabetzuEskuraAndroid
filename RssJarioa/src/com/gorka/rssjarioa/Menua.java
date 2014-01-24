@@ -131,6 +131,8 @@ public class Menua extends Activity {
         new Thread(new Runnable(){
             @Override
             public void run() {
+                long time_start, time_end;
+                time_start = System.currentTimeMillis();
                 Log.e("hilo1", "on");
                 final Calendar c = Calendar.getInstance();
                 int mYear = c.get(Calendar.YEAR);
@@ -192,6 +194,9 @@ public class Menua extends Activity {
                 }
                 db.zarratu();
                 Log.e("hilo1", "off");
+                time_end = System.currentTimeMillis();
+                EasyTracker tracker = EasyTracker.getInstance(Menua.this);
+                tracker.send(MapBuilder.createTiming("Menua",(time_end - time_start), "haria", null).build());
                 hariaEginda = true;
             }
 

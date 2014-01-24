@@ -147,6 +147,8 @@ public class Berriak extends Activity {
             new Thread(new Runnable(){
                 @Override
                 public void run() {
+                    long time_start, time_end;
+                    time_start = System.currentTimeMillis();
                     db.zabaldu();
                     HashMap mblog = new HashMap();
                     int i = arr_blogs.size();
@@ -193,6 +195,9 @@ public class Berriak extends Activity {
                     XMLParser parser = new XMLParser(arr,post,mblog);
                     Message msg = progressHandler.obtainMessage();
                     msg.obj = parser.parse();
+                    time_end = System.currentTimeMillis();
+                    EasyTracker tracker = EasyTracker.getInstance(Berriak.this);
+                    tracker.send(MapBuilder.createTiming("Berriak",(time_end - time_start), "loadData", null).build());
                     progressHandler.sendMessage(msg);
                 }}).start();
     }

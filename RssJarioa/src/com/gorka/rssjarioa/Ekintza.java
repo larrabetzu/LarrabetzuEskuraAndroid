@@ -135,6 +135,8 @@ public class Ekintza extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        EasyTracker tracker = EasyTracker.getInstance(this);
+        tracker.send(MapBuilder.createEvent("Ekintzak","menua","menua" ,(long) id).build());
         getMenuInflater().inflate(R.menu.menu_ekintzak, menu);
         return true;
     }
