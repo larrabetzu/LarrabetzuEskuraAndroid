@@ -262,12 +262,15 @@ public class Ekintza extends Activity {
                 Log.i("denboradiferentzia", denboradiferentzia + "");
             }catch (Exception e){
                 Log.e("ekitaldieguna", e.toString());
+                Tracker myTracker = EasyTracker.getInstance(this);
+                myTracker.send(MapBuilder.createException(new StandardExceptionParser(this, null)
+                        .getDescription(Thread.currentThread().getName(),e), false).build());
             }
             Intent intent=new Intent(this, Alarma.class);
             PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
             AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP,
-                    System.currentTimeMillis() + 10000, //denboradiferentzia
+                    denboradiferentzia,
                     pendingIntent);
             Toast.makeText(this,"Ekitaldiaren alarma jarrita",Toast.LENGTH_SHORT).show();
             db.ekitaldiaAlarmaAktualizatu(id);
