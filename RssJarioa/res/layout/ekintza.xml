@@ -98,25 +98,35 @@
 
 
     </TableRow>
-    <TextView
-        android:id="@+id/ekintza_deskribapena"
-        android:text="bla balab alalalba babla galarodn lalala ala alal ala  a ala a."
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
-    <ImageView
-        android:id="@+id/ekintza_kartela"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="kartela" />
-    <TextView
-        android:id="@+id/ekintza_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/ekintza_deskribapena"
+                    android:text="bla balab alalalba babla galarodn lalala ala alal ala  a ala a."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"/>
+                <ImageView
+                    android:id="@+id/ekintza_kartela"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="kartela" />
+                <TextView
+                    android:id="@+id/ekintza_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    />
+                </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
