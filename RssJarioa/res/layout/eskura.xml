@@ -1,51 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/zuria"
-    android:padding="10dp"
+    android:layout_width="match_parent"
     >
 
 
-    <TextView
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        />
 
-    <TextView
-        android:text=""
-        android:layout_width="fill_parent"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        />
-    <TextView
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        />
-    <TextView
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        />
-    <TextView
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        />
-    <TextView
-        android:text=""
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        />
-
-
-</LinearLayout>
+        android:orientation="vertical"
+        android:background="@color/zuria"
+        android:padding="10dp"
+        >
+        <TextView
+            android:text="Zer da:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+        <TextView
+            android:text="Larrabetzu eskura, telefono mugikorretarako aplikazio bat da. Herriko informazioa eta ekitaldien agenda modu automatikoan eskaintzen ditu eskura. larrabetzu.net gunean."
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <TextView
+            android:text="Zertarako:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+        <TextView
+            android:text="Aplikazio honek eskura jartzen du gure herrian sortzen den informazio guztia. Informazio dinamikoa. Parte hartzera gonbidatzen zaitu, modu aktiboan."
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <TextView
+            android:text="Zelan erabiltzen da:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+        <TextView
+            android:text="Erraza da. Deskargatu ostean, zure mugikorreko pantailan Larrabetzu aplikazioaren irudia izango duzu, ostean klik egiten duzun bakoitzean herriko informazioa edo kultur ekitaldi guztien berri izango duzu."
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <TextView
+            android:text="Zelan parte hartu:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+        <TextView
+            android:text="Garrantzitsua da elkarteetako lagunek ere informazioa gehitzea aplikazioan, antolatzen den guztiaren berri emanez. Irudiak, deialdiak, orduak, lekua adieraziz."
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <TextView
+            android:text="Hurrengo geltokia:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+        <TextView
+            android:text="Aplikazioa garatzen eta hobetzen jarraitu nahi dugu. Horretarako app hau zenbat eta gehiago erabili, zenbat eta parte hartze handiagoa izan… hobeto jakingo dugu gure beharrizanen gainean, eta horren arabera berritu eta hobetu ahal izango dugu. Guztion eskura dago."
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+        <TextView
+            android:text="Garapena:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+        <TextView
+            android:text="2013ko urrian aurkeztu genuen sarean Eskura aplikazioa. Gorka Ercilla eta Patxi Gaztelumendiren artean sortu genuen lehen bertsioa. Aurrerantzean bertsio hobetuak eta irekiak egiten jarraitzea da gure asmoa; gehiago ikusi, ikasi eta berrituz."
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+    </LinearLayout>
+</ScrollView>

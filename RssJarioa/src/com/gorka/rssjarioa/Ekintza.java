@@ -185,10 +185,14 @@ public class Ekintza extends Activity {
                     }
                     kartelabitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
                 }catch (Exception e){
-                    Log.e("Ekintza",e.toString());
+                    Log.e("Ekintza-dowsnloadbitmap",e.toString());
                     Tracker myTracker = EasyTracker.getInstance(Ekintza.this);
                     myTracker.send(MapBuilder.createException(new StandardExceptionParser(Ekintza.this, null)
                             .getDescription(Thread.currentThread().getName(), e), false).build());
+                    Drawable myDrawable = getResources().getDrawable(R.drawable.warning);
+                    Bitmap anImage = ((BitmapDrawable) myDrawable).getBitmap();
+                    kartela.setImageBitmap(anImage);
+                    Toast.makeText(Ekintza.this,"Kartela ezin da deskargatu.", Toast.LENGTH_LONG).show();
                 }
                 Message msg = progressHandler.obtainMessage();
                 progressHandler.sendMessage(msg);

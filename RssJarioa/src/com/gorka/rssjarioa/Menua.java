@@ -119,9 +119,9 @@ public class Menua extends Activity {
             case R.id.menu_kontaktua:
                 startActivity(new Intent("kontaktua"));
                 return true;
-  /*          case R.id.menu_nortzuk:
+            case R.id.menu_nortzuk:
                 startActivity(new Intent("eskura"));
-                return true;*/
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
