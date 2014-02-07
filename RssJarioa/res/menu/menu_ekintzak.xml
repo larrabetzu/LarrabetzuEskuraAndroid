@@ -5,7 +5,7 @@
         android:id="@+id/menu_elkarbanatu"
         android:title="Elkarbanatu"
         android:icon="@drawable/share_light"
-        android:showAsAction="never" />
+        android:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_alarma"
         android:title="Alarma"
