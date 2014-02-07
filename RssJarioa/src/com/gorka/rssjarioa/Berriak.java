@@ -81,12 +81,16 @@ public class Berriak extends Activity {
                         }
                     }
                 }
-                EasyTracker tracker = EasyTracker.getInstance(this);
-                tracker.send(MapBuilder.createEvent("Berriak","blogs numeroa","blogs numeroa" ,(long) arr_blogs.size()).build());
-                loadData();
                 Log.i("Arraylist", ""+arr_blogs.size());
+                if(arr_blogs.size()<1){
+                    hobespenakjarri();
+                }else{
+                    EasyTracker tracker = EasyTracker.getInstance(this);
+                    tracker.send(MapBuilder.createEvent("Berriak","blogs numeroa","blogs numeroa" ,(long) arr_blogs.size()).build());
+                    loadData();
+                }
             }catch (Exception ex) {
-                eleccion();
+                hobespenakjarri();
                 Log.e("patapan", ex.getMessage());
             }
             ListView lv = (ListView) findViewById(R.id.berriak_lstData);
@@ -295,7 +299,7 @@ public class Berriak extends Activity {
         });
     }
 
-	public void eleccion(){
+	public void hobespenakjarri(){
 	        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
             alertbox.setTitle("Lehenengo zure hobespenak jarri behar dozuz");
 	        alertbox.setPositiveButton("Bai", new DialogInterface.OnClickListener() {
