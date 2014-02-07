@@ -105,22 +105,6 @@ public class Ekintza extends Activity {
                 try {
                     Log.i("Kartela-url",url);
                     dowsnloadbitmap();
-                    /**kartela.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            final String title = "Aukeratu aplikazioa Kartela elkarbanatzeko";
-                            Intent sendIntent = new Intent();
-                            sendIntent.setAction(Intent.ACTION_SEND);
-                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
-                            kartelabitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                            sendIntent.putExtra(Intent.EXTRA_STREAM, bytes.toByteArray());
-                            sendIntent.setType("image/jpeg");
-                            startActivity(Intent.createChooser(sendIntent, title));
-                            return false;
-                        }
-                    });**/
-
                 } catch (Exception e) {
                     Log.e("kartela",e.toString());
                 }
@@ -190,9 +174,7 @@ public class Ekintza extends Activity {
                     myTracker.send(MapBuilder.createException(new StandardExceptionParser(Ekintza.this, null)
                             .getDescription(Thread.currentThread().getName(), e), false).build());
                     Drawable myDrawable = getResources().getDrawable(R.drawable.warning);
-                    Bitmap anImage = ((BitmapDrawable) myDrawable).getBitmap();
-                    kartela.setImageBitmap(anImage);
-                    Toast.makeText(Ekintza.this,"Kartela ezin da deskargatu.", Toast.LENGTH_LONG).show();
+                    kartelabitmap = ((BitmapDrawable) myDrawable).getBitmap();
                 }
                 Message msg = progressHandler.obtainMessage();
                 progressHandler.sendMessage(msg);
@@ -203,7 +185,7 @@ public class Ekintza extends Activity {
         @SuppressWarnings("unchecked")
         public void handleMessage(Message msg) {
             kartela.setImageBitmap(kartelabitmap);
-                progressDialog.dismiss();
+            progressDialog.dismiss();
         }
     };
 
