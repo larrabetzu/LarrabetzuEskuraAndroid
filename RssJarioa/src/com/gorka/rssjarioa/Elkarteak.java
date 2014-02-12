@@ -2,9 +2,12 @@ package com.gorka.rssjarioa;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -180,12 +183,16 @@ public class Elkarteak extends Activity {
                         }
                         break;
                     case 1:
-                        String link = arr_data.get(position).get_web();
-                        Intent intent=new Intent("webnavigation");
-                        Bundle bundle =new Bundle();
-                        bundle.putString("weblink", link);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                        if(networkAvailable()){
+                            String link = arr_data.get(position).get_web();
+                            Intent intent=new Intent("webnavigation");
+                            Bundle bundle =new Bundle();
+                            bundle.putString("weblink", link);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(Elkarteak.this,"EZ zaude internetari konektatuta", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
             }
@@ -194,6 +201,17 @@ public class Elkarteak extends Activity {
         alert.show();
     }
 
+    public boolean networkAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }else{
+            Log.d("INTERNET", "EZ dago internetik");
+        }
+        return false;
+    }
 
     @Override
     public void onStart() {

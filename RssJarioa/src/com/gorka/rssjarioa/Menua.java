@@ -97,7 +97,11 @@ public class Menua extends Activity {
     }
 
     public void onclickbtnelkarteak(@SuppressWarnings("UnusedParameters")View view){
+        if(hariaEginda || !networkAvailable()){
             startActivity(new Intent("elkarteak"));
+        }else {
+            Toast.makeText(this,"zerbitzariarekin konektatzen",Toast.LENGTH_LONG).show();
+        }
     }
 
     public void onclickbtnzerbitzuak(@SuppressWarnings("UnusedParameters")View view){

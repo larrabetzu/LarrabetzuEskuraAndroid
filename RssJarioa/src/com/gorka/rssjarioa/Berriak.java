@@ -4,10 +4,13 @@ package com.gorka.rssjarioa;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
@@ -98,32 +102,35 @@ public class Berriak extends Activity {
             lv.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> av, View v, int position,long id) {
-                    String link = arr_data.get(position).get_link();
+                    if(networkAvailable()){
+                        String link = arr_data.get(position).get_link();
+                        Log.e("link",link);
+                        String blog = "ez dafo";
+                        if (link.contains("larrabetzutik.org")) {
+                            blog = "larrabetzutik";
+                        }else if (link.contains("horibai.org")) {
+                            blog = "horibai";
+                        }else if (link.contains("larrabetzukoeskola.org")) {
+                            blog = "eskola";
+                        }else if (link.contains("gaztelumendi")) {
+                            blog = "gaztelumendi";
+                        }else if (link.contains("larrabetzuko-udala")) {
+                            blog = "udala";
+                        }else if (link.contains("literaturaeskola")) {
+                            blog = "literaturaeskola";
+                        }
 
-                    Log.e("link",link);
-                    String blog = "ez dafo";
-                    if (link.contains("larrabetzutik.org")) {
-                        blog = "larrabetzutik";
-                    }else if (link.contains("horibai.org")) {
-                        blog = "horibai";
-                    }else if (link.contains("larrabetzukoeskola.org")) {
-                        blog = "eskola";
-                    }else if (link.contains("gaztelumendi")) {
-                        blog = "gaztelumendi";
-                    }else if (link.contains("larrabetzuko-udala")) {
-                        blog = "udala";
-                    }else if (link.contains("literaturaeskola")) {
-                        blog = "literaturaeskola";
+                        EasyTracker tracker = EasyTracker.getInstance(Berriak.this);
+                        tracker.send(MapBuilder.createEvent("web", "navigation", blog, (long) position).build());
+
+                        Intent intent=new Intent("webnavigation");
+                        Bundle bundle =new Bundle();
+                        bundle.putString("weblink", link);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(Berriak.this, "EZ zaude internetari konektatuta", Toast.LENGTH_SHORT).show();
                     }
-
-                    EasyTracker tracker = EasyTracker.getInstance(Berriak.this);
-                    tracker.send(MapBuilder.createEvent("web", "navigation", blog, (long) position).build());
-
-                    Intent intent=new Intent("webnavigation");
-                    Bundle bundle =new Bundle();
-                    bundle.putString("weblink", link);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
                 }
             });
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -297,6 +304,18 @@ public class Berriak extends Activity {
                 }
             }
         });
+    }
+
+    public boolean networkAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }else{
+            Log.d("INTERNET", "EZ dago internetik");
+        }
+        return false;
     }
 
 	public void hobespenakjarri(){
