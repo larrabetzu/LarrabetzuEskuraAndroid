@@ -10,7 +10,7 @@
 		   android:entryValues="@array/codipost" 
 		   android:defaultValue="4"/>
 	</PreferenceCategory>
-	<PreferenceCategory android:title="Aukeratu blogak (gutxiago karga azkarrago)">
+	<PreferenceCategory android:title="Aukeratu blogak (gutxi karga azkarrago)">
 	 	<CheckBoxPreference
 	        android:key="1"
 	        android:title="Larrabetzutik"
@@ -30,5 +30,8 @@
         <CheckBoxPreference
             android:key="6"
             android:title="Literatura eskola" />
+        <CheckBoxPreference
+            android:key="7"
+            android:title="Larrabetzu zero zabor" />
     </PreferenceCategory>
 </PreferenceScreen>

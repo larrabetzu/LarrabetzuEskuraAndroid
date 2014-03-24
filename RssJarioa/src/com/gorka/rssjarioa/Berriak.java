@@ -54,7 +54,7 @@ public class Berriak extends Activity {
             try {
                 this.post =Integer.parseInt(sharedPrefs.getString("post","Null"));
                 arr_blogs.clear();
-                for (int i = 1; i <= 6; i++) {
+                for (int i = 1; i <= 7; i++) {
                     boolean posi=sharedPrefs.getBoolean(""+i, false);
                     if (posi) {
                         switch (i) {
@@ -81,6 +81,10 @@ public class Berriak extends Activity {
                         case 6:
                             arr_blogs.add("http://www.literaturaeskola.org/?feed=rss2");
                             Log.i("array-Berriak", "http://www.literaturaeskola.org/?feed=rss2");
+                            break;
+                        case 7:
+                            arr_blogs.add("http://larrabetzuzerozabor.org/index.php/eu/bloga?format=feed&type=rss");
+                            Log.i("array-Berriak", "http://larrabetzuzerozabor.org/index.php/eu/bloga?format=feed&type=rss");
                             break;
                         }
                     }
@@ -118,6 +122,8 @@ public class Berriak extends Activity {
                             blog = "udala";
                         }else if (link.contains("literaturaeskola")) {
                             blog = "literaturaeskola";
+                        }else if (link.contains("larrabetzuzerozabor")) {
+                            blog = "larrabetzuzerozabor";
                         }
 
                         EasyTracker tracker = EasyTracker.getInstance(Berriak.this);
@@ -191,10 +197,16 @@ public class Berriak extends Activity {
                                 String data = db.blogazkendata("udala");
                                 mblog.put("udala", data);
                                 blogak = blogak + "'udala',";
+
                             } else if (getblog.contains("literaturaeskola")) {
                                 String data = db.blogazkendata("literaturaeskola");
                                 mblog.put("literaturaeskola", data);
                                 blogak = blogak + "'literaturaeskola',";
+
+                            }else if (getblog.contains("larrabetzuzerozabor")) {
+                                String data = db.blogazkendata("larrabetzuzerozabor");
+                                mblog.put("larrabetzuzerozabor", data);
+                                blogak = blogak + "'larrabetzuzerozabor',";
                             }
                     }catch (Exception e){
                         Log.e("loaddata-Berriak",e.toString());
@@ -246,6 +258,8 @@ public class Berriak extends Activity {
                     blog = "udala";
                 }else if (aData.get("L").contains("literaturaeskola")) {
                     blog = "literaturaeskola";
+                }else if (aData.get("L").contains("larrabetzuzerozabor")) {
+                    blog = "larrabetzuzerozabor";
                 }
                 if (blog!=null){
                     db.linkjarri(blog,aData.get("T"),aData.get("L"),aData.get("D"));
@@ -276,6 +290,8 @@ public class Berriak extends Activity {
                         logo = R.drawable.udala;
                     }else if (s.equals("literaturaeskola")) {
                         logo = R.drawable.literatura;
+                    }else if (s.equals("larrabetzuzerozabor")) {
+                        logo = R.drawable.larrabetzuzerozabor;
                     }
                 }
                 arr_data.add(new List_Sarrera(cursor.getString(1), cursor.getString(2), logo));

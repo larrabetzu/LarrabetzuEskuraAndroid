@@ -76,6 +76,9 @@ public class XMLParser {
 
                     }else if (BlogUrl.toString().contains("literaturaeskola")){
                         blog = "literaturaeskola";
+
+                    }else if (BlogUrl.toString().contains("larrabetzuzerozabor")){
+                        blog = "larrabetzuzerozabor";
                     }
                     try{
                         String prueba = mblog.get(blog).toString();
