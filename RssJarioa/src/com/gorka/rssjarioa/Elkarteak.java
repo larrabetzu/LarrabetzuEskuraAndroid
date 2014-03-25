@@ -56,6 +56,8 @@ public class Elkarteak extends Activity {
                         logo = R.drawable.gaztelumendiabesbatza;
                     }else if (izena.equalsIgnoreCase("gureetxea")) {
                         logo = R.drawable.guretxea;
+                    }else if (izena.equalsIgnoreCase("gureeskudago")) {
+                        logo = R.drawable.gureeskudago;
                     }else if (izena.equalsIgnoreCase("gurpide")) {
                         logo = R.drawable.gurpide;
                     }else if (izena.equalsIgnoreCase("intxurretajaibatzordea")) {
@@ -74,6 +76,8 @@ public class Elkarteak extends Activity {
                         logo = R.drawable.kukubel;
                     }else if (izena.equalsIgnoreCase("tantaztanta")) {
                         logo = R.drawable.tantaztanta;
+                    }else if (izena.equalsIgnoreCase("larrabetzuzerozabor")) {
+                        logo = R.drawable.larrabetzuzerozabor;
                     }
                     arr_data.add(new List_Sarrera(logo, cursor.getString(0), cursor.getString(1), cursor.getString(2)));
                 } while(cursor.moveToNext());
@@ -101,6 +105,8 @@ public class Elkarteak extends Activity {
                             logo = R.drawable.gaztelumendiabesbatza;
                         }else if (izena.equalsIgnoreCase("gureetxea")) {
                             logo = R.drawable.guretxea;
+                        }else if (izena.equalsIgnoreCase("gureeskudago")) {
+                            logo = R.drawable.gureeskudago;
                         }else if (izena.equalsIgnoreCase("gurpide")) {
                             logo = R.drawable.gurpide;
                         }else if (izena.equalsIgnoreCase("intxurretajaibatzordea")) {
@@ -119,6 +125,8 @@ public class Elkarteak extends Activity {
                             logo = R.drawable.kukubel;
                         }else if (izena.equalsIgnoreCase("tantaztanta")) {
                             logo = R.drawable.tantaztanta;
+                        }else if (izena.equalsIgnoreCase("larrabetzuzerozabor")) {
+                            logo = R.drawable.larrabetzuzerozabor;
                         }
                         arr_data.add(new List_Sarrera(logo, cautor.getString(0), cautor.getString(1), cautor.getString(2)));
                     } while(cautor.moveToNext());
