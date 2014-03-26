@@ -33,6 +33,8 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.StandardExceptionParser;
 import com.google.analytics.tracking.android.Tracker;
+import com.parse.Parse;
+import com.parse.PushService;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -50,6 +52,8 @@ public class Menua extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menua);
+        Parse.initialize(this, "uucnk4RbZSP3o41Ntzp9Ju6o3i99ENAJqPsZYOsB", "ABhgQKHR1NNNmXqVxslL2HI1jYQNKu948MZnPapr");
+        PushService.setDefaultPushCallback(this, Menua.class);
 
         final TextView bertsioa = (TextView) findViewById(R.id.menua_bertsioa);
         try {
