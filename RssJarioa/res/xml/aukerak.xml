@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Post Kantidadea">
+    <PreferenceCategory android:title="Berriak">
 	    <ListPreference
 		   android:key="post"
 		   android:title="Zenbat Post Blog Bakoitzeko"
@@ -10,28 +10,55 @@
 		   android:entryValues="@array/codipost" 
 		   android:defaultValue="4"/>
 	</PreferenceCategory>
-	<PreferenceCategory android:title="Aukeratu blogak (gutxi karga azkarrago)">
-	 	<CheckBoxPreference
-	        android:key="1"
-	        android:title="Larrabetzutik"
-	        android:defaultValue="true" />
-	 	<CheckBoxPreference
-	        android:key="2"
-	        android:title="Hori bai" />
-	 	<CheckBoxPreference
-	        android:key="3"
-	        android:title="Eskola" />
-	 	<CheckBoxPreference
-	        android:key="4"
-	        android:title="iPtx" />
-        <CheckBoxPreference
-            android:key="5"
-            android:title="Udala" />
-        <CheckBoxPreference
-            android:key="6"
-            android:title="Literatura eskola" />
-        <CheckBoxPreference
-            android:key="7"
-            android:title="Larrabetzu zero zabor" />
+    <PreferenceScreen
+        android:title="Aukeratzeko blogak"
+        android:persistent="false">
+        <PreferenceCategory android:title="gutxi karga azkarrago">
+            <CheckBoxPreference
+                android:key="1"
+                android:title="Larrabetzutik"
+                android:defaultValue="true" />
+            <CheckBoxPreference
+                android:key="2"
+                android:title="Hori bai" />
+            <CheckBoxPreference
+                android:key="3"
+                android:title="Eskola" />
+            <CheckBoxPreference
+                android:key="4"
+                android:title="iPtx" />
+            <CheckBoxPreference
+                android:key="5"
+                android:title="Udala" />
+            <CheckBoxPreference
+                android:key="6"
+                android:title="Literatura eskola" />
+            <CheckBoxPreference
+                android:key="7"
+                android:title="Larrabetzu zero zabor" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+    <PreferenceCategory  android:title="Abisuak">
+        <PreferenceScreen
+            android:title="Abisuak aukeran"
+            android:persistent="false">
+            <CheckBoxPreference
+                android:key="11"
+                android:title="Kultura"
+                android:defaultValue="false" />
+            <CheckBoxPreference
+                android:key="12"
+                android:title="Kirola"
+                android:defaultValue="false" />
+            <CheckBoxPreference
+                android:key="13"
+                android:title="Udal gaiak"
+                android:defaultValue="false" />
+            <CheckBoxPreference
+                android:key="14"
+                android:title="Albisteak"
+                android:defaultValue="false" />
+        </PreferenceScreen>
+
     </PreferenceCategory>
 </PreferenceScreen>

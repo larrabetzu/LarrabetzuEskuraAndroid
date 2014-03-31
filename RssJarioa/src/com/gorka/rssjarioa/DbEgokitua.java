@@ -63,7 +63,7 @@ public class DbEgokitua {
     static final String LINK_LINK = "link";
     static final String LINK_PUB_DATE = "blog_pub_date";
 
-	static final int DB_BERTSIOA = 10;
+	static final int DB_BERTSIOA = 11;
     static final String DB_IZENA = "NireDB";
     
     
@@ -375,17 +375,16 @@ public class DbEgokitua {
 
     public  DbEgokitua zabaldu() throws SQLException
     {
+        try{
             db = DBHelper.getWritableDatabase();
-            try{
-
-                if (db != null) {
-                    Cursor cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
-                    cursor.close();
-                }
-            }catch (Exception ex){
-                Log.e("zabaldu",ex.toString());
+            if (db != null) {
+                Cursor cursor = db.rawQuery("PRAGMA journal_mode = OFF;", null);
+                cursor.close();
             }
-            return this;
+        }catch (Exception ex){
+            Log.e("zabaldu",ex.toString());
+        }
+        return this;
     }
 
     public void zarratu()
