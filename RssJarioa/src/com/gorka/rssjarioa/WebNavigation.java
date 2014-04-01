@@ -102,7 +102,6 @@ public class WebNavigation extends Activity {
         super.onStop();
         // The rest of your onStop() code.
         EasyTracker.getInstance(this).activityStop(this);
-        Log.e("web", "onStop");
         finish();
     }
 }

@@ -48,9 +48,15 @@ public class Berriak extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.berriak);
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.berriak);
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        long seconds = System.currentTimeMillis();
+        Log.e("seconds"," "+seconds);
+        Log.e("prefere"," "+sharedPrefs.getLong("berriakaktualizatutakomilisegundoa",0));
+        if(seconds > (sharedPrefs.getLong("berriakaktualizatutakomilisegundoa",0)+300000)){
+            Log.e("actualizatu","");
             try {
                 this.post =Integer.parseInt(sharedPrefs.getString("post","Null"));
                 arr_blogs.clear();
@@ -58,34 +64,34 @@ public class Berriak extends Activity {
                     boolean posi=sharedPrefs.getBoolean(""+i, false);
                     if (posi) {
                         switch (i) {
-                        case 1:
-                            arr_blogs.add("http://www.larrabetzutik.org/feed/");
+                            case 1:
+                                arr_blogs.add("http://www.larrabetzutik.org/feed/");
                                 Log.i("array-Berriak", "http://larrabetzutik.org/feed/");
-                            break;
-                        case 2:
-                            arr_blogs.add("http://www.horibai.org/feed/");
+                                break;
+                            case 2:
+                                arr_blogs.add("http://www.horibai.org/feed/");
                                 Log.i("array-Berriak", "http://horibai.org/feed/");
-                            break;
-                        case 3:
-                            arr_blogs.add("http://www.larrabetzukoeskola.org/feed/");
+                                break;
+                            case 3:
+                                arr_blogs.add("http://www.larrabetzukoeskola.org/feed/");
                                 Log.i("array-Berriak", "http://www.larrabetzukoeskola.org/feed/");
-                            break;
-                        case 4:
-                            arr_blogs.add("http://gaztelumendi.tumblr.com/rss");
+                                break;
+                            case 4:
+                                arr_blogs.add("http://gaztelumendi.tumblr.com/rss");
                                 Log.i("array-Berriak", "http://gaztelumendi.tumblr.com/rss");
-                            break;
-                        case 5:
-                            arr_blogs.add("http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
-                            Log.i("array-Berriak", "http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
-                            break;
-                        case 6:
-                            arr_blogs.add("http://www.literaturaeskola.org/?feed=rss2");
-                            Log.i("array-Berriak", "http://www.literaturaeskola.org/?feed=rss2");
-                            break;
-                        case 7:
-                            arr_blogs.add("http://larrabetzuzerozabor.org/index.php/eu/bloga?format=feed&type=rss");
-                            Log.i("array-Berriak", "http://larrabetzuzerozabor.org/index.php/eu/bloga?format=feed&type=rss");
-                            break;
+                                break;
+                            case 5:
+                                arr_blogs.add("http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
+                                Log.i("array-Berriak", "http://www.larrabetzuko-udala.com/_layouts/feed.aspx?xsl=1&web=%2Feu-ES&page=80690b0d-69fd-4e54-901d-309ace29e156&wp=e062f3df-e82b-4a0f-9365-2aefefa7a8a5");
+                                break;
+                            case 6:
+                                arr_blogs.add("http://www.literaturaeskola.org/?feed=rss2");
+                                Log.i("array-Berriak", "http://www.literaturaeskola.org/?feed=rss2");
+                                break;
+                            case 7:
+                                arr_blogs.add("http://larrabetzuzerozabor.org/index.php/eu/bloga?format=feed&type=rss");
+                                Log.i("array-Berriak", "http://larrabetzuzerozabor.org/index.php/eu/bloga?format=feed&type=rss");
+                                break;
                         }
                     }
                 }
@@ -96,12 +102,20 @@ public class Berriak extends Activity {
                     EasyTracker tracker = EasyTracker.getInstance(this);
                     tracker.send(MapBuilder.createEvent("Berriak","blogs numeroa","blogs numeroa" ,(long) arr_blogs.size()).build());
                     loadData();
+                    SharedPreferences.Editor editor = sharedPrefs.edit();
+                    editor.putLong("berriakaktualizatutakomilisegundoa",seconds);
+                    editor.commit();
                 }
             }catch (Exception ex) {
                 hobespenakjarri();
                 Log.e("patapan", ex.getMessage());
             }
-            ListView lv = (ListView) findViewById(R.id.berriak_lstData);
+        }else{
+            db.zabaldu();
+            getDataDb();
+            lvsortu();
+        }
+        ListView lv = (ListView) findViewById(R.id.berriak_lstData);
             //linka nabigatzailean ireki
             lv.setOnItemClickListener(new OnItemClickListener() {
                 @Override
@@ -109,7 +123,7 @@ public class Berriak extends Activity {
                     if(networkAvailable()){
                         String link = arr_data.get(position).get_link();
                         Log.e("link",link);
-                        String blog = "ez dafo";
+                        String blog = "ez dago";
                         if (link.contains("larrabetzutik.org")) {
                             blog = "larrabetzutik";
                         }else if (link.contains("horibai.org")) {

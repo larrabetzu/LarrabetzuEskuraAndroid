@@ -11,7 +11,7 @@ import com.parse.PushService;
 import java.util.List;
 
 public class Hobespenak extends PreferenceActivity {
-    SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
 
     Boolean kultura;
     Boolean kirola;
@@ -22,6 +22,7 @@ public class Hobespenak extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.aukerak);
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
             kultura= sharedPrefs.getBoolean("11", false);
             kirola= sharedPrefs.getBoolean("12", false);
@@ -46,6 +47,7 @@ public class Hobespenak extends PreferenceActivity {
         // The rest of your onStop() code.
         EasyTracker.getInstance(this).activityStop(this);
 
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (kultura != (sharedPrefs.getBoolean("11", false))){
             if(!kultura){
                 PushService.subscribe(this, "kultura", Menua.class);
