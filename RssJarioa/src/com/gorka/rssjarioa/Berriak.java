@@ -53,8 +53,6 @@ public class Berriak extends Activity {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         long seconds = System.currentTimeMillis();
-        Log.e("seconds"," "+seconds);
-        Log.e("prefere"," "+sharedPrefs.getLong("berriakaktualizatutakomilisegundoa",0));
         if(seconds > (sharedPrefs.getLong("berriakaktualizatutakomilisegundoa",0)+300000)){
             Log.e("actualizatu","");
             try {
@@ -181,7 +179,7 @@ public class Berriak extends Activity {
                     long time_start, time_end;
                     time_start = System.currentTimeMillis();
                     db.zabaldu();
-                    HashMap mblog = new HashMap();
+                    HashMap <String, String> mblog = new HashMap <String, String>();
                     int i = arr_blogs.size();
                     String [] arr = arr_blogs.toArray(new String[i]);
                     String blogak ="";
