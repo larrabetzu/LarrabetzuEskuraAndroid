@@ -1,0 +1,108 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/zuria"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/menua_andramari"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:scaleType="center"
+            android:paddingBottom="5sp"
+            android:background="@drawable/andramari"
+            android:orientation="vertical"
+            android:layout_weight="40"
+            >
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15sp"
+            android:layout_weight="2"
+            >
+           <Button
+                android:drawableLeft="@drawable/paste"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnberriak"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnberriak"
+                android:paddingLeft="50dp"
+                android:text="Berriak"
+                android:textSize="35sp"
+                  />
+           <Button
+                android:drawableLeft="@drawable/today"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnagenda"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnagenda"
+                android:paddingLeft="50dp"
+                android:text="Agenda"
+                android:textSize="35sp"
+                  />
+           <Button
+                android:drawableLeft="@drawable/elkarteak"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnelkarteak"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnelkarteak"
+                android:paddingLeft="50dp"
+                android:text="Elkarteak"
+                android:textSize="35sp"
+                />
+            <!--
+           <Button
+                android:drawableLeft="@drawable/about"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnzerbitzuak"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnzerbitzuak"
+                android:paddingLeft="50dp"
+                android:text="Zerbitzuak"
+                android:textSize="35sp"
+                />
+                -->
+           </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menua_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15sp"
+            android:layout_weight="2"
+            >
+
+             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Larrabetzu Eskura"
+                 android:textSize="20sp"
+                 />
+
+            <TextView
+                android:id="@+id/menua_bertsioa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                 />
+        </LinearLayout>
+
+
+</LinearLayout>

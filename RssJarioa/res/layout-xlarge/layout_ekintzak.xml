@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/zuria"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" >
+
+        <TextView
+            android:id="@+id/ekintzak_egune"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="22"
+            android:textSize="60sp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            />
+
+        <TextView
+            android:id="@+id/ekintzak_tituloa_agenda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="25sp"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="30sp"
+            />
+
+        <ImageView
+            android:id="@+id/ekintzak_imageIconEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@id/ekintzak_tituloa_agenda"
+            android:layout_toRightOf="@id/ekintzak_egune"
+            android:src="@drawable/event"
+            />
+
+        <TextView
+            android:id="@+id/ekintzak_ordue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ekintzak_tituloa_agenda"
+            android:layout_toRightOf="@id/ekintzak_imageIconEvent"
+            android:text="TextView"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="20sp"
+            />
+
+        <ImageView
+            android:id="@+id/ekintzak_imageIconPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@id/ekintzak_tituloa_agenda"
+            android:layout_toRightOf="@id/ekintzak_ordue"
+            android:src="@drawable/place"
+            />
+
+        <TextView
+            android:id="@+id/ekintzak_lekua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ekintzak_tituloa_agenda"
+            android:layout_toRightOf="@id/ekintzak_imageIconPlace"
+            android:text="TextView"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="20sp"
+            />
+
+        <ImageView
+            android:id="@+id/ekintzak_imageIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/navigation_next_item" />
+
+
+</RelativeLayout>

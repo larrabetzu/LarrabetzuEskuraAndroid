@@ -1,0 +1,90 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/zuria"
+    android:padding="20dp" >
+    
+
+    <TableRow
+        android:id="@+id/kontaktua_tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/kontaktua_txtgaia"
+            android:layout_weight="0.1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gaia: "
+            android:textSize="30sp"
+            android:layout_gravity="bottom"/>
+
+        <EditText
+            android:id="@+id/kontaktua_Gaia"
+            android:layout_weight="9"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:textSize="20sp" >
+           
+       </EditText>
+
+            
+   </TableRow>
+   
+    <EditText
+        android:id="@+id/kontaktua_testua"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:lines="5"
+        android:width="300dp" 
+        android:hint="Hemen idatzitako Testua garatzaileari bidaliko da....."
+
+        />
+
+    <CheckBox
+        android:id="@+id/kontaktua_checkBox"
+        android:checked="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sistemaren Informazioa Gehitu"
+        android:padding="10dp"
+        android:gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+
+        />
+
+    
+    <TableRow
+        android:id="@+id/kontaktua_tableRow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:paddingBottom="10dp">
+    
+    
+    <Button
+        android:id="@+id/kontaktua_deitu"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onclicktwitter"
+        android:text="twitterren"
+        android:textSize="20sp"
+            />
+    
+    <Button
+        android:id="@+id/kontaktua_bidali"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Emaila bidali"
+        android:layout_gravity="right"
+        android:textSize="20sp"
+        />
+
+     </TableRow>
+</LinearLayout>

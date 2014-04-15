@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/zuria"
+    android:paddingBottom="15sp"
+    android:paddingTop="15sp"
+    android:paddingLeft="15sp" >
+
+
+    <ImageView
+        android:id="@+id/layout_elkarteak_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/rsslogo"
+        />
+
+    <TextView
+        android:id="@+id/layout_elkarteak_nor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="60dp"
+        android:layout_toRightOf="@+id/layout_elkarteak_logo"
+        android:text="Intxurreta jai batzordea"
+        android:layout_centerVertical="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        />
+
+    <ImageView
+        android:id="@+id/layout_elkarteak_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="20dp"
+        android:src="@drawable/about" />
+
+</RelativeLayout>
