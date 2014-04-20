@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grisa"
+        android:padding="15dp"
+        >
+
+        <TextView
+            android:id="@+id/layout_menupush_zenbatpush"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Zenbat Abisu:"
+            />
+        <TextView
+            android:id="@+id/layout_menupush_pushnumeroa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text=""
+            />
+
+        </LinearLayout>
+
+    <EditText
+        android:id="@+id/layout_menupush_tituloa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tituloa"
+        android:layout_margin="10dp"
+        />
+
+    <EditText
+        android:id="@+id/layout_menupush_testua"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="testua"
+        android:layout_margin="10dp"
+        />
+
+
+    <CheckBox
+        android:id="@+id/layout_menupush_urlcheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="URL-rik?"
+        android:layout_margin="10dp"
+        />
+
+    <EditText
+        android:id="@+id/layout_menupush_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:ems="10"
+        android:hint="Url nahi badozu"
+        android:visibility="gone"
+        android:layout_margin="10dp"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        >
+
+        <Button
+            android:id="@+id/layout_menupush_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="logout"
+            android:layout_margin="10dp"
+            />
+
+        <Button
+            android:id="@+id/layout_menupush_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ok"
+            android:layout_margin="10dp"
+            />
+
+        </LinearLayout>
+
+
+</LinearLayout>

@@ -34,6 +34,7 @@ import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.StandardExceptionParser;
 import com.google.analytics.tracking.android.Tracker;
 import com.parse.ParseAnalytics;
+import com.parse.ParseUser;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -80,6 +81,21 @@ public class Menua extends Activity {
                 Menua.this.openOptionsMenu();
             }
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && networkAvailable()) {
+            info.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    if (currentUser != null) {
+                        startActivity(new Intent("menupush"));
+                    } else {
+                        startActivity(new Intent("loginpush"));
+                    }
+                    return true;
+                }
+            });
+        }
+
     }
 
     public void onclickbtnberriak(@SuppressWarnings("UnusedParameters")View view){

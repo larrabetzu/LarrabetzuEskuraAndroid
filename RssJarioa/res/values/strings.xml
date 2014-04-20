@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Activityen Tituloak-->
     <string name="app_name">Larrabetzu</string>
     <string name="tituloa_activity_agenda">Agenda</string>
     <string name="tituloa_activity_berriak">Eguneko Berriak</string>
@@ -12,6 +13,14 @@
     <string name="tituloa_activity_menua">larrabetzu</string>
     <string name="tituloa_activity_webnavigation">Web</string>
     <string name="tituloa_activity_zerbitzuak">Zerbitzuak</string>
+    <string name="tituloa_activity_loginpush">Login</string>
+    <string name="tituloa_activity_menupush">Informazioa</string>
+
+    <!-- Edit Text-->
+    <string name="text_erabiltzailea">Erabiltzailea</string>
+    <string name="text_pasahitza">Pasahitza</string>
+
+    <!-- Button Text-->
 
 
 </resources>
