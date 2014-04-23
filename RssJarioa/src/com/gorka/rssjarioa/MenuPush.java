@@ -39,77 +39,88 @@ public class MenuPush extends Activity {
         final Button pushlogout = (Button) findViewById(R.id.layout_menupush_logout);
         final Button pushok = (Button) findViewById(R.id.layout_menupush_ok);
 
+        String user = ParseUser.getCurrentUser().getUsername();
+        String myID = null;
+        if(user.equals("kirola")){
+            myID= "2tysKzUkpK";
+        }else if(user.equals("udalgaiak")){
+            myID= "UMn1Zcjc2M";
+        }else if(user.equals("kultura")){
+            myID= "UGPMY5gCGJ";
+        }else if(user.equals("albisteak")){
+            myID= "ZOE82MnQr3";
+        }
 
-        String myID = "2tysKzUkpK";
-        ParseQuery query = new ParseQuery("PushNumeroa");
-        query.getInBackground(myID, new GetCallback() {
-            @Override
-            public void done(ParseObject object, ParseException e) {
-                if (object != null) {
-                    parseObject = object;
-                    zenbatPushNumeroa = object.getInt("numeroa");
-                    Log.e("zenbatPushNumeroa", ""+ zenbatPushNumeroa);
-                    pushnumeroa.setText(Integer.toString(zenbatPushNumeroa));
-                } else {
-                    Toast.makeText(MenuPush.this, "Beranduago saiatu", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-
-        urlrik.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (urlrik.isChecked()) {
-                    pushurl.setVisibility(View.VISIBLE);
-                } else {
-                    pushurl.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        pushok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pushtituloa.getText().toString().isEmpty() || pushtestua.getText().toString().isEmpty()) {
-                    Toast.makeText(MenuPush.this, "Tituloa eta testua beteak egon behar dira", Toast.LENGTH_SHORT).show();
-                }else{
-                    if (urlrik.isChecked() && pushurl.getText().toString().isEmpty()){
-                        Toast.makeText(MenuPush.this, "Url-a beteta egon behar da", Toast.LENGTH_SHORT).show();
-                    }else {
-                        JSONObject data = null;
-                        try {
-                            data = new JSONObject("{ \"action\": \"com.gorka.rssjarioa.UPDATE_STATUS\"," +
-                                    " \"tit\": \""+pushtituloa.getText().toString()+"\", " +
-                                    "\"tex\": \""+pushtestua.getText().toString()+"\", " +
-                                    "\"url\": \""+pushurl.getText().toString()+"\" }");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        ParsePush push = new ParsePush();
-                        push.setChannel(ParseUser.getCurrentUser().getUsername());
-                        push.setData(data);
-                        push.sendInBackground();
-
-                        pushtituloa.setText("");
-                        pushtestua.setText("");
-                        pushurl.setText("");
-                        parseObject.increment("numeroa",-1);
-                        parseObject.saveInBackground();
-                        finish();
+        if(myID != null) {
+            ParseQuery query = new ParseQuery("PushNumeroa");
+            query.getInBackground(myID, new GetCallback() {
+                @Override
+                public void done(ParseObject object, ParseException e) {
+                    if (object != null) {
+                        parseObject = object;
+                        zenbatPushNumeroa = object.getInt("numeroa");
+                        Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
+                        pushnumeroa.setText(Integer.toString(zenbatPushNumeroa));
+                    } else {
+                        Toast.makeText(MenuPush.this, "Beranduago saiatu", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-        });
+            });
 
-        pushlogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseUser.logOut();
-                finish();
-            }
-        });
+
+            urlrik.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (urlrik.isChecked()) {
+                        pushurl.setVisibility(View.VISIBLE);
+                    } else {
+                        pushurl.setVisibility(View.GONE);
+                    }
+                }
+            });
+
+            pushok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (pushtituloa.getText().toString().isEmpty() || pushtestua.getText().toString().isEmpty()) {
+                        Toast.makeText(MenuPush.this, "Tituloa eta testua beteak egon behar dira", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (urlrik.isChecked() && pushurl.getText().toString().isEmpty()) {
+                            Toast.makeText(MenuPush.this, "Url-a beteta egon behar da", Toast.LENGTH_SHORT).show();
+                        } else {
+                            JSONObject data = null;
+                            try {
+                                data = new JSONObject("{ \"action\": \"com.gorka.rssjarioa.UPDATE_STATUS\"," +
+                                        " \"tit\": \"" + pushtituloa.getText().toString() + "\", " +
+                                        "\"tex\": \"" + pushtestua.getText().toString() + "\", " +
+                                        "\"url\": \"" + pushurl.getText().toString() + "\" }");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ParsePush push = new ParsePush();
+                            push.setChannel(ParseUser.getCurrentUser().getUsername());
+                            push.setData(data);
+                            push.sendInBackground();
+
+                            pushtituloa.setText("");
+                            pushtestua.setText("");
+                            pushurl.setText("");
+                            parseObject.increment("numeroa", -1);
+                            parseObject.saveInBackground();
+                            finish();
+                        }
+                    }
+                }
+            });
+
+            pushlogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ParseUser.logOut();
+                    finish();
+                }
+            });
+        }
     }
 
 
