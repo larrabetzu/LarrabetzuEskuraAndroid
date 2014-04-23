@@ -1,6 +1,7 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.parse.GetCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
@@ -20,6 +21,8 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class MenuPush extends Activity {
 
@@ -39,54 +42,46 @@ public class MenuPush extends Activity {
         final Button pushlogout = (Button) findViewById(R.id.layout_menupush_logout);
         final Button pushok = (Button) findViewById(R.id.layout_menupush_ok);
 
-        String user = ParseUser.getCurrentUser().getUsername();
-        String myID = null;
-        if(user.equals("kirola")){
-            myID= "2tysKzUkpK";
-        }else if(user.equals("udalgaiak")){
-            myID= "UMn1Zcjc2M";
-        }else if(user.equals("kultura")){
-            myID= "UGPMY5gCGJ";
-        }else if(user.equals("albisteak")){
-            myID= "ZOE82MnQr3";
-        }
+        final String user = ParseUser.getCurrentUser().getUsername();
 
-        if(myID != null) {
-            ParseQuery query = new ParseQuery("PushNumeroa");
-            query.getInBackground(myID, new GetCallback() {
-                @Override
-                public void done(ParseObject object, ParseException e) {
-                    if (object != null) {
-                        parseObject = object;
-                        zenbatPushNumeroa = object.getInt("numeroa");
-                        Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
-                        pushnumeroa.setText(Integer.toString(zenbatPushNumeroa));
-                    } else {
-                        Toast.makeText(MenuPush.this, "Beranduago saiatu", Toast.LENGTH_SHORT).show();
-                    }
+        ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
+        uery.whereEqualTo("channel", user);
+        uery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {
+                    parseObject = scoreList.get(0);
+                    parseObject.getObjectId();
+                    zenbatPushNumeroa = parseObject.getInt("numeroa");
+                    Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
+                    pushnumeroa.setText(Integer.toString(zenbatPushNumeroa));
+                } else {
+                    Log.e("score", "Error: " + e.getMessage());
+                    showToast(MenuPush.this, "Beranduago saiatu");
                 }
-            });
+            }
+        });
 
 
-            urlrik.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (urlrik.isChecked()) {
-                        pushurl.setVisibility(View.VISIBLE);
-                    } else {
-                        pushurl.setVisibility(View.GONE);
-                    }
+        urlrik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (urlrik.isChecked()) {
+                    pushurl.setVisibility(View.VISIBLE);
+                } else {
+                    pushurl.setVisibility(View.GONE);
                 }
-            });
+            }
+        });
 
-            pushok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        pushok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(zenbatPushNumeroa>=1){
                     if (pushtituloa.getText().toString().isEmpty() || pushtestua.getText().toString().isEmpty()) {
-                        Toast.makeText(MenuPush.this, "Tituloa eta testua beteak egon behar dira", Toast.LENGTH_SHORT).show();
+                        showToast(MenuPush.this, "Tituloa eta testua beteak egon behar dira");
                     } else {
                         if (urlrik.isChecked() && pushurl.getText().toString().isEmpty()) {
-                            Toast.makeText(MenuPush.this, "Url-a beteta egon behar da", Toast.LENGTH_SHORT).show();
+                            showToast(MenuPush.this, "Url-a beteta egon behar da");
                         } else {
                             JSONObject data = null;
                             try {
@@ -110,17 +105,22 @@ public class MenuPush extends Activity {
                             finish();
                         }
                     }
+                }else {
+                    showToast(MenuPush.this, "Abisu gustiak amaitu doduz");
                 }
-            });
+            }
+        });
 
-            pushlogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ParseUser.logOut();
-                    finish();
-                }
-            });
-        }
+        pushlogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                finish();
+            }
+        });
+    }
+    public void showToast(Context context, String text){
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
 
