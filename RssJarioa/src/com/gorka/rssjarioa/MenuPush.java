@@ -2,6 +2,7 @@ package com.gorka.rssjarioa;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -10,13 +11,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MenuPush extends Activity {
+
+    int zenbatPushNumeroa ;
+    ParseObject parseObject;
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_push);
@@ -30,12 +40,30 @@ public class MenuPush extends Activity {
         final Button pushok = (Button) findViewById(R.id.layout_menupush_ok);
 
 
+        String myID = "2tysKzUkpK";
+        ParseQuery query = new ParseQuery("PushNumeroa");
+        query.getInBackground(myID, new GetCallback() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if (object != null) {
+                    parseObject = object;
+                    zenbatPushNumeroa = object.getInt("numeroa");
+                    Log.e("zenbatPushNumeroa", ""+ zenbatPushNumeroa);
+                    pushnumeroa.setText(Integer.toString(zenbatPushNumeroa));
+                } else {
+                    Toast.makeText(MenuPush.this, "Beranduago saiatu", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
         urlrik.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(urlrik.isChecked()){
+                if (urlrik.isChecked()) {
                     pushurl.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     pushurl.setVisibility(View.GONE);
                 }
             }
@@ -63,9 +91,12 @@ public class MenuPush extends Activity {
                         push.setChannel(ParseUser.getCurrentUser().getUsername());
                         push.setData(data);
                         push.sendInBackground();
+
                         pushtituloa.setText("");
                         pushtestua.setText("");
                         pushurl.setText("");
+                        parseObject.increment("numeroa",-1);
+                        parseObject.saveInBackground();
                         finish();
                     }
                 }
@@ -79,7 +110,6 @@ public class MenuPush extends Activity {
                 finish();
             }
         });
-
     }
 
 

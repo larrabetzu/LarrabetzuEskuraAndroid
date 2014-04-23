@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,7 +83,7 @@ public class Menua extends Activity {
                 Menua.this.openOptionsMenu();
             }
         });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH && networkAvailable()) {
+        if (networkAvailable()) {
             info.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -92,6 +94,30 @@ public class Menua extends Activity {
                         startActivity(new Intent("loginpush"));
                     }
                     return true;
+                }
+            });
+        }
+        if(isTablet(this)){
+            Button btnHobespenak = (Button)findViewById(R.id.btnhobespenak);
+            Button btnKontaktua = (Button)findViewById(R.id.btnkontaktua);
+            Button btnNortzuk = (Button)findViewById(R.id.btnnortzuk);
+
+            btnHobespenak.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent("hobespenak"));
+                }
+            });
+            btnKontaktua.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent("kontaktua"));
+                }
+            });
+            btnNortzuk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent("eskura"));
                 }
             });
         }
@@ -128,24 +154,30 @@ public class Menua extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_menua, menu);
+        if (!isTablet(this)){
+            getMenuInflater().inflate(R.menu.menu_menua, menu);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_hobespenak:
-                startActivity(new Intent("hobespenak"));
-                return true;
-            case R.id.menu_kontaktua:
-                startActivity(new Intent("kontaktua"));
-                return true;
-            case R.id.menu_nortzuk:
-                startActivity(new Intent("eskura"));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (!isTablet(this)){
+            switch (item.getItemId()) {
+                case R.id.menu_hobespenak:
+                    startActivity(new Intent("hobespenak"));
+                    return true;
+                case R.id.menu_kontaktua:
+                    startActivity(new Intent("kontaktua"));
+                    return true;
+                case R.id.menu_nortzuk:
+                    startActivity(new Intent("eskura"));
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }else {
+            return false;
         }
     }
 
@@ -356,6 +388,11 @@ public class Menua extends Activity {
             }
         });
         alertbox.show();
+    }
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @Override

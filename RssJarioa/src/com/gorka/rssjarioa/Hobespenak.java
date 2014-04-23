@@ -2,13 +2,14 @@ package com.gorka.rssjarioa;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.parse.PushService;
 
-import java.util.List;
 
 public class Hobespenak extends PreferenceActivity {
 
@@ -22,6 +23,28 @@ public class Hobespenak extends PreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.aukerak);
+
+            final PreferenceScreen pab = (PreferenceScreen) findPreference("preferencescreen_aukeratzeko_blogak");
+            pab.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    PreferenceScreen a = (PreferenceScreen) preference;
+                    a.getDialog().getWindow().setBackgroundDrawableResource(R.color.zuria);
+                    return false;
+                }
+            });
+            final PreferenceScreen paa = (PreferenceScreen) findPreference("preferencescreen_abisuak_aukeran");
+            paa.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    PreferenceScreen a = (PreferenceScreen) preference;
+                    a.getDialog().getWindow().setBackgroundDrawableResource(R.color.zuria);
+                    return false;
+                }
+            });
+
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
             kultura= sharedPrefs.getBoolean("11", false);
@@ -29,10 +52,7 @@ public class Hobespenak extends PreferenceActivity {
             udalgaiak=sharedPrefs.getBoolean("13", false);
             albisteak= sharedPrefs.getBoolean("14", false);
         }
-        @Override
-        public void onBuildHeaders(List<Header> target) {
-            // loadHeadersFromResource(R.xml.preference_headers, target);
-        }
+
 
     @Override
     public void onStart() {

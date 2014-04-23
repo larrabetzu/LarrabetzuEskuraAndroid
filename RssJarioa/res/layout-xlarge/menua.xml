@@ -62,7 +62,46 @@
                 android:text="Elkarteak"
                 android:textSize="35sp"
                 />
+
+            <Button
+                android:id="@+id/btnhobespenak"
+                android:drawableLeft="@drawable/settings"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnelkarteak"
+                android:paddingLeft="50dp"
+                android:layout_marginTop="20dp"
+                android:text="Hobespenak"
+                android:textSize="30sp"
+                />
+            <Button
+                android:id="@+id/btnkontaktua"
+                android:drawableLeft="@drawable/email"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnelkarteak"
+                android:paddingLeft="50dp"
+                android:text="Kontaktua"
+                android:textSize="30sp"
+                />
+            <Button
+                android:id="@+id/btnnortzuk"
+                android:drawableLeft="@drawable/phone"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtnelkarteak"
+                android:paddingLeft="50dp"
+                android:text="Nortzuk Gara"
+                android:textSize="30sp"
+                />
             <!--
+
            <Button
                 android:drawableLeft="@drawable/about"
                 android:drawablePadding="35dp"
@@ -84,7 +123,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="15sp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             >
 
              <TextView

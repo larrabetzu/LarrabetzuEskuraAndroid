@@ -12,7 +12,7 @@
 	</PreferenceCategory>
     <PreferenceScreen
         android:title="Aukeratzeko blogak"
-        android:persistent="false">
+        android:key="preferencescreen_aukeratzeko_blogak">
         <PreferenceCategory android:title="gutxi karga azkarrago">
             <CheckBoxPreference
                 android:key="1"
@@ -41,7 +41,7 @@
     <PreferenceCategory  android:title="Abisuak">
         <PreferenceScreen
             android:title="Abisuak aukeran"
-            android:persistent="false">
+            android:key="preferencescreen_abisuak_aukeran">
             <CheckBoxPreference
                 android:key="11"
                 android:title="Kultura"
