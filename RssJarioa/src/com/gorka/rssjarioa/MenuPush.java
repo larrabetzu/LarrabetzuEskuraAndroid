@@ -22,11 +22,13 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MenuPush extends Activity {
 
     int zenbatPushNumeroa ;
+    int pushNumeroaAktualizatuta;
     ParseObject parseObject;
 
     @Override
@@ -43,6 +45,8 @@ public class MenuPush extends Activity {
         final Button pushok = (Button) findViewById(R.id.layout_menupush_ok);
 
         final String user = ParseUser.getCurrentUser().getUsername();
+        final Calendar c = Calendar.getInstance();
+        final int mWeek = c.get(Calendar.WEEK_OF_YEAR);
 
         ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
         uery.whereEqualTo("channel", user);
@@ -52,8 +56,16 @@ public class MenuPush extends Activity {
                     parseObject = scoreList.get(0);
                     parseObject.getObjectId();
                     zenbatPushNumeroa = parseObject.getInt("numeroa");
+                    pushNumeroaAktualizatuta = parseObject.getInt("aktualizatua");
                     Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
                     pushnumeroa.setText(Integer.toString(zenbatPushNumeroa));
+
+                    if (mWeek != pushNumeroaAktualizatuta) {
+                        parseObject.put("numeroa", 3);
+                        parseObject.put("aktualizatua", mWeek);
+                        parseObject.saveInBackground();
+
+                    }
                 } else {
                     Log.e("score", "Error: " + e.getMessage());
                     showToast(MenuPush.this, "Beranduago saiatu");
