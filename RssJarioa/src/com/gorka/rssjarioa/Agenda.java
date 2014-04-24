@@ -19,7 +19,6 @@ import java.util.Calendar;
 public class Agenda extends Activity {
 
     DbEgokitua db=new DbEgokitua(this);
-    private ListView lista;
   
     @Override
     protected void onCreate(Bundle savedInstanceState) {        
@@ -51,7 +50,7 @@ public class Agenda extends Activity {
             }
             db.zarratu();
             //listView sortu
-            lista = (ListView) findViewById(R.id.agenda_listview);
+            final ListView lista = (ListView) findViewById(R.id.agenda_listview);
             lista.setAdapter(new List_adaptador(this, R.layout.layout_ekintzak, datos){
                 @Override
                 public void onEntrada(Object entrada, View view) {
