@@ -3,17 +3,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_hobespenak"
-        android:title="Hobespenak"
+        android:title="@string/text_hobespenak"
         android:icon="@drawable/settings_light"
         android:showAsAction="never" />
     <item
         android:id="@+id/menu_kontaktua"
-        android:title="Kontaktua"
+        android:title="@string/text_kontaktua"
         android:icon="@drawable/email_light"
         android:showAsAction="never" />
     <item
         android:id="@+id/menu_nortzuk"
-        android:title="Larrabetzu Eskura"
+        android:title="@string/text_larrabetzu_eskura"
         android:icon="@drawable/phone_light"
         android:showAsAction="never" />
 </menu>

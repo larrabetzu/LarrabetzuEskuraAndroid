@@ -21,6 +21,25 @@
     <string name="text_pasahitza">Pasahitza</string>
 
     <!-- Button Text-->
+    <string name="text_login">Login</string>
+        <!-- Menua-->
+        <string name="text_berriak">Berriak</string>
+        <string name="text_agenda">Agenda</string>
+        <string name="text_elkarteak">Elkarteak</string>
+        <string name="text_zerbitzuak">Zerbitzuak</string>
+        <string name="text_hobespenak">Hobespenak</string>
+        <string name="text_kontaktua">Kontaktua</string>
+        <string name="text_larrabetzu_eskura">Larrabetzu Eskura</string>
 
+
+    <!-- TextView -->
+    <string name="text_elkarteentzat">Elkarteentzat Abisuen panela</string>
+    <string name="text_elkarteentzat_azalpena">Atal hau elkarteentzat bakarrik da.
+        Bertatik erabiltzaileei nahi duten abisuak bidali al dira.
+        Informazio gehiago nahi badozu bidali e-mail bat  ;)</string>
+
+    <!-- Menuak -->
+    <string name="elkarbanatu">Elkarbanatu</string>
+    <string name="antolatzaileak">Antolatzaileak</string>
 
 </resources>

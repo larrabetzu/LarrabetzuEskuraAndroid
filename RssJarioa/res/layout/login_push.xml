@@ -29,11 +29,23 @@
 
     <Button
         android:id="@+id/layout_loginpush_ok"
-        android:text="OK"
+        android:text="@string/text_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_elkarteentzat"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:background="@color/grisa"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_elkarteentzat_azalpena"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        />
 
 </LinearLayout>

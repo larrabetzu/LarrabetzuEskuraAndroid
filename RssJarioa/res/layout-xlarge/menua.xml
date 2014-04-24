@@ -35,7 +35,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnberriak"
                 android:paddingLeft="50dp"
-                android:text="Berriak"
+                android:text="@string/text_berriak"
                 android:textSize="35sp"
                   />
            <Button
@@ -47,7 +47,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnagenda"
                 android:paddingLeft="50dp"
-                android:text="Agenda"
+                android:text="@string/text_agenda"
                 android:textSize="35sp"
                   />
            <Button
@@ -59,7 +59,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnelkarteak"
                 android:paddingLeft="50dp"
-                android:text="Elkarteak"
+                android:text="@string/text_elkarteak"
                 android:textSize="35sp"
                 />
 
@@ -73,7 +73,7 @@
                 android:onClick="onclickbtnelkarteak"
                 android:paddingLeft="50dp"
                 android:layout_marginTop="20dp"
-                android:text="Hobespenak"
+                android:text="@string/text_hobespenak"
                 android:textSize="30sp"
                 />
             <Button
@@ -85,7 +85,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnelkarteak"
                 android:paddingLeft="50dp"
-                android:text="Kontaktua"
+                android:text="@string/text_kontaktua"
                 android:textSize="30sp"
                 />
             <Button
@@ -97,7 +97,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnelkarteak"
                 android:paddingLeft="50dp"
-                android:text="Nortzuk Gara"
+                android:text="@string/text_larrabetzu_eskura"
                 android:textSize="30sp"
                 />
             <!--
@@ -130,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Larrabetzu Eskura"
+                android:text="@string/text_larrabetzu_eskura"
                  android:textSize="20sp"
                  />
 

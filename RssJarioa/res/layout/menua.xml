@@ -35,7 +35,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnberriak"
                 android:paddingLeft="50dp"
-                android:text="Berriak"
+                android:text="@string/text_berriak"
                 android:textSize="25sp"
                   />
            <Button
@@ -47,7 +47,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnagenda"
                 android:paddingLeft="50dp"
-                android:text="Agenda"
+                android:text="@string/text_agenda"
                 android:textSize="25sp"
                   />
            <Button
@@ -59,7 +59,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtnelkarteak"
                 android:paddingLeft="50dp"
-                android:text="Elkarteak"
+                android:text="@string/text_elkarteak"
                 android:textSize="25sp"
                 />
             <!--
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Larrabetzu Eskura"
+                android:text="@string/text_larrabetzu_eskura"
                  />
 
             <TextView

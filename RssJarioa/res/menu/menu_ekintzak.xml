@@ -3,7 +3,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_elkarbanatu"
-        android:title="Elkarbanatu"
+        android:title="@string/elkarbanatu"
         android:icon="@drawable/share_light"
         android:showAsAction="ifRoom" />
 <!-- <item
@@ -13,7 +13,7 @@
         android:showAsAction="never" />-->
     <item
         android:id="@+id/menu_antolatzaileak"
-        android:title="Antolatzaileak"
+        android:title="@string/antolatzaileak"
         android:icon="@drawable/elkarteak_light"
         android:showAsAction="ifRoom" />
 </menu>
