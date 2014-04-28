@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
             android:text=""
             />
 
@@ -62,7 +63,7 @@
         android:layout_height="wrap_content"
         android:inputType="textUri"
         android:ems="10"
-        android:hint="Url nahi badozu"
+        android:hint="http://..."
         android:visibility="gone"
         />
 

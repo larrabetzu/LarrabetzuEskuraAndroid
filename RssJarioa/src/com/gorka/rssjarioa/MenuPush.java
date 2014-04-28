@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.StandardExceptionParser;
+import com.google.analytics.tracking.android.Tracker;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -58,11 +61,12 @@ public class MenuPush extends Activity {
                     zenbatPushNumeroa = parseObject.getInt("numeroa");
                     pushNumeroaAktualizatuta = parseObject.getInt("aktualizatua");
                     Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
-                    pushnumeroa.setText(Integer.toString(zenbatPushNumeroa));
+                    pushnumeroa.setText(""+zenbatPushNumeroa);
 
                     if (mWeek != pushNumeroaAktualizatuta) {
                         parseObject.put("numeroa", 3);
                         parseObject.put("aktualizatua", mWeek);
+                        pushnumeroa.setText(""+3);
                         parseObject.saveInBackground();
 
                     }
@@ -103,9 +107,12 @@ public class MenuPush extends Activity {
                                         "\"url\": \"" + pushurl.getText().toString() + "\" }");
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                Tracker myTracker = EasyTracker.getInstance(MenuPush.this);
+                                myTracker.send(MapBuilder.createException(new StandardExceptionParser(MenuPush.this, null)
+                                        .getDescription(Thread.currentThread().getName(), e), false).build());
                             }
                             ParsePush push = new ParsePush();
-                            push.setChannel(ParseUser.getCurrentUser().getUsername());
+                            push.setChannel(user);
                             push.setData(data);
                             push.sendInBackground();
 
