@@ -5,9 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ public class MenuPush extends Activity {
 
     int zenbatPushNumeroa ;
     int pushNumeroaAktualizatuta;
+    int orduTartea;
     ParseObject parseObject;
 
     @Override
@@ -39,17 +43,25 @@ public class MenuPush extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_push);
 
-        final TextView pushnumeroa = (TextView) findViewById(R.id.layout_menupush_pushnumeroa);
-        final EditText pushtituloa = (EditText) findViewById(R.id.layout_menupush_tituloa);
-        final EditText pushtestua = (EditText) findViewById(R.id.layout_menupush_testua);
-        final CheckBox urlrik = (CheckBox) findViewById(R.id.layout_menupush_urlcheckbox);
-        final EditText pushurl =(EditText) findViewById(R.id.layout_menupush_url);
-        final Button pushlogout = (Button) findViewById(R.id.layout_menupush_logout);
-        final Button pushok = (Button) findViewById(R.id.layout_menupush_ok);
+        final TextView pushNumeroa = (TextView) findViewById(R.id.layout_menupush_pushnumeroa);
+        final EditText pushTituloa = (EditText) findViewById(R.id.layout_menupush_tituloa);
+        final EditText pushTestua = (EditText) findViewById(R.id.layout_menupush_testua);
+        final CheckBox url_rik = (CheckBox) findViewById(R.id.layout_menupush_urlcheckbox);
+        final EditText pushUrl =(EditText) findViewById(R.id.layout_menupush_url);
+        final CheckBox checkboxDataTartea = (CheckBox) findViewById(R.id.layout_menupush_checkbox_data);
+        final Spinner spinnerDataTartea =(Spinner) findViewById(R.id.layout_menupush_data);
+        final Button pushLogout = (Button) findViewById(R.id.layout_menupush_logout);
+        final Button pushOk = (Button) findViewById(R.id.layout_menupush_ok);
 
         final String user = ParseUser.getCurrentUser().getUsername();
         final Calendar c = Calendar.getInstance();
         final int mWeek = c.get(Calendar.WEEK_OF_YEAR);
+
+        final String orduak[] ={"ordu 1", "2 ordu", "4 ordu", "6 ordu", "10 ordu", "Egun bat", "2 Egun"};
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item,orduak);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDataTartea.setAdapter(dataAdapter);
 
         ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
         uery.whereEqualTo("channel", user);
@@ -61,12 +73,12 @@ public class MenuPush extends Activity {
                     zenbatPushNumeroa = parseObject.getInt("numeroa");
                     pushNumeroaAktualizatuta = parseObject.getInt("aktualizatua");
                     Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
-                    pushnumeroa.setText(""+zenbatPushNumeroa);
+                    pushNumeroa.setText("" + zenbatPushNumeroa);
 
                     if (mWeek != pushNumeroaAktualizatuta) {
                         parseObject.put("numeroa", 3);
                         parseObject.put("aktualizatua", mWeek);
-                        pushnumeroa.setText(""+3);
+                        pushNumeroa.setText("" + 3);
                         parseObject.saveInBackground();
 
                     }
@@ -78,33 +90,60 @@ public class MenuPush extends Activity {
         });
 
 
-        urlrik.setOnClickListener(new View.OnClickListener() {
+        url_rik.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (urlrik.isChecked()) {
-                    pushurl.setVisibility(View.VISIBLE);
+                if (url_rik.isChecked()) {
+                    pushUrl.setVisibility(View.VISIBLE);
                 } else {
-                    pushurl.setVisibility(View.GONE);
+                    pushUrl.setVisibility(View.GONE);
                 }
             }
         });
 
-        pushok.setOnClickListener(new View.OnClickListener() {
+        checkboxDataTartea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(zenbatPushNumeroa>=1){
-                    if (pushtituloa.getText().toString().isEmpty() || pushtestua.getText().toString().isEmpty()) {
+                if(checkboxDataTartea.isChecked()){
+                    spinnerDataTartea.setVisibility(View.VISIBLE);
+                }else{
+                    spinnerDataTartea.setVisibility(View.GONE);
+                }
+            }
+        });
+        spinnerDataTartea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, android.view.View v, int position, long id) {
+                switch (position){//"ordu 1", "2 ordu", "4 ordu", "6 ordu", "10 ordu", "Egun bat", "2 Egun"
+                    case 0:orduTartea = 1; break;
+                    case 1:orduTartea = 2; break;
+                    case 2:orduTartea = 4; break;
+                    case 3:orduTartea = 6; break;
+                    case 4:orduTartea = 10; break;
+                    case 5:orduTartea = 24; break;
+                    case 6:orduTartea = 48; break;
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                showToast(MenuPush.this, "Ordu tarte bat jarri behar dozu");
+            }
+        });
+        pushOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (zenbatPushNumeroa >= 1) {
+                    if (pushTituloa.getText().toString().isEmpty() || pushTestua.getText().toString().isEmpty()) {
                         showToast(MenuPush.this, "Tituloa eta testua beteak egon behar dira");
                     } else {
-                        if (urlrik.isChecked() && pushurl.getText().toString().isEmpty()) {
+                        if (url_rik.isChecked() && pushUrl.getText().toString().isEmpty()) {
                             showToast(MenuPush.this, "Url-a beteta egon behar da");
                         } else {
                             JSONObject data = null;
                             try {
                                 data = new JSONObject("{ \"action\": \"com.gorka.rssjarioa.UPDATE_STATUS\"," +
-                                        " \"tit\": \"" + pushtituloa.getText().toString() + "\", " +
-                                        "\"tex\": \"" + pushtestua.getText().toString() + "\", " +
-                                        "\"url\": \"" + pushurl.getText().toString() + "\" }");
+                                        " \"tit\": \"" + pushTituloa.getText().toString() + "\", " +
+                                        "\"tex\": \"" + pushTestua.getText().toString() + "\", " +
+                                        "\"url\": \"" + pushUrl.getText().toString() + "\" }");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 Tracker myTracker = EasyTracker.getInstance(MenuPush.this);
@@ -113,24 +152,27 @@ public class MenuPush extends Activity {
                             }
                             ParsePush push = new ParsePush();
                             push.setChannel(user);
+                            if(checkboxDataTartea.isChecked() && orduTartea!=0){
+                                long denboraTot= (System.currentTimeMillis()/ 1000)+(60*60*orduTartea);
+                                push.setExpirationTime(denboraTot);
+                            }
                             push.setData(data);
                             push.sendInBackground();
-
-                            pushtituloa.setText("");
-                            pushtestua.setText("");
-                            pushurl.setText("");
+                            pushTituloa.setText("");
+                            pushTestua.setText("");
+                            pushUrl.setText("");
                             parseObject.increment("numeroa", -1);
                             parseObject.saveInBackground();
                             finish();
                         }
                     }
-                }else {
+                } else {
                     showToast(MenuPush.this, "Abisu gustiak amaitu doduz");
                 }
             }
         });
 
-        pushlogout.setOnClickListener(new View.OnClickListener() {
+        pushLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();

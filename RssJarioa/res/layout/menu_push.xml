@@ -52,7 +52,7 @@
 
     <CheckBox
         android:id="@+id/layout_menupush_urlcheckbox"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="URL-rik?"
         />
@@ -64,6 +64,19 @@
         android:inputType="textUri"
         android:ems="10"
         android:hint="http://..."
+        android:visibility="gone"
+        />
+
+    <CheckBox
+        android:id="@+id/layout_menupush_checkbox_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Denbora tartea?"
+        />
+    <Spinner
+        android:id="@+id/layout_menupush_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:visibility="gone"
         />
 
