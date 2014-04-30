@@ -167,6 +167,9 @@ public class MenuPush extends Activity {
                         if (url_rik.isChecked() && (pushUrl.getText().toString().isEmpty() || !ping)) {
                             showToast(MenuPush.this, "URL-a konprobatu");
                         } else {
+                            if(!url_rik.isChecked()){
+                                pushUrl.setText("");
+                            }
                             JSONObject data = null;
                             try {
                                 data = new JSONObject("{ \"action\": \"com.gorka.rssjarioa.UPDATE_STATUS\"," +
