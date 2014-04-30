@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,9 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class MenuPush extends Activity {
     int pushNumeroaAktualizatuta;
     int orduTartea;
     ParseObject parseObject;
+    boolean ping;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,7 @@ public class MenuPush extends Activity {
         final EditText pushTestua = (EditText) findViewById(R.id.layout_menupush_testua);
         final CheckBox url_rik = (CheckBox) findViewById(R.id.layout_menupush_urlcheckbox);
         final EditText pushUrl =(EditText) findViewById(R.id.layout_menupush_url);
+        final ImageView imageVerified = (ImageView) findViewById(R.id.layout_menupush_imageview);
         final CheckBox checkboxDataTartea = (CheckBox) findViewById(R.id.layout_menupush_checkbox_data);
         final Spinner spinnerDataTartea =(Spinner) findViewById(R.id.layout_menupush_data);
         final Button pushLogout = (Button) findViewById(R.id.layout_menupush_logout);
@@ -113,14 +119,28 @@ public class MenuPush extends Activity {
         });
         spinnerDataTartea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, android.view.View v, int position, long id) {
-                switch (position){//"ordu 1", "2 ordu", "4 ordu", "6 ordu", "10 ordu", "Egun bat", "2 Egun"
-                    case 0:orduTartea = 1; break;
-                    case 1:orduTartea = 2; break;
-                    case 2:orduTartea = 4; break;
-                    case 3:orduTartea = 6; break;
-                    case 4:orduTartea = 10; break;
-                    case 5:orduTartea = 24; break;
-                    case 6:orduTartea = 48; break;
+                switch (position) {//"ordu 1", "2 ordu", "4 ordu", "6 ordu", "10 ordu", "Egun bat", "2 Egun"
+                    case 0:
+                        orduTartea = 1;
+                        break;
+                    case 1:
+                        orduTartea = 2;
+                        break;
+                    case 2:
+                        orduTartea = 4;
+                        break;
+                    case 3:
+                        orduTartea = 6;
+                        break;
+                    case 4:
+                        orduTartea = 10;
+                        break;
+                    case 5:
+                        orduTartea = 24;
+                        break;
+                    case 6:
+                        orduTartea = 48;
+                        break;
                 }
             }
 
@@ -135,8 +155,17 @@ public class MenuPush extends Activity {
                     if (pushTituloa.getText().toString().isEmpty() || pushTestua.getText().toString().isEmpty()) {
                         showToast(MenuPush.this, "Tituloa eta testua beteak egon behar dira");
                     } else {
-                        if (url_rik.isChecked() && pushUrl.getText().toString().isEmpty()) {
-                            showToast(MenuPush.this, "Url-a beteta egon behar da");
+                        ping = ping(pushUrl.getText().toString());
+                        Log.e("ping", " "+ping);
+                        if(ping){
+                            imageVerified.setImageDrawable(getResources().getDrawable(R.drawable.accept));
+                        }else {
+                            imageVerified.setImageDrawable(getResources().getDrawable(R.drawable.cancel));
+                        }
+                        imageVerified.setVisibility(View.VISIBLE);
+
+                        if (url_rik.isChecked() && (pushUrl.getText().toString().isEmpty() || !ping)) {
+                            showToast(MenuPush.this, "URL-a konprobatu");
                         } else {
                             JSONObject data = null;
                             try {
@@ -152,8 +181,8 @@ public class MenuPush extends Activity {
                             }
                             ParsePush push = new ParsePush();
                             push.setChannel(user);
-                            if(checkboxDataTartea.isChecked() && orduTartea!=0){
-                                long denboraTot= (System.currentTimeMillis()/ 1000)+(60*60*orduTartea);
+                            if (checkboxDataTartea.isChecked() && orduTartea != 0) {
+                                long denboraTot = (System.currentTimeMillis() / 1000) + (60 * 60 * orduTartea);
                                 push.setExpirationTime(denboraTot);
                             }
                             push.setData(data);
@@ -184,6 +213,20 @@ public class MenuPush extends Activity {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
+    public static boolean ping(String url) {
+        url = url.replaceFirst("https", "http");
+        try {
+            URL urll = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urll.openConnection();
+            connection.setConnectTimeout(30000);
+            connection.setReadTimeout(30000);
+            int responseCode = connection.getResponseCode();
+            return (200 <= responseCode && responseCode <= 399);
+        } catch (IOException exception) {
+            Log.e("menu", exception.toString());
+            return false;
+        }
+    }
 
     @Override
     public void onStart() {

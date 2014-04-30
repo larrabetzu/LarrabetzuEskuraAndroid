@@ -57,15 +57,33 @@
         android:text="URL-rik?"
         />
 
-    <EditText
-        android:id="@+id/layout_menupush_url"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textUri"
-        android:ems="10"
-        android:hint="http://..."
-        android:visibility="gone"
-        />
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/layout_menupush_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:ems="10"
+            android:text="http://"
+            android:autoText="true"
+            android:layout_weight="1"
+            android:visibility="gone"
+            />
+        <ImageView
+            android:id="@+id/layout_menupush_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:src="@drawable/accept"
+            android:visibility="gone"
+            />
+
+        </LinearLayout>
 
     <CheckBox
         android:id="@+id/layout_menupush_checkbox_data"
