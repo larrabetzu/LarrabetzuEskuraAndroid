@@ -39,7 +39,7 @@ public class MenuPush extends Activity {
 
     int zenbatPushNumeroa ;
     int pushNumeroaAktualizatuta;
-    int orduTartea;
+    long denboraTot;
     ParseObject parseObject;
     boolean ping;
 
@@ -54,7 +54,6 @@ public class MenuPush extends Activity {
         final CheckBox url_rik = (CheckBox) findViewById(R.id.layout_menupush_urlcheckbox);
         final EditText pushUrl =(EditText) findViewById(R.id.layout_menupush_url);
         final ImageView imageVerified = (ImageView) findViewById(R.id.layout_menupush_imageview);
-        final CheckBox checkboxDataTartea = (CheckBox) findViewById(R.id.layout_menupush_checkbox_data);
         final Spinner spinnerDataTartea =(Spinner) findViewById(R.id.layout_menupush_data);
         final Button pushLogout = (Button) findViewById(R.id.layout_menupush_logout);
         final Button pushOk = (Button) findViewById(R.id.layout_menupush_ok);
@@ -68,6 +67,7 @@ public class MenuPush extends Activity {
                 (this, android.R.layout.simple_spinner_item,orduak);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDataTartea.setAdapter(dataAdapter);
+        spinnerDataTartea.setSelection(6);
 
         ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
         uery.whereEqualTo("channel", user);
@@ -107,45 +107,35 @@ public class MenuPush extends Activity {
             }
         });
 
-        checkboxDataTartea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(checkboxDataTartea.isChecked()){
-                    spinnerDataTartea.setVisibility(View.VISIBLE);
-                }else{
-                    spinnerDataTartea.setVisibility(View.GONE);
-                }
-            }
-        });
         spinnerDataTartea.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, android.view.View v, int position, long id) {
+                long currentTime = System.currentTimeMillis();
                 switch (position) {//"ordu 1", "2 ordu", "4 ordu", "6 ordu", "10 ordu", "Egun bat", "2 Egun"
                     case 0:
-                        orduTartea = 1;
+                        denboraTot = (currentTime / 1000) + (60 * 60 * 1);
                         break;
                     case 1:
-                        orduTartea = 2;
+                        denboraTot = (currentTime / 1000) + (60 * 60 * 2);
                         break;
                     case 2:
-                        orduTartea = 4;
+                        denboraTot = (currentTime / 1000) + (60 * 60 * 4);
                         break;
                     case 3:
-                        orduTartea = 6;
+                        denboraTot = (currentTime / 1000) + (60 * 60 * 6);
                         break;
                     case 4:
-                        orduTartea = 10;
+                        denboraTot = (currentTime / 1000) + (60 * 60 * 10);
                         break;
                     case 5:
-                        orduTartea = 24;
+                        denboraTot = (currentTime / 1000) + (60 * 60 * 24);
                         break;
                     case 6:
-                        orduTartea = 48;
+                        denboraTot = (currentTime / 1000) + (60 * 60 * 48);
                         break;
                 }
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
-                showToast(MenuPush.this, "Ordu tarte bat jarri behar dozu");
             }
         });
         pushOk.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +145,8 @@ public class MenuPush extends Activity {
                     if (pushTituloa.getText().toString().isEmpty() || pushTestua.getText().toString().isEmpty()) {
                         showToast(MenuPush.this, "Tituloa eta testua beteak egon behar dira");
                     } else {
-                        ping = ping(pushUrl.getText().toString());
+                        String urlText = pushUrl.getText().toString();
+                        ping = ping(urlText);
                         Log.e("ping", " "+ping);
                         if(ping){
                             imageVerified.setImageDrawable(getResources().getDrawable(R.drawable.accept));
@@ -164,18 +155,19 @@ public class MenuPush extends Activity {
                         }
                         imageVerified.setVisibility(View.VISIBLE);
 
-                        if (url_rik.isChecked() && (pushUrl.getText().toString().isEmpty() || !ping)) {
+                        if (url_rik.isChecked() && (urlText.isEmpty() || !ping)) {
                             showToast(MenuPush.this, "URL-a konprobatu");
                         } else {
                             if(!url_rik.isChecked()){
                                 pushUrl.setText("");
+                                urlText="";
                             }
                             JSONObject data = null;
                             try {
                                 data = new JSONObject("{ \"action\": \"com.gorka.rssjarioa.UPDATE_STATUS\"," +
                                         " \"tit\": \"" + pushTituloa.getText().toString() + "\", " +
                                         "\"tex\": \"" + pushTestua.getText().toString() + "\", " +
-                                        "\"url\": \"" + pushUrl.getText().toString() + "\" }");
+                                        "\"url\": \"" + urlText + "\" }");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 Tracker myTracker = EasyTracker.getInstance(MenuPush.this);
@@ -184,10 +176,7 @@ public class MenuPush extends Activity {
                             }
                             ParsePush push = new ParsePush();
                             push.setChannel(user);
-                            if (checkboxDataTartea.isChecked() && orduTartea != 0) {
-                                long denboraTot = (System.currentTimeMillis() / 1000) + (60 * 60 * orduTartea);
-                                push.setExpirationTime(denboraTot);
-                            }
+                            push.setExpirationTime(denboraTot);
                             push.setData(data);
                             push.sendInBackground();
                             pushTituloa.setText("");
@@ -212,7 +201,7 @@ public class MenuPush extends Activity {
             }
         });
     }
-    public void showToast(Context context, String text){
+    public static void showToast(Context context, String text){
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 

@@ -88,18 +88,12 @@
 
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/layout_menupush_checkbox_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Denbora tartea?"
-        android:layout_margin="10dp"
-        />
+
     <Spinner
         android:id="@+id/layout_menupush_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_margin="10dp"
         />
 
