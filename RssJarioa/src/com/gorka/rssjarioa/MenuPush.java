@@ -1,7 +1,6 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +24,7 @@ import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.RequestPasswordResetCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +48,7 @@ public class MenuPush extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_push);
 
+        final TextView pushZenbatPushkanala = (TextView) findViewById(R.id.layout_menupush_zenbatpush);
         final TextView pushNumeroa = (TextView) findViewById(R.id.layout_menupush_pushnumeroa);
         final EditText pushTituloa = (EditText) findViewById(R.id.layout_menupush_tituloa);
         final EditText pushTestua = (EditText) findViewById(R.id.layout_menupush_testua);
@@ -55,10 +56,12 @@ public class MenuPush extends Activity {
         final EditText pushUrl =(EditText) findViewById(R.id.layout_menupush_url);
         final ImageView imageVerified = (ImageView) findViewById(R.id.layout_menupush_imageview);
         final Spinner spinnerDataTartea =(Spinner) findViewById(R.id.layout_menupush_data);
-        final Button pushLogout = (Button) findViewById(R.id.layout_menupush_logout);
         final Button pushOk = (Button) findViewById(R.id.layout_menupush_ok);
+        final Button logout = (Button) findViewById(R.id.layout_menupush_logout);
+        final Button pasahitzaAldatu = (Button) findViewById(R.id.layout_menupush_pasahitza);
 
-        final String user = ParseUser.getCurrentUser().getUsername();
+        final String userKanala = ParseUser.getCurrentUser().getString("kanala");
+        pushZenbatPushkanala.setText("Zenbat Abisu "+userKanala+":");
         final Calendar c = Calendar.getInstance();
         final int mWeek = c.get(Calendar.WEEK_OF_YEAR);
 
@@ -70,7 +73,7 @@ public class MenuPush extends Activity {
         spinnerDataTartea.setSelection(6);
 
         ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
-        uery.whereEqualTo("channel", user);
+        uery.whereEqualTo("channel", userKanala);
         uery.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> scoreList, ParseException e) {
                 if (e == null) {
@@ -90,7 +93,7 @@ public class MenuPush extends Activity {
                     }
                 } else {
                     Log.e("score", "Error: " + e.getMessage());
-                    showToast(MenuPush.this, "Beranduago saiatu");
+                    showToast( "Beranduago saiatu");
                 }
             }
         });
@@ -143,20 +146,24 @@ public class MenuPush extends Activity {
             public void onClick(View v) {
                 if (zenbatPushNumeroa >= 1) {
                     if (pushTituloa.getText().toString().isEmpty() || pushTestua.getText().toString().isEmpty()) {
-                        showToast(MenuPush.this, "Tituloa eta testua beteak egon behar dira");
+                        showToast("Tituloa eta testua beteak egon behar dira");
                     } else {
                         String urlText = pushUrl.getText().toString();
                         ping = ping(urlText);
                         Log.e("ping", " "+ping);
-                        if(ping){
-                            imageVerified.setImageDrawable(getResources().getDrawable(R.drawable.accept));
-                        }else {
-                            imageVerified.setImageDrawable(getResources().getDrawable(R.drawable.cancel));
+                        if(url_rik.isChecked()) {
+                            if (ping) {
+                                imageVerified.setImageDrawable(getResources().getDrawable(R.drawable.accept));
+                                imageVerified.setBackgroundColor(getResources().getColor(R.color.berdea));
+                            } else {
+                                imageVerified.setImageDrawable(getResources().getDrawable(R.drawable.cancel));
+                                imageVerified.setBackgroundColor(getResources().getColor(R.color.gorria));
+                            }
+                            imageVerified.setVisibility(View.VISIBLE);
                         }
-                        imageVerified.setVisibility(View.VISIBLE);
 
                         if (url_rik.isChecked() && (urlText.isEmpty() || !ping)) {
-                            showToast(MenuPush.this, "URL-a konprobatu");
+                            showToast( "URL-a konprobatu");
                         } else {
                             if(!url_rik.isChecked()){
                                 pushUrl.setText("");
@@ -175,7 +182,7 @@ public class MenuPush extends Activity {
                                         .getDescription(Thread.currentThread().getName(), e), false).build());
                             }
                             ParsePush push = new ParsePush();
-                            push.setChannel(user);
+                            push.setChannel(userKanala);
                             push.setExpirationTime(denboraTot);
                             push.setData(data);
                             push.sendInBackground();
@@ -188,21 +195,38 @@ public class MenuPush extends Activity {
                         }
                     }
                 } else {
-                    showToast(MenuPush.this, "Abisu gustiak amaitu doduz");
+                    showToast("Abisu gustiak amaitu doduz");
                 }
             }
         });
 
-        pushLogout.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
                 finish();
             }
         });
+        pasahitzaAldatu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String email = ParseUser.getCurrentUser().getEmail();
+                ParseUser.requestPasswordResetInBackground(email,
+                        new RequestPasswordResetCallback() {
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    showToast( "Email bat bidali da zure "+email+" kontura");
+                                    finish();
+                                } else {
+                                    showToast( "Beranduago saiatu");
+                                }
+                            }
+                        });
+            }
+        });
     }
-    public static void showToast(Context context, String text){
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    public void showToast( String text){
+        Toast.makeText(MenuPush.this, text, Toast.LENGTH_SHORT).show();
     }
 
     public static boolean ping(String url) {

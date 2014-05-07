@@ -14,7 +14,7 @@
     <string name="tituloa_activity_webnavigation">Web</string>
     <string name="tituloa_activity_zerbitzuak">Zerbitzuak</string>
     <string name="tituloa_activity_loginpush">Login</string>
-    <string name="tituloa_activity_menupush">Informazioa</string>
+    <string name="tituloa_activity_menupush">Abisuak</string>
 
     <!-- Edit Text-->
     <string name="text_erabiltzailea">Erabiltzailea</string>

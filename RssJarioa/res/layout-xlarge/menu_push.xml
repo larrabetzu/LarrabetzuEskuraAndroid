@@ -19,7 +19,7 @@
             android:id="@+id/layout_menupush_zenbatpush"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="6"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Zenbat Abisu:"
             />
@@ -93,8 +93,16 @@
         android:id="@+id/layout_menupush_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <Button
+        android:id="@+id/layout_menupush_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bidali"
+        android:background="@color/berdea"
         />
 
     <LinearLayout
@@ -114,11 +122,11 @@
             />
 
         <Button
-            android:id="@+id/layout_menupush_ok"
+            android:id="@+id/layout_menupush_pasahitza"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ok"
+            android:text="Pasahitza aldatu"
             android:layout_margin="10dp"
             />
 
