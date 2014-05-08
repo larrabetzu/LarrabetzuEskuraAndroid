@@ -42,12 +42,14 @@ public class MenuPush extends Activity {
     long denboraTot;
     ParseObject parseObject;
     boolean ping;
+    String userKanala;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_push);
 
+        final Spinner spinnerKanala =(Spinner) findViewById(R.id.layout_menupush_kanala);
         final TextView pushZenbatPushkanala = (TextView) findViewById(R.id.layout_menupush_zenbatpush);
         final TextView pushNumeroa = (TextView) findViewById(R.id.layout_menupush_pushnumeroa);
         final EditText pushTituloa = (EditText) findViewById(R.id.layout_menupush_tituloa);
@@ -60,7 +62,7 @@ public class MenuPush extends Activity {
         final Button logout = (Button) findViewById(R.id.layout_menupush_logout);
         final Button pasahitzaAldatu = (Button) findViewById(R.id.layout_menupush_pasahitza);
 
-        final String userKanala = ParseUser.getCurrentUser().getString("kanala");
+        userKanala = ParseUser.getCurrentUser().getString("kanala");
         pushZenbatPushkanala.setText("Zenbat Abisu "+userKanala+":");
         final Calendar c = Calendar.getInstance();
         final int mWeek = c.get(Calendar.WEEK_OF_YEAR);
@@ -72,32 +74,55 @@ public class MenuPush extends Activity {
         spinnerDataTartea.setAdapter(dataAdapter);
         spinnerDataTartea.setSelection(6);
 
-        ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
-        uery.whereEqualTo("channel", userKanala);
-        uery.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> scoreList, ParseException e) {
-                if (e == null) {
-                    parseObject = scoreList.get(0);
-                    parseObject.getObjectId();
-                    zenbatPushNumeroa = parseObject.getInt("numeroa");
-                    pushNumeroaAktualizatuta = parseObject.getInt("aktualizatua");
-                    Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
-                    pushNumeroa.setText("" + zenbatPushNumeroa);
+        final String kanalak[] ={"albisteak","udalgaiak","kirola","kultura"};
+        ArrayAdapter<String> kanalakAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item,kanalak);
+        kanalakAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerKanala.setAdapter(kanalakAdapter);
+        spinnerKanala.setSelection(0);
 
-                    if (mWeek != pushNumeroaAktualizatuta) {
-                        parseObject.put("numeroa", 3);
-                        parseObject.put("aktualizatua", mWeek);
-                        pushNumeroa.setText("" + 3);
-                        parseObject.saveInBackground();
+        if(userKanala.equalsIgnoreCase("admin")){
+            zenbatPushNumeroa = 10;
+            spinnerKanala.setVisibility(View.VISIBLE);
+        }else{
+            ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
+            uery.whereEqualTo("channel", userKanala);
+            uery.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> scoreList, ParseException e) {
+                    if (e == null) {
+                        parseObject = scoreList.get(0);
+                        parseObject.getObjectId();
+                        zenbatPushNumeroa = parseObject.getInt("numeroa");
+                        pushNumeroaAktualizatuta = parseObject.getInt("aktualizatua");
+                        Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
+                        pushNumeroa.setText("" + zenbatPushNumeroa);
 
+                        if (mWeek != pushNumeroaAktualizatuta) {
+                            parseObject.put("numeroa", 3);
+                            parseObject.put("aktualizatua", mWeek);
+                            pushNumeroa.setText("" + 3);
+                            parseObject.saveInBackground();
+
+                        }
+                    } else {
+                        Log.e("score", "Error: " + e.getMessage());
+                        showToast( "Beranduago saiatu");
                     }
-                } else {
-                    Log.e("score", "Error: " + e.getMessage());
-                    showToast( "Beranduago saiatu");
                 }
+            });
+        }
+
+        spinnerKanala.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                userKanala = kanalak[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
-
 
         url_rik.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,8 +214,10 @@ public class MenuPush extends Activity {
                             pushTituloa.setText("");
                             pushTestua.setText("");
                             pushUrl.setText("");
-                            parseObject.increment("numeroa", -1);
-                            parseObject.saveInBackground();
+                            if(spinnerKanala.getVisibility()==View.GONE){
+                                parseObject.increment("numeroa", -1);
+                                parseObject.saveInBackground();
+                            }
                             finish();
                         }
                     }
