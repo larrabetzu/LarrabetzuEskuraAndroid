@@ -64,7 +64,7 @@ public class Ekintza extends Activity {
         if (bundle != null) {
             id = bundle.getInt("posicion");
         }
-        Log.i("posicion",id+"");
+        Log.d("posicion",id+"");
         Cursor cursor=db.ekitaldiaLortuDana(id);
         db.zarratu();
 
@@ -90,7 +90,7 @@ public class Ekintza extends Activity {
         } while(cursor.moveToNext());
 
         if (link != null){
-            Log.i("link", " "+link);
+            Log.d("link", " "+link);
             ekintza_link.setText(link);
             ekintza_link.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,9 +131,9 @@ public class Ekintza extends Activity {
             case R.id.menu_elkarbanatu:
                 elkarbanatu();
                 return true;
-         /**   case R.id.menu_alarma:
+            case R.id.menu_alarma:
                 startalert();
-                return true;**/
+                return true;
             case R.id.menu_antolatzaileak:
                 if(id>0){
                     Intent intent = new Intent("elkarteak");
@@ -244,7 +244,7 @@ public class Ekintza extends Activity {
                 Log.i("ekitaldiegune", ekitaldiegune);
                 DateFormat formatoa = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 java.util.Date noz = formatoa.parse(ekitaldiegune , new ParsePosition(0));
-                denboradiferentzia = noz.getTime()-System.currentTimeMillis();
+                denboradiferentzia = noz.getTime()-900000;//900.000 => 15 min
                 Log.i("denboradiferentzia", denboradiferentzia + "");
             }catch (Exception e){
                 Log.e("ekitaldieguna", e.toString());
@@ -255,9 +255,7 @@ public class Ekintza extends Activity {
             Intent intent=new Intent(this, Alarma.class);
             PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
             AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP,
-                    denboradiferentzia,
-                    pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,denboradiferentzia,pendingIntent);
             Toast.makeText(this,"Ekitaldiaren alarma jarrita",Toast.LENGTH_SHORT).show();
             db.ekitaldiaAlarmaAktualizatu(id);
         }

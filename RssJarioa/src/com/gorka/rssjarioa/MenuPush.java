@@ -85,14 +85,13 @@ public class MenuPush extends Activity {
                     pushNumeroa.setText("" + zenbatPushNumeroa);
 
                     if (mWeek != pushNumeroaAktualizatuta) {
-                        parseObject.put("numeroa", 3);
+                        parseObject.put("numeroa", 5);
                         parseObject.put("aktualizatua", mWeek);
-                        pushNumeroa.setText("" + 3);
+                        pushNumeroa.setText("" + 5);
                         parseObject.saveInBackground();
 
                     }
                 } else {
-                    Log.e("score", "Error: " + e.getMessage());
                     showToast( "Beranduago saiatu");
                 }
             }
@@ -239,7 +238,6 @@ public class MenuPush extends Activity {
             int responseCode = connection.getResponseCode();
             return (200 <= responseCode && responseCode <= 399);
         } catch (IOException exception) {
-            Log.e("menu", exception.toString());
             return false;
         }
     }
