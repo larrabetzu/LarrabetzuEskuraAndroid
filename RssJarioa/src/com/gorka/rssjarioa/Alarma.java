@@ -1,30 +1,41 @@
 package com.gorka.rssjarioa;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 public class Alarma extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
 
-        //TODO =>> NotificationCompat "Gogoratu XXXXXX ekitaldia dauela"
-
+        Intent resultIntent = new Intent(context, Menua.class);
         try {
-            Toast.makeText(context,"Alarma",Toast.LENGTH_LONG).show();
-            Vibrator vibrator= (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            long[] vibra= {1000,1000,1000,1000,1000,1000};
-            vibrator.vibrate(vibra,-1);
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Ringtone r = RingtoneManager.getRingtone(context, notification);
-            r.play();
+
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            context,
+                            0,
+                            resultIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(context)
+                            .setSmallIcon(R.drawable.rsslogo)
+                            .setContentTitle("Ekitaldiaren Alarma")
+                            .setContentText("15 min barru zuk nahi zenuen ekitaldia egongo da.")
+                            .setContentIntent(resultPendingIntent)
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .setAutoCancel(true);
+            NotificationManager mNotificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(1, mBuilder.build());
+
         } catch (Exception e) {
             Log.e("Alarma",e.toString());
         }

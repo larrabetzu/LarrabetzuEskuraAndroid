@@ -64,7 +64,7 @@ public class Ekintza extends Activity {
         if (bundle != null) {
             id = bundle.getInt("posicion");
         }
-        Log.d("posicion",id+"");
+        Log.d("posicion", id + "");
         Cursor cursor=db.ekitaldiaLortuDana(id);
         db.zarratu();
 
@@ -90,7 +90,7 @@ public class Ekintza extends Activity {
         } while(cursor.moveToNext());
 
         if (link != null){
-            Log.d("link", " "+link);
+            Log.d("link", " " + link);
             ekintza_link.setText(link);
             ekintza_link.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -238,14 +238,14 @@ public class Ekintza extends Activity {
         if(aktibatuta){
             Toast.makeText(this,"Ekitaldiaren alarma aktibatuta daukazu", Toast.LENGTH_SHORT).show();
         }else{
-            long denboradiferentzia = 0;
+            long ekitaldiEgunaMilise = 0;
             try{
                 final String ekitaldiegune = "2014-"+hilea+"-"+ekintza_egune.getText()+" "+ekintza_ordue.getText();
                 Log.i("ekitaldiegune", ekitaldiegune);
                 DateFormat formatoa = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 java.util.Date noz = formatoa.parse(ekitaldiegune , new ParsePosition(0));
-                denboradiferentzia = noz.getTime()-900000;//900.000 => 15 min
-                Log.i("denboradiferentzia", denboradiferentzia + "");
+                ekitaldiEgunaMilise = noz.getTime()-900000;//900.000 => 15 min
+                Log.i("ekitaldiEgunaMilise", ekitaldiEgunaMilise + "");
             }catch (Exception e){
                 Log.e("ekitaldieguna", e.toString());
                 Tracker myTracker = EasyTracker.getInstance(this);
@@ -255,7 +255,7 @@ public class Ekintza extends Activity {
             Intent intent=new Intent(this, Alarma.class);
             PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
             AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP,denboradiferentzia,pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,ekitaldiEgunaMilise,pendingIntent);
             Toast.makeText(this,"Ekitaldiaren alarma jarrita",Toast.LENGTH_SHORT).show();
             db.ekitaldiaAlarmaAktualizatu(id);
         }
@@ -265,14 +265,12 @@ public class Ekintza extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        // The rest of your onStart() code.
         EasyTracker.getInstance(this).activityStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // The rest of your onStop() code.
         EasyTracker.getInstance(this).activityStop(this);
     }
 
