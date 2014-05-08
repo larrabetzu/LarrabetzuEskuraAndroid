@@ -253,6 +253,7 @@ public class Ekintza extends Activity {
                         .getDescription(Thread.currentThread().getName(),e), false).build());
             }
             Intent intent=new Intent(this, Alarma.class);
+            intent.putExtra("ekitaldia",ekintza_tituloa.getText());
             PendingIntent pendingIntent= PendingIntent.getBroadcast(this.getApplicationContext(),20000, intent, 0);
             AlarmManager alarmManager= (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP,ekitaldiEgunaMilise,pendingIntent);

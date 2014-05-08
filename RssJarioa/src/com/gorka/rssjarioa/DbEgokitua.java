@@ -47,7 +47,6 @@ public class DbEgokitua {
     static final String KEY_link="link";
     static final String KEY_kartela_link="kartela_link";
 	static final String KEY_JAKINARAZPENA1="jakinarazpena_1";
-	static final String KEY_JAKINARAZPENA2="jakinarazpena_2";
 	/*
 	 * TABLE principal_ekintza_sortzailea
 	 */
@@ -63,7 +62,7 @@ public class DbEgokitua {
     static final String LINK_LINK = "link";
     static final String LINK_PUB_DATE = "blog_pub_date";
 
-	static final int DB_BERTSIOA = 13;
+	static final int DB_BERTSIOA = 14;
     static final String DB_IZENA = "NireDB";
     
     
@@ -82,8 +81,7 @@ public class DbEgokitua {
                                     "link varchar(200)," +
                                     "kartela_link varchar(100),"+
 									"pub_date datetime NOT NULL,"+
-									"jakinarazpena_1 bool NOT NULL,"+
-									"jakinarazpena_2 bool NOT NULL);";
+									"jakinarazpena_1 bool NOT NULL);";
 
     static final String DB_TAULA_ekintza_sortzailea = "CREATE TABLE principal_ekintza_sortzailea ("+
 						    	    "id integer NOT NULL PRIMARY KEY,"+
@@ -259,7 +257,6 @@ public class DbEgokitua {
                                                 initialValues.put(KEY_kartela_link,kartela_link);
                                                 initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                                                 initialValues.put(KEY_JAKINARAZPENA1, false);
-                                                initialValues.put(KEY_JAKINARAZPENA2, false);
                                                 long id =db.insert(TAULA_ekintza, null, initialValues);
                                                 Log.i("id",""+id);
                                                 if (id==-1) {Log.d(tituloa, "Ez da ekintzarik gehitu");
@@ -324,7 +321,6 @@ public class DbEgokitua {
                             initialValues.put(KEY_PUB_DATE, pub_date);
                             initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                             initialValues.put(KEY_JAKINARAZPENA1, false);
-                            initialValues.put(KEY_JAKINARAZPENA2, false);
                             long id =db.insert(TAULA_ekintza, null, initialValues);
                             if (id==-1){
                                 Log.d(tituloa, "Ez da ekintzarik gehitu");
@@ -483,7 +479,6 @@ public class DbEgokitua {
                                         initialValues.put(KEY_PUB_DATE, pub_date);
                                         initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                                         initialValues.put(KEY_JAKINARAZPENA1, false);
-                                        initialValues.put(KEY_JAKINARAZPENA2, false);
                                         long id =db.insert(TAULA_ekintza, null, initialValues);
                                         Log.i("id",""+id);
                                         if (id==-1) {Log.d(tituloa, "Ez da ekintzarik gehitu");
@@ -555,7 +550,6 @@ public class DbEgokitua {
                     initialValues.put(KEY_PUB_DATE, pub_date);
                     initialValues.put(KEY_DESKRIBAPENA, deskribapena);
                     initialValues.put(KEY_JAKINARAZPENA1, false);
-                    initialValues.put(KEY_JAKINARAZPENA2, false);
                     long id =db.insert(TAULA_ekintza, null, initialValues);
                     if (id==-1){
                         Log.d(tituloa, "Ez da ekintzarik gehitu");

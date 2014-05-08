@@ -14,6 +14,8 @@ public class Alarma extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
 
+        String ekitaldia = intent.getStringExtra("ekitaldia");
+
         Intent resultIntent = new Intent(context, Menua.class);
         try {
 
@@ -28,7 +30,7 @@ public class Alarma extends BroadcastReceiver {
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.drawable.rsslogo)
                             .setContentTitle("Ekitaldiaren Alarma")
-                            .setContentText("15 min barru zuk nahi zenuen ekitaldia egongo da.")
+                            .setContentText("15 min barru "+ekitaldia)
                             .setContentIntent(resultPendingIntent)
                             .setDefaults(Notification.DEFAULT_ALL)
                             .setAutoCancel(true);
