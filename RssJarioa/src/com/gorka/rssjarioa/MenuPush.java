@@ -91,7 +91,6 @@ public class MenuPush extends Activity {
                 public void done(List<ParseObject> scoreList, ParseException e) {
                     if (e == null) {
                         parseObject = scoreList.get(0);
-                        parseObject.getObjectId();
                         zenbatPushNumeroa = parseObject.getInt("numeroa");
                         pushNumeroaAktualizatuta = parseObject.getInt("aktualizatua");
                         Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
@@ -106,7 +105,7 @@ public class MenuPush extends Activity {
                         }
                     } else {
                         Log.e("score", "Error: " + e.getMessage());
-                        showToast( "Beranduago saiatu");
+                        showToast( "Saiatu beranduago");
                     }
                 }
             });
