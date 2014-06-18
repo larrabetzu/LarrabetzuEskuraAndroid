@@ -62,20 +62,20 @@
                 android:text="@string/text_elkarteak"
                 android:textSize="25sp"
                 />
-            <!--
+
            <Button
                 android:drawableLeft="@drawable/about"
                 android:drawablePadding="35dp"
                 android:gravity="left"
-                android:id="@+id/btnzerbitzuak"
+                android:id="@+id/btntwitter"
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
-                android:onClick="onclickbtnzerbitzuak"
+                android:onClick="onclickbtntwitter"
                 android:paddingLeft="50dp"
-                android:text="Zerbitzuak"
+                android:text="@string/text_twitterren"
                 android:textSize="25sp"
                 />
-                -->
+
            </LinearLayout>
 
         <LinearLayout

@@ -63,7 +63,20 @@
                 android:textSize="35sp"
                 />
 
-            <Button
+           <Button
+                android:drawableLeft="@drawable/about"
+                android:drawablePadding="35dp"
+                android:gravity="left"
+                android:id="@+id/btnzerbitzuak"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:onClick="onclickbtntwitter"
+                android:paddingLeft="50dp"
+                android:text="@string/text_twitterren"
+                android:textSize="35sp"
+                />
+
+           <Button
                 android:id="@+id/btnhobespenak"
                 android:drawableLeft="@drawable/settings"
                 android:drawablePadding="35dp"
@@ -76,7 +89,7 @@
                 android:text="@string/text_hobespenak"
                 android:textSize="30sp"
                 />
-            <Button
+           <Button
                 android:id="@+id/btnkontaktua"
                 android:drawableLeft="@drawable/email"
                 android:drawablePadding="35dp"
@@ -88,7 +101,7 @@
                 android:text="@string/text_kontaktua"
                 android:textSize="30sp"
                 />
-            <Button
+           <Button
                 android:id="@+id/btnnortzuk"
                 android:drawableLeft="@drawable/phone"
                 android:drawablePadding="35dp"
@@ -100,21 +113,8 @@
                 android:text="@string/text_larrabetzu_eskura"
                 android:textSize="30sp"
                 />
-            <!--
 
-           <Button
-                android:drawableLeft="@drawable/about"
-                android:drawablePadding="35dp"
-                android:gravity="left"
-                android:id="@+id/btnzerbitzuak"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:onClick="onclickbtnzerbitzuak"
-                android:paddingLeft="50dp"
-                android:text="Zerbitzuak"
-                android:textSize="35sp"
-                />
-                -->
+
            </LinearLayout>
 
         <LinearLayout

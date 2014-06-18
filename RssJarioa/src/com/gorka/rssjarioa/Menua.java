@@ -148,8 +148,12 @@ public class Menua extends Activity {
         }
     }
 
-    public void onclickbtnzerbitzuak(@SuppressWarnings("UnusedParameters")View view){
-            startActivity(new Intent("zerbitzuak"));
+    public void onclickbtntwitter(@SuppressWarnings("UnusedParameters")View view){
+        Intent intent=new Intent("webnavigation");
+        Bundle bundle =new Bundle();
+        bundle.putString("weblink", "https://twitter.com/search?q=larrabetzu");
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override

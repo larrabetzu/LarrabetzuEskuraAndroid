@@ -34,6 +34,9 @@ public class WebNavigation extends Activity {
         WebSettings settings = browser.getSettings();
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
+        if(link.equals("https://twitter.com/search?q=larrabetzu")){
+            settings.setJavaScriptEnabled(true);
+        }
 
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
         browser.setWebChromeClient(new WebChromeClient()
