@@ -18,6 +18,9 @@ Larrabetzuko agenda digitala
 
 Bertsioak
 ==================
+  	• 1.5.0
+		⁃Ekitaldietarako alarmak jarri dira.
+		⁃Twitterren larrabetzutaz esaten dana agertan da.
   	• 1.4.0
 		⁃Larrabetzuko abisuak jarri dira. Nahi dozun kanalera harpidetu al zara(Kirolak, kultura, udal gaiak, Albisteak).
 		-Berriak azkarrago kargetan dire.
