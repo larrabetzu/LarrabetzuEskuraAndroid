@@ -22,6 +22,7 @@
 
     <!-- Button Text-->
     <string name="text_login">Login</string>
+    <string name="text_reset_pass">Berrezarri pasahitza</string>
         <!-- Menua-->
         <string name="text_berriak">Berriak</string>
         <string name="text_agenda">Agenda</string>

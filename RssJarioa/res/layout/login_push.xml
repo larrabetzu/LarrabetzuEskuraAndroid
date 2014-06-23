@@ -34,6 +34,16 @@
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         />
+
+    <Button
+        android:id="@+id/layout_reset_pass"
+        android:text="@string/text_reset_pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:visibility="gone"
+        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
