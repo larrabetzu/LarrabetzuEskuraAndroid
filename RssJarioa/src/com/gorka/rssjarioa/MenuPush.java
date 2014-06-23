@@ -1,7 +1,10 @@
 package com.gorka.rssjarioa;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +44,7 @@ public class MenuPush extends Activity {
     int pushNumeroaAktualizatuta;
     long denboraTot;
     ParseObject parseObject;
+    ParseUser user;
     boolean ping;
     String userKanala;
 
@@ -62,7 +66,8 @@ public class MenuPush extends Activity {
         final Button logout = (Button) findViewById(R.id.layout_menupush_logout);
         final Button pasahitzaAldatu = (Button) findViewById(R.id.layout_menupush_pasahitza);
 
-        userKanala = ParseUser.getCurrentUser().getString("kanala");
+        user = ParseUser.getCurrentUser();
+        userKanala = user.getString("kanala");
         pushZenbatPushkanala.setText("Zenbat Abisu "+userKanala+":");
         final Calendar c = Calendar.getInstance();
         final int mWeek = c.get(Calendar.WEEK_OF_YEAR);
@@ -80,6 +85,13 @@ public class MenuPush extends Activity {
         kanalakAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerKanala.setAdapter(kanalakAdapter);
         spinnerKanala.setSelection(0);
+
+        try{
+            Log.e("email",user.getEmail());
+        }catch (Exception e){
+            Log.e("MenuPush", e.toString());
+            dialogToSetEmail();
+        }
 
         if(userKanala.equalsIgnoreCase("admin")){
             zenbatPushNumeroa = 10;
@@ -269,6 +281,31 @@ public class MenuPush extends Activity {
             return false;
         }
     }
+
+   public void dialogToSetEmail(){
+       AlertDialog.Builder alert = new AlertDialog.Builder(MenuPush.this);
+       alert.setTitle("Emaila");
+       alert.setIcon(R.drawable.about);
+       alert.setMessage("Pasahitza berrezarri egin behar badan zure emaila jakin behar dugu.");
+       final EditText input = new EditText(MenuPush.this);
+       input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+       alert.setView(input);
+
+       alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+               String value = input.getText().toString();
+               user.setEmail(value);
+               user.saveInBackground();
+           }
+       });
+
+       alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+               finish();
+           }
+       });
+       alert.show();
+   }
 
     @Override
     public void onStart() {
