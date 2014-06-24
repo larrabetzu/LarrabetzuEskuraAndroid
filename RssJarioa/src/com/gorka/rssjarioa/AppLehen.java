@@ -12,7 +12,7 @@ public class AppLehen extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Parse.initialize(this, "uucnk4RbZSP3o41Ntzp9Ju6o3i99ENAJqPsZYOsB", "ABhgQKHR1NNNmXqVxslL2HI1jYQNKu948MZnPapr");
+        Parse.initialize(this, password.YOUR_APP_ID, password.YOUR_CLIENT_KEY);
         PushService.setDefaultPushCallback(this, Menua.class);
     }
 
