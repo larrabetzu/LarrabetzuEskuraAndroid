@@ -8,9 +8,9 @@
         android:showAsAction="ifRoom" />
  <item
         android:id="@+id/menu_alarma"
-        android:title="Alarma"
+        android:title="@string/alarma"
         android:icon="@drawable/add_alarm_light"
-        android:showAsAction="never" />
+        android:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_antolatzaileak"
         android:title="@string/antolatzaileak"

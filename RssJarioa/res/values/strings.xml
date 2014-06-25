@@ -23,7 +23,7 @@
     <!-- Button Text-->
     <string name="text_login">Login</string>
     <string name="text_reset_pass">Berrezarri pasahitza</string>
-        <!-- Menua-->
+        <!--App-aren Menua-->
         <string name="text_berriak">Berriak</string>
         <string name="text_agenda">Agenda</string>
         <string name="text_elkarteak">Elkarteak</string>
@@ -43,5 +43,6 @@
     <!-- Menuak -->
     <string name="elkarbanatu">Elkarbanatu</string>
     <string name="antolatzaileak">Antolatzaileak</string>
+    <string name="alarma">Alarma</string>
 
 </resources>
