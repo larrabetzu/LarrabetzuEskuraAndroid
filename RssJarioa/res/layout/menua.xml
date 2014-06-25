@@ -64,7 +64,7 @@
                 />
 
            <Button
-                android:drawableLeft="@drawable/about"
+                android:drawableLeft="@drawable/twitter"
                 android:drawablePadding="35dp"
                 android:gravity="left"
                 android:id="@+id/btntwitter"
@@ -72,7 +72,7 @@
                 android:layout_width="fill_parent"
                 android:onClick="onclickbtntwitter"
                 android:paddingLeft="50dp"
-                android:text="@string/text_twitterren"
+                android:text="@string/text_larrabetzu"
                 android:textSize="25sp"
                 />
 
