@@ -817,9 +817,4 @@ public class DbEgokitua {
         }
     }
 
-
-
-    /*
-    // para alarma :SELECT * FROM mytable WHERE strftime('%m-%d', 'now') = strftime('%m-%d', birthday)
-   */
 }
