@@ -208,7 +208,7 @@ public class MenuPush extends Activity {
                             JSONObject data = null;
                             try {
                                 data = new JSONObject("{ \"action\": \"com.gorka.rssjarioa.UPDATE_STATUS\"," +
-                                        " \"tit\": \"" + pushTituloa.getText().toString() + "\", " +
+                                        " \"alert\": \"" + pushTituloa.getText().toString() + "\", " +
                                         "\"tex\": \"" + pushTestua.getText().toString() + "\", " +
                                         "\"url\": \"" + urlText + "\" }");
                             } catch (JSONException e) {

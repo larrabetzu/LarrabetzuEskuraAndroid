@@ -27,7 +27,7 @@ public class PushReceiver extends BroadcastReceiver {
 
             /**
              * { "action": "com.gorka.rssjarioa.UPDATE_STATUS”,
-             * "tit": "",
+             * "alert": "",
              * "tex”:"",
              * "url": ""}
              */
@@ -54,7 +54,7 @@ public class PushReceiver extends BroadcastReceiver {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.drawable.rsslogo)
-                            .setContentTitle(json.getString("tit"))
+                            .setContentTitle(json.getString("alert"))
                             .setContentText(json.getString("tex"))
                             .setContentIntent(resultPendingIntent)
                             .setDefaults(Notification.DEFAULT_ALL)
