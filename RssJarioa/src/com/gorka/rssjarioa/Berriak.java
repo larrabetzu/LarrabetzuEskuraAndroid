@@ -270,7 +270,7 @@ public class Berriak extends Activity {
             } while(cursor.moveToNext());
 
         }catch (Exception ex){
-            Log.e("arr_data-datubasetik-Berriak",ex.toString());
+            Log.e("arr_data-dbtik-Berriak",ex.toString());
         }
         db.zarratu();
 

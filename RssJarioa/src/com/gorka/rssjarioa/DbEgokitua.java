@@ -137,7 +137,7 @@ public class DbEgokitua {
                     String nor;
                     int foo = 0;
                     try {
-                        URL url = new URL("http://37.139.15.79/wsAutor/");
+                        URL url = new URL("http://37.139.15.79/wsElkarteak/");
                         URLConnection uc = url.openConnection();
                         uc.connect();
                         BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
