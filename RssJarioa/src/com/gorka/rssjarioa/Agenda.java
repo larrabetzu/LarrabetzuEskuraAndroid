@@ -42,7 +42,7 @@ public class Agenda extends Activity {
                     Log.d("id ",id+"");
                     Cursor cursor1=db.ekitaldiaLortu(id);
                     do{
-                        datos.add(new List_Sarrera(cursor1.getString(0),cursor1.getString(1).substring(8,10) , cursor1.getString(1).substring(10, 16),cursor1.getString(2),id));
+                        datos.add(new List_Sarrera(cursor1.getString(0),cursor1.getString(1).substring(8,10) , cursor1.getString(1).substring(11, 16),cursor1.getString(2),id));
                     } while(cursor1.moveToNext());
 
 

@@ -82,7 +82,7 @@ public class Ekintza extends Activity {
             ekintza_hilea.setText(hilea());
             ekintza_tituloa.setText(cursor.getString(0));
             ekintza_egune.setText(cursor.getString(1).substring(8, 10));
-            ekintza_ordue.setText(cursor.getString(1).substring(10, 16));
+            ekintza_ordue.setText(cursor.getString(1).substring(11, 16));
             ekintza_lekue.setText(cursor.getString(2));
             ekintza_deskribapena.setText(cursor.getString(3));
             link = cursor.getString(4);
