@@ -192,63 +192,26 @@ public class Menua extends Activity {
                 long time_start, time_end;
                 time_start = System.currentTimeMillis();
                 Log.e("hilo1", "on");
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR);
-                int mMonth = c.get(Calendar.MONTH)+1;   //urtarrila=0
-                int mDay = c.get(Calendar.DAY_OF_MONTH);
-                int mhour = c.get(Calendar.HOUR_OF_DAY);
-                int numdbekitaldi = 0;
-                int numwebekitaldi = 0;
 
-                Log.i("gaurko data", "" + mYear + "-" + String.format("%02d",mMonth) + "-" + String.format("%02d",mDay)  +" "+String.format("%02d",mhour));
                 db.zabaldu();
+
                 try{
-                    numwebekitaldi = db.eguneratuEkintzak();
-                    Log.i("numwebekitaldi",numwebekitaldi+"");
-                    }catch (Exception e){
-                    Log.e("eguneratu",e.toString());
-                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
-                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
-                            .getDescription(Thread.currentThread().getName(), e), false).build());
-                }
-                try{
-                    db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), String.format("%02d",mhour));
-                    }catch (Exception e){
-                    Log.e("garbitu",e.toString());
-                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
-                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
-                            .getDescription(Thread.currentThread().getName(), e), false).build());
-                }
-                try{
-                    numdbekitaldi = db.ekitaldikzenbat();
-                    Log.i("numdbekitaldi",numdbekitaldi+"");
+                    db.eguneratuElkarteak();
                 }catch (Exception e){
-                    Log.e("ekitaldikzenbat",e.toString());
-                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
-                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
-                            .getDescription(Thread.currentThread().getName(), e), false).build());
+                    Log.e("eguneratuElkarteak",e.toString());
+                    exceptionTracker(e);
                 }
-                if(numwebekitaldi<numdbekitaldi && numwebekitaldi!=0){
-                    try {
-                        Log.e("berAktualizatu","");
-                        db.ekitaldiguztiakkendu();
-                        db.eguneratuEkintzak();
-                        db.garbitu(mYear, String.format("%02d",mMonth),String.format("%02d",mDay), String.format("%02d",mhour));
-                    }catch (Exception e){
-                        Log.e("ekitaldiguztiakkendu",e.toString());
-                        Tracker myTracker = EasyTracker.getInstance(Menua.this);
-                        myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
-                                .getDescription(Thread.currentThread().getName(), e), false).build());
-                    }
+                try{
+                    db.eguneratuEkintzak();
+                }catch (Exception e){
+                    Log.e("eguneratuEkintzak",e.toString());
+                    exceptionTracker(e);
                 }
-                try {
-                    int id= db.azkenId();
-                    Log.d("azkenID",id+"");
-                    }catch (Exception e){
-                    Log.e("azkenID",e.toString());
-                    Tracker myTracker = EasyTracker.getInstance(Menua.this);
-                    myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
-                            .getDescription(Thread.currentThread().getName(), e), false).build());
+                try{
+                    db.garbitu();
+                }catch (Exception e){
+                    Log.e("garbitu",e.toString());
+                    exceptionTracker(e);
                 }
                 db.zarratu();
                 Log.e("hilo1", "off");
@@ -272,7 +235,7 @@ public class Menua extends Activity {
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(Menua.this);
                 if(mWeek != sharedPrefs.getInt("bertsioaBegituData",0)){
                     try {
-                        URL url = new URL("http://37.139.15.79/Bertsioa/");
+                        URL url = new URL("http://larrabetzu.net/Bertsioa/");
                         URLConnection uc = url.openConnection();
                         uc.connect();
                         BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
@@ -398,6 +361,13 @@ public class Menua extends Activity {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
+
+    public void exceptionTracker(Exception e){
+        Tracker myTracker = EasyTracker.getInstance(Menua.this);
+        myTracker.send(MapBuilder.createException(new StandardExceptionParser(Menua.this, null)
+                .getDescription(Thread.currentThread().getName(), e), false).build());
+    }
+
 
     @Override
     public void onStart() {

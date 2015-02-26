@@ -42,29 +42,29 @@ public class Elkarteak extends Activity {
         db.zabaldu();
         if(ekintza_id<0){
             try{
-                Cursor cursor = db.autorLortuDanak();
+                Cursor cursor = db.elkarteaLortuDanak();
                 do {
                     String izena = cursor.getString(0).replace(" ","");
                     arr_data.add(new List_Sarrera(logoa(izena), cursor.getString(0), cursor.getString(1), cursor.getString(2)));
                 } while(cursor.moveToNext());
             }catch (Exception e){
-                Log.e("arr_data-datubasetik-Elkarteak", e.toString());
+                Log.e("arr_data-Elkarteak", e.toString());
                 Tracker myTracker = EasyTracker.getInstance(Elkarteak.this);
                 myTracker.send(MapBuilder.createException(new StandardExceptionParser(Elkarteak.this, null)
                         .getDescription(Thread.currentThread().getName(), e), false).build());
             }
         }else {
             try{
-                Cursor c = db.autorLortuId(ekintza_id);
+                Cursor c = db.elkarteaLortuId(ekintza_id);
                 do{
-                    Cursor cautor = db.autorLortu(Integer.parseInt(c.getString(0)));
+                    Cursor cautor = db.elkarteaLortu(Integer.parseInt(c.getString(0)));
                     do {
                         String izena = cautor.getString(0).replace(" ","");
                         arr_data.add(new List_Sarrera(logoa(izena), cautor.getString(0), cautor.getString(1), cautor.getString(2)));
                     } while(cautor.moveToNext());
                 }while (c.moveToNext());
             }catch (Exception e){
-                Log.e("arr_data-datubasetik-Elkarteak",e.toString());
+                Log.e("arr_data-Elkarteak",e.toString());
                 Tracker myTracker = EasyTracker.getInstance(Elkarteak.this);
                 myTracker.send(MapBuilder.createException(new StandardExceptionParser(Elkarteak.this, null)
                         .getDescription(Thread.currentThread().getName(), e), false).build());

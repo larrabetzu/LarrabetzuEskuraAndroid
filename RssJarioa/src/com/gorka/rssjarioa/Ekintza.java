@@ -86,7 +86,8 @@ public class Ekintza extends Activity {
             ekintza_lekue.setText(cursor.getString(2));
             ekintza_deskribapena.setText(cursor.getString(3));
             link = cursor.getString(4);
-            url = cursor.getString(5);
+            String urlDb = cursor.getString(5);
+            url = urlDb.substring(0,urlDb.length()-4)+".medium."+urlDb.substring(urlDb.length()-3);
         } while(cursor.moveToNext());
 
         if (link != null){

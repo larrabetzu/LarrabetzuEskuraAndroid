@@ -10,11 +10,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.StrictMode;
 import android.util.Log;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -26,33 +36,39 @@ public class DbEgokitua {
     final Context context;
     DatabaseHelper DBHelper;
     SQLiteDatabase db;
-    
     /*
-	 * TABLE principal_autor
+	 * TABLE principal_elkartea
 	 */
-	static final String TAULA_autor= "principal_autor";
+	static final String TAULA_elkartea= "principal_elkartea";
+    static final String AUT_ID = "id";
 	static final String AUT_NOR = "nor";
 	static final String AUT_EMAIL = "email";
 	static final String AUT_WEBGUNEA = "webgunea";
-    
+    static final String AUT_CREATED = "created_at";
+    static final String AUT_UPDATED = "updated_at";
+    static final String AUT_DESKRIBAPENA = "deskribapena";
+    static final String AUT_IKONOA = "ikonoa";
+    static final String AUT_GOIBURUAK = "goiburuak";
 	/*
 	 * TABLE principal_ekintza
 	 */
     static final String TAULA_ekintza= "principal_ekintza";
     static final String KEY_TITULOA = "tituloa";
     static final String KEY_LEKUA = "lekua";
-	static final String KEY_PUB_DATE="pub_date"; //publikatutako data
-	static final String KEY_EGUNE="egune";		 // ekitaldian egune
-	static final String KEY_DESKRIBAPENA="deskribapena";
-    static final String KEY_link="link";
-    static final String KEY_kartela_link="kartela_link";
+	static final String KEY_CREATED ="created_at";
+    static final String KEY_UPDATED ="updated_at";
+	static final String KEY_EGUNE="egune";
+    static final String KEY_AMAIERA ="amaiera";
+    static final String KEY_DESKRIBAPENA="deskribapena";
+    static final String KEY_LINK ="link";
+    static final String KEY_KARTELA ="kartela";
 	static final String KEY_JAKINARAZPENA1="jakinarazpena_1";
 	/*
 	 * TABLE principal_ekintza_sortzailea
 	 */
 	static final String TAULA_ekintza_sortzailea= "principal_ekintza_sortzailea";
     static final String SOR_EKINTZA="ekintza_id";
-    static final String SOR_AUTOR="autor_id";
+    static final String SOR_elkartea="elkartea_id";
     /*
      * TABLE blog_link
      */
@@ -62,32 +78,40 @@ public class DbEgokitua {
     static final String LINK_LINK = "link";
     static final String LINK_PUB_DATE = "blog_pub_date";
 
-	static final int DB_BERTSIOA = 14;
+
+	static final int DB_BERTSIOA = 15;
     static final String DB_IZENA = "NireDB";
     
     
-    static final String DB_TAULA_autor = "CREATE TABLE principal_autor ("+
+    static final String DB_TAULA_elkartea = "CREATE TABLE principal_elkartea ("+
 						    	    "id integer NOT NULL PRIMARY KEY,"+
 						    	    "nor varchar(30) NOT NULL,"+
 						    	    "email varchar(75) NOT NULL,"+
-						    	    "webgunea varchar(200) NOT NULL); ";
+						    	    "webgunea varchar(200) NOT NULL," +
+                                    "created_at datetime NOT NULL," +
+                                    "updated_at datetime NOT NULL," +
+                                    "deskribapena varchar(600) NOT NULL," +
+                                    "ikonoa varchar(100) NOT NULL," +
+                                    "goiburuak varchar(100) NOT NULL);";
 
     static final String DB_TAULA_ekintza ="CREATE TABLE principal_ekintza ("+
 									"id integer NOT NULL PRIMARY KEY,"+
 									"tituloa varchar(100) NOT NULL,"+
                                     "lekua varchar(100) NOT NULL,"+
 									"egune datetime NOT NULL,"+
+                                    "amaiera datetime NOT NULL,"+
 									"deskribapena varchar(600) NOT NULL,"+
                                     "link varchar(200)," +
-                                    "kartela_link varchar(100),"+
-									"pub_date datetime NOT NULL,"+
+                                    "kartela varchar(100),"+
+									"created_at datetime NOT NULL,"+
+                                    "updated_at datetime NOT NULL,"+
 									"jakinarazpena_1 bool NOT NULL);";
 
     static final String DB_TAULA_ekintza_sortzailea = "CREATE TABLE principal_ekintza_sortzailea ("+
 						    	    "id integer NOT NULL PRIMARY KEY,"+
 						    	    "ekintza_id integer NOT NULL,"+
-						    	    "autor_id integer NOT NULL REFERENCES principal_autor (id),"+
-						    	    "UNIQUE (ekintza_id, autor_id)); ";
+						    	    "elkartea_id integer NOT NULL REFERENCES principal_elkartea (id),"+
+						    	    "UNIQUE (ekintza_id, elkartea_id)); ";
 						    	    
 						    	    
 	static final String DB_TAULA_blog_links = "CREATE TABLE blog_links (" +
@@ -115,7 +139,7 @@ public class DbEgokitua {
             public void onCreate(SQLiteDatabase db)
             {
                 try {
-                    db.execSQL(DB_TAULA_autor);
+                    db.execSQL(DB_TAULA_elkartea);
                     db.execSQL(DB_TAULA_ekintza);
                     db.execSQL(DB_TAULA_ekintza_sortzailea);
                     db.execSQL(DB_TAULA_blog_links);
@@ -128,227 +152,114 @@ public class DbEgokitua {
                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
                     StrictMode.setThreadPolicy(policy);
                     /**
-                     * db autor internetetik aktualizatu
+                     * db elkartea internetetik sortu
                      *
                      */
-                    int numero=0;
-                    String webgunea=null;
-                    String email=null;
-                    String nor;
-                    int foo = 0;
-                    try {
-                        URL url = new URL("http://37.139.15.79/wsElkarteak/");
-                        URLConnection uc = url.openConnection();
-                        uc.connect();
-                        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-                        String inputLine=in.readLine();
-                        while (inputLine != null) {
-                            String palabra="";
-                            for(int x=0;x<inputLine.length();x++){
-                                char carac=inputLine.charAt(x);
-                                if(carac!='"'){
-                                    palabra=palabra+carac;
-                                }else{
-                                    foo = foo +1;
-                                    if(0!=foo%2){
-                                        // todas las palabras menos la ultima
-                                        switch (numero){
-                                            case 1:webgunea=palabra.replace(",", "");           numero=0; break;
-                                            case 2:email=palabra.replace(",", "");       numero=0; break;
-                                            case 3:nor=palabra.replace("}},", "").replace("{", "");         numero=0;
-                                                ContentValues initialValues = new ContentValues();
-                                                initialValues.put(AUT_NOR, nor);
-                                                initialValues.put(AUT_EMAIL, email);
-                                                initialValues.put(AUT_WEBGUNEA, webgunea);
-                                                long id =db.insert(TAULA_autor, null, initialValues);
-                                                if (id==-1) {
-                                                    Log.d(nor, "Ez da gehitu autor");
-                                                }else {
-                                                    Log.d(nor, "+autor");    }break;
-                                        }
-                                        if(palabra.contains("webgunea:")){
-                                            numero=1;
-                                        }
-                                        if(palabra.contains("email:")){
-                                            numero=2;
-                                        }
-                                        if(palabra.contains("nor:")){
-                                            numero=3;
-                                        }
-                                        palabra="";
-                                    }
+                    JSONArray jarrayElkarteak = elkarteakSortu();
+                    for (int i = 0; i < jarrayElkarteak.length(); i++) {
+                        try {
+                            JSONObject c = jarrayElkarteak.getJSONObject(i);
+                            int pk = Integer.parseInt(c.getString("pk"));
+                            String info = c.getString("fields");
+                            JSONObject fields = new JSONObject(info);
+                            String nor = fields.getString(AUT_NOR);
+                            String email = fields.getString(AUT_EMAIL);
+                            String webgunea = fields.getString(AUT_WEBGUNEA);
+                            String created = fields.getString(AUT_CREATED);
+                            String updated = fields.getString(AUT_UPDATED);
+                            String deskribapena = fields.getString(AUT_DESKRIBAPENA);
+                            String ikonoa = fields.getString(AUT_IKONOA);
+                            String goiburua = fields.getString(AUT_GOIBURUAK);
+
+                            try {
+                                ContentValues initialValues = new ContentValues();
+                                initialValues.put(AUT_ID, pk);
+                                initialValues.put(AUT_NOR, nor);
+                                initialValues.put(AUT_EMAIL, email);
+                                initialValues.put(AUT_WEBGUNEA, webgunea);
+                                initialValues.put(AUT_CREATED, created);
+                                initialValues.put(AUT_UPDATED, updated);
+                                initialValues.put(AUT_DESKRIBAPENA, deskribapena);
+                                initialValues.put(AUT_IKONOA, ikonoa);
+                                initialValues.put(AUT_GOIBURUAK, goiburua);
+
+                                long id = db.insert(TAULA_elkartea, null, initialValues);
+                                if (id == -1) {
+                                    Log.d(nor, "Ez da gehitu elkartea");
+                                } else {
+                                    Log.d(nor, "+elkartea");
                                 }
+                            } catch (Exception e) {
+                                Log.e("elkarteasortu",e.toString());
                             }
-                            nor=palabra.replace("}}]","");
-                            ContentValues initialValues = new ContentValues();
-                            initialValues.put(AUT_NOR, nor);
-                            initialValues.put(AUT_EMAIL, email);
-                            initialValues.put(AUT_WEBGUNEA, webgunea);
-                            long id =db.insert(TAULA_autor, null, initialValues);
-                            if (id==-1) {
-                                Log.d(nor, "Ez da gehitu autor");
-                            }else {
-                                Log.d(nor, "+autor");
-                            }
-                            inputLine=in.readLine();
                         }
-                        in.close();
-                    } catch (Exception e) {
-                        Log.e("autorsortu",e.toString());
+                        catch (JSONException e) {
+                            Log.e("Elkarteak",e.toString());
+                        }
                     }
                     /**
-                     * db ekintza internetetik aktualizatu
+                     * db ekintza internetetik sortu
                      *
                      */
-                    numero=0;
-                    String egune = null;
-                    String sortzailea;
-                    String tituloa = null;
-                    String link = null;
-                    String kartela_link = null;
-                    String deskribapena = null;
-                    String lekua = null;
-                    String pub_date;
-                    foo = 0;
-                    String substring = null;
-                    try {
-                        URL url = new URL("http://37.139.15.79/wsEkintza/");
-                        URLConnection uc = url.openConnection();
-                        uc.connect();
-                        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-                        String inputLine=in.readLine();
-                        while (inputLine != null) {
-                            String palabra="";
-                            for(int x=0;x<inputLine.length();x++){
-                                char carac=inputLine.charAt(x);
-                                if(carac!='"'){
+                    JSONArray jarrayEkintzak = ekintzakSortu();
+                    for (int i = 0; i < jarrayEkintzak.length(); i++) {
+                        try {
+                            JSONObject c = jarrayEkintzak.getJSONObject(i);
+                            int pk = Integer.parseInt(c.getString("pk"));
+                            String info = c.getString("fields");
+                            JSONObject fields = new JSONObject(info);
+                            String tituloa = fields.getString(KEY_TITULOA);
+                            String lekua = fields.getString(KEY_LEKUA);
+                            String egune = fields.getString(KEY_EGUNE);
+                            String amaiera = fields.getString(KEY_AMAIERA);
+                            String deskribapena = fields.getString(KEY_DESKRIBAPENA);
+                            String link = fields.getString(KEY_LINK);
+                            String kartela = fields.getString(KEY_KARTELA);
+                            String created_at = fields.getString(KEY_CREATED);
+                            String updated_at = fields.getString(KEY_UPDATED);
 
-                                    palabra=palabra+carac;
+                            Log.e("elkartea =>", pk+" "+tituloa);
+
+                            try {
+                                ContentValues initialValues = new ContentValues();
+                                initialValues.put("id", pk);
+                                initialValues.put(KEY_EGUNE, egune);
+                                initialValues.put(KEY_AMAIERA, amaiera);
+                                initialValues.put(KEY_LEKUA,lekua);
+                                initialValues.put(KEY_TITULOA, tituloa);
+                                initialValues.put(KEY_LINK,link);
+                                initialValues.put(KEY_KARTELA,"http://larrabetzu.net/media/"+kartela);
+                                initialValues.put(KEY_CREATED, created_at);
+                                initialValues.put(KEY_UPDATED, updated_at);
+                                initialValues.put(KEY_DESKRIBAPENA, deskribapena);
+                                initialValues.put(KEY_JAKINARAZPENA1, false);
+                                long id = db.insert(TAULA_ekintza, null, initialValues);
+                                if (id == -1){
+                                    Log.d(tituloa, "Ez da ekintzarik gehitu");
                                 }else{
-                                    foo = foo +1;
-                                    if(0!=foo%2){
-                                        // todas las palabras menos la ultima
-                                        switch (numero){
-                                            case 1:tituloa = palabra.replace("\"", "").replace(",", "");
-                                                    numero=0; break;
-                                            case 2:deskribapena = palabra.replace("\"", "").replace("}},", "").replace(",","");
-                                                    numero=0; break;
-                                            case 4:lekua = palabra.replace("[", "").replace("]", "").replace(",", "");
-                                                    numero=0; break;
-                                            case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z","");
-                                                    numero=0; break;
-                                            case 6:link = null;
-                                                    if(palabra.replace("\"", "").replace(",", "").length()>6){
-                                                    link = palabra.replace("\"", "").replace(",", "");}
-                                                    numero=0; break;
-                                            case 7:kartela_link = null;
-                                                    if (palabra.replace("\"", "").replace(",", "").length()>4){
-                                                    kartela_link = "http://37.139.15.79/media/"+palabra.replace("\"", "").replace(",", "");
-                                                    }
-                                                    numero=0; break;
-                                            case 8:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19);
-                                                    numero=0;
-                                                ContentValues initialValues = new ContentValues();
-                                                initialValues.put(KEY_EGUNE, egune);
-                                                initialValues.put(KEY_LEKUA,lekua);
-                                                initialValues.put(KEY_TITULOA, tituloa);
-                                                initialValues.put(KEY_PUB_DATE, pub_date);
-                                                initialValues.put(KEY_link,link);
-                                                initialValues.put(KEY_kartela_link,kartela_link);
-                                                initialValues.put(KEY_DESKRIBAPENA, deskribapena);
-                                                initialValues.put(KEY_JAKINARAZPENA1, false);
-                                                long id =db.insert(TAULA_ekintza, null, initialValues);
-                                                Log.i("id",""+id);
-                                                if (id==-1) {Log.d(tituloa, "Ez da ekintzarik gehitu");
-                                                }else {Log.d(tituloa, "+ ekintza");
-                                                    for (int i = 0; i < substring.replace(",", "").length(); i++){
-                                                        if(substring.charAt(i)!=','){
-                                                            if(substring.charAt(i+1)!=','){
-                                                                sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
-                                                                i++;
-                                                            }else{
-                                                                sortzailea = substring.charAt(i)+"";
-                                                            }
-                                                            ContentValues initialValuesSortzailea = new ContentValues();
-                                                            initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
-                                                            initialValuesSortzailea.put(SOR_EKINTZA, id);
-                                                            long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-                                                            if (idsor==-1) {Log.e(sortzailea, "Ez da sortzailea gehitu");
-                                                            }else {Log.i(sortzailea,"+ sortzailea");}
-                                                        }
-                                                   }
-                                                }
-                                                break;
-                                        }
-                                        if(palabra.contains("tituloa:") ){
-                                            numero=1;
-                                        }
-                                        if(palabra.contains("deskribapena:")){
-                                            numero=2;
-                                        }
-                                        if(palabra.contains("sortzailea:")){
-                                            substring = palabra.substring(13).replace("]", "").replace(" ","");
-                                        }
-                                        if(palabra.contains("lekua:") ){
-                                            numero=4;
-                                        }
-                                        if(palabra.contains("egune:") ){
-                                            numero=5;
-                                        }
-                                        if(palabra.contains("link:") ){
-                                            numero=6;
-                                        }
-                                        if(palabra.contains("kartela:") ){
-                                            numero=7;
-                                        }
-                                        if(palabra.contains("pub_date:")){
-                                            numero=8;
-                                        }
-
-                                        palabra="";
-                                    }
-                                }
-
-                            }
-                            //ultima palabra antes de terminar
-                            pub_date=palabra.replace("}}]", "").replace("\"","").replace("T", " ").replace("Z","").substring(0, 19);
-                            ContentValues initialValues = new ContentValues();
-                            initialValues.put(KEY_EGUNE, egune);
-                            initialValues.put(KEY_LEKUA,lekua);
-                            initialValues.put(KEY_TITULOA, tituloa);
-                            initialValues.put(KEY_link,link);
-                            initialValues.put(KEY_kartela_link,kartela_link);
-                            initialValues.put(KEY_PUB_DATE, pub_date);
-                            initialValues.put(KEY_DESKRIBAPENA, deskribapena);
-                            initialValues.put(KEY_JAKINARAZPENA1, false);
-                            long id =db.insert(TAULA_ekintza, null, initialValues);
-                            if (id==-1){
-                                Log.d(tituloa, "Ez da ekintzarik gehitu");
-                            }else{
-                                Log.d(tituloa, "+ ekintza");
-
-                                for (int i = 0; i < substring.replace(",", "").length(); i++){
-                                    if(substring.charAt(i)!=','){
-                                        if(substring.charAt(i+1)!=','){
-                                            sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
-                                            i++;
-                                        }else{
-                                            sortzailea = substring.charAt(i)+"";
-                                        }
+                                    JSONArray sortzaileak = fields.getJSONArray("sortzailea");
+                                    Log.e("sortzaileak", sortzaileak+" ");
+                                    for (int s = 0; s < sortzaileak.length(); s++) {
+                                        int sortzaileaID = sortzaileak.getInt(s);
+                                        Log.e("sortzailea ID", sortzaileaID+"");
+                                        Log.d(tituloa, "+ ekintza");
                                         ContentValues initialValuesSortzailea = new ContentValues();
-                                        initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
+                                        initialValuesSortzailea.put(SOR_elkartea, sortzaileaID);
                                         initialValuesSortzailea.put(SOR_EKINTZA, id);
-                                        long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-                                        if (idsor==-1) {Log.e(sortzailea, "Ez da sortzailea gehitu");
-                                        }else {Log.i(sortzailea,"+ sortzailea");}
+                                        long idsor = db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
+                                        if (idsor == -1) {
+                                            Log.e(""+sortzaileaID, "Ez da sortzailea gehitu");
+                                        }else {
+                                            Log.i(""+sortzaileaID,"+ sortzailea");
+                                        }
                                     }
                                 }
+                            } catch (Exception e) {
+                                Log.e("elkarteasortu",e.toString());
                             }
-                            inputLine=in.readLine();//Leemos una nueva inputLine
+                        }catch (JSONException e) {
+                            Log.e("Elkarteak",e.toString());
                         }
-                        in.close();
-                    } catch (Exception e) {
-                        Log.e("ekintzasortu", e.toString());
                     }
                 } catch (SQLException e) {
                     Log.e("sql", "Taula ez da sortu ");
@@ -360,7 +271,7 @@ public class DbEgokitua {
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
             {
                 Log.w("DbEgokitua", "Datu-basearen bertsioa eguneratzen " + oldVersion + " tik " + newVersion +"-ra" +", datu zahar guztiak kenduko dira");
-                db.execSQL("DROP TABLE IF EXISTS principal_autor");
+                db.execSQL("DROP TABLE IF EXISTS principal_elkartea");
                 db.execSQL("DROP TABLE IF EXISTS principal_ekintza_sortzailea");
                 db.execSQL("DROP TABLE IF EXISTS principal_ekintza");
                 db.execSQL("DROP TABLE IF EXISTS blog_links");
@@ -392,203 +303,401 @@ public class DbEgokitua {
         }
     }
 
-    public int eguneratuEkintzak()
-    {
-        int zenbat = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        java.util.Date fecha1 = null;
-        java.util.Date fecha2 = null;
+    private static JSONArray elkarteakSortu(){
 
-        String query = "SELECT MAX(pub_date) AS max  FROM "+TAULA_ekintza;
-        Cursor cursor = db.rawQuery(query, null);
-        String azken_pub_date = null;
-        if (cursor.moveToFirst()) {
-            do {
-                try{
-                azken_pub_date = cursor.getString(0);
-                if (azken_pub_date == null){
-                    azken_pub_date =  "2013-01-21 12:00:00";
-                }
-                }catch (Exception e){
-                    Log.e("DbEgokitua-azken_pub_date",e.toString());
-                    azken_pub_date = "2013-01-21 12:00:00";
-                }
-            } while(cursor.moveToNext());
-        }
-        Log.e("azken_pub_date-DbEgokitua",azken_pub_date);
-
-        try{
-            fecha1 = sdf.parse(azken_pub_date , new ParsePosition(0));
-        }catch (Exception e){
-            Log.e("String to date-DbEgokitua",e.toString());
-        }
-        /**
-         * db ekintza internetetik aktualizatu
-         */
-        int numero=0;
-        String egune=null;
-        String sortzailea;
-        String tituloa=null;
-        String link = null;
-        String kartela_link = null;
-        String pub_date;
-        String deskribapena=null;
-        String lekua=null;
-        int foo = 0;
-        String substring = null;
+        String json = getJson("http://larrabetzu.net/wsElkarteak/");
         try {
-            URL url = new URL("http://37.139.15.79/wsEkintza/");
-            URLConnection uc = url.openConnection();
-            uc.connect();
-            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
-            String inputLine=in.readLine();
-            while (inputLine != null) {
-                String palabra="";
-                for(int x=0;x<inputLine.length();x++){
-                    char carac=inputLine.charAt(x);
-                    if(carac!='"'){
-                        palabra=palabra+carac;
-                    }else{
-                        foo = foo +1;
-                        if(0!=foo%2){
-                            // todas las palabras menos la ultima
-                            switch (numero){
-                                case 1:tituloa = palabra.replace("\"", "").replace(",", "");                        numero=0; break;
-                                case 2:deskribapena = palabra.replace("\"", "").replace("}},", "").replace(",",""); numero=0; break;
-                                case 4:lekua = palabra.replace("[", "").replace("]", "").replace(",", "");          numero=0; break;
-                                case 5:egune = palabra.replace("\"", "").replace(",", "").replace("T"," ").replace("Z",""); numero=0; break;
-                                case 6:link = null;
-                                        if(palabra.replace("\"", "").replace(",", "").length()>6){
-                                        link = palabra.replace("\"", "").replace(",", "");}numero=0; break;
-                                case 7:kartela_link = null;
-                                       if (palabra.replace("\"", "").replace(",", "").length()>4){
-                                       kartela_link = "http://37.139.15.79/media/"+palabra.replace("\"", "").replace(",", "");}numero=0; break;
-                                case 8:pub_date = palabra.replace("\"", "").replace(",", "").replace("T", " ").replace("Z","").replace("}}", "").substring(0, 19); numero=0;
-                                    try{
-                                    fecha2 = sdf.parse(pub_date , new ParsePosition(0));
-                                    }catch (Exception e){
-                                        Log.e("Parse date",e.toString());
-                                    }
-                                    if(fecha1.before(fecha2)){
-                                        ContentValues initialValues = new ContentValues();
-                                        initialValues.put(KEY_EGUNE, egune);
-                                        initialValues.put(KEY_LEKUA,lekua);
-                                        initialValues.put(KEY_TITULOA, tituloa);
-                                        initialValues.put(KEY_link,link);
-                                        initialValues.put(KEY_kartela_link,kartela_link);
-                                        initialValues.put(KEY_PUB_DATE, pub_date);
-                                        initialValues.put(KEY_DESKRIBAPENA, deskribapena);
-                                        initialValues.put(KEY_JAKINARAZPENA1, false);
-                                        long id =db.insert(TAULA_ekintza, null, initialValues);
-                                        Log.i("id",""+id);
-                                        if (id==-1) {Log.d(tituloa, "Ez da ekintzarik gehitu");
-                                        }else {Log.d(tituloa, "+ ekintza");
-                                            for (int i = 0; i < substring.replace(",", "").length(); i++){
-                                                if(substring.charAt(i)!=','){
-                                                    if(substring.charAt(i+1)!=','){
-                                                        sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
-                                                        i++;
-                                                    }else{
-                                                        sortzailea = substring.charAt(i)+"";
-                                                    }
-                                                    ContentValues initialValuesSortzailea = new ContentValues();
-                                                    initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
-                                                    initialValuesSortzailea.put(SOR_EKINTZA, id);
-                                                    long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-                                                    if (idsor==-1) {Log.e(sortzailea, "Ez da sortzailea gehitu");
-                                                    }else {Log.i(sortzailea,"+ sortzailea");}
-                                                }
-                                            }
-                                        }
-                                    }
-                                    zenbat++;
-                                    break;
-                            }
-                            if(palabra.contains("tituloa:") ){
-                                numero=1;
-                            }
-                            if(palabra.contains("deskribapena:")){
-                                numero=2;
-                            }
-                            if(palabra.contains("sortzailea:")){
-                                substring = palabra.substring(13).replace("]", "");
-                            }
-                            if(palabra.contains("lekua:") ){
-                                numero=4;
-                            }
-                            if(palabra.contains("egune:") ){
-                                numero=5;
-                            }
-                            if(palabra.contains("link:") ){
-                                numero=6;
-                            }
-                            if(palabra.contains("kartela:") ){
-                                numero=7;
-                            }
-                            if(palabra.contains("pub_date:")){
-                                numero=8;
-                            }
-                            palabra="";
-                        }
-                    }
+            return new JSONArray(json);
+        } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+        return null;
+    }
 
-                }
-                //ultima palabra antes de terminar
-                pub_date=palabra.replace("}}]", "").replace("\"","").replace("T", " ").replace("Z","").substring(0, 19);
-                try{
-                    fecha2 = sdf.parse(pub_date , new ParsePosition(0));
-                }catch (Exception e){
-                    Log.e("Parse date",e.toString());
-                }
-                if(fecha1.before(fecha2)){
-                    ContentValues initialValues = new ContentValues();
-                    initialValues.put(KEY_EGUNE, egune);
-                    initialValues.put(KEY_LEKUA,lekua);
-                    initialValues.put(KEY_TITULOA, tituloa);
-                    initialValues.put(KEY_link,link);
-                    initialValues.put(KEY_kartela_link,kartela_link);
-                    initialValues.put(KEY_PUB_DATE, pub_date);
-                    initialValues.put(KEY_DESKRIBAPENA, deskribapena);
-                    initialValues.put(KEY_JAKINARAZPENA1, false);
-                    long id =db.insert(TAULA_ekintza, null, initialValues);
-                    if (id==-1){
-                        Log.d(tituloa, "Ez da ekintzarik gehitu");
-                    }else{
-                        Log.d(tituloa, "+ ekintza");
+    private static JSONArray ekintzakSortu(){
 
-                        for (int i = 0; i < substring.replace(",", "").length(); i++){
-                            if(substring.charAt(i)!=','){
-                                if(substring.charAt(i+1)!=','){
-                                    sortzailea = substring.charAt(i)+""+substring.charAt(i+1);
-                                    i++;
-                                }else{
-                                    sortzailea = substring.charAt(i)+"";
-                                }
-                                ContentValues initialValuesSortzailea = new ContentValues();
-                                initialValuesSortzailea.put(SOR_AUTOR, sortzailea);
-                                initialValuesSortzailea.put(SOR_EKINTZA, id);
-                                long idsor=db.insert(TAULA_ekintza_sortzailea,null,initialValuesSortzailea);
-                                if (idsor==-1) {Log.d(sortzailea, "Ez da sortzailea gehitu");
-                                }else {Log.d(sortzailea,"+ sortzailea");}
-                            }
-                        }
-                    }
+        String json = getJson("http://larrabetzu.net/wsEkintza/");
+        try {
+            return new JSONArray(json);
+        } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+        return null;
+
+    }
+
+    private static String getJson(String url) {
+        StringBuilder builder = new StringBuilder();
+        HttpClient client = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet(url);
+        try {
+            HttpResponse response = client.execute(httpGet);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
                 }
-                zenbat++;
-                inputLine=in.readLine();
+            } else {
+                Log.e("Elkarteak", "Failed to download file");
             }
-            in.close();
-        }catch (FileNotFoundException e){
-            Log.e("DbEgokitua-ekintzasortu","ezin da serbitzariarekin konektatu");
-        } catch (Exception e) {
-            Log.e("DbEgokitua-ekintzasortu", e.toString());
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return zenbat;
+        return builder.toString();
     }
 
-    public Cursor autorLortuDanak()
+    private void ekintzaBarriakSartu(JSONArray jarrayEkintzak){
+        for (int i = 0; i < jarrayEkintzak.length(); i++) {
+            try {
+                JSONObject c = jarrayEkintzak.getJSONObject(i);
+                int pk = Integer.parseInt(c.getString("pk"));
+                String info = c.getString("fields");
+                JSONObject fields = new JSONObject(info);
+
+                String tituloa = fields.getString(KEY_TITULOA);
+                String lekua = fields.getString(KEY_LEKUA);
+                String egune = fields.getString(KEY_EGUNE);
+                String amaiera = fields.getString(KEY_AMAIERA);
+                String deskribapena = fields.getString(KEY_DESKRIBAPENA);
+                String link = fields.getString(KEY_LINK);
+                String kartela = fields.getString(KEY_KARTELA);
+                String created_at = fields.getString(KEY_CREATED);
+                String updated_at = fields.getString(KEY_UPDATED);
+
+                String query = "SELECT MAX(id) AS max_id FROM " + TAULA_ekintza;
+                Cursor cursor = db.rawQuery(query, null);
+                int idMax = 0;
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            idMax = Integer.parseInt(cursor.getString(0));
+                            Log.i("max (id)", idMax+"");
+
+                        } catch (Exception e) {
+                            Log.e("DbE-max id", e.toString());
+                        }
+                    } while (cursor.moveToNext());
+                }
+                if (idMax < pk) {
+                    try {
+                        ContentValues initialValues = new ContentValues();
+                        initialValues.put("id", pk);
+                        initialValues.put(KEY_EGUNE, egune);
+                        initialValues.put(KEY_AMAIERA, amaiera);
+                        initialValues.put(KEY_LEKUA, lekua);
+                        initialValues.put(KEY_TITULOA, tituloa);
+                        initialValues.put(KEY_LINK, link);
+                        initialValues.put(KEY_KARTELA, "http://larrabetzu.net/media/" + kartela);
+                        initialValues.put(KEY_CREATED, created_at);
+                        initialValues.put(KEY_UPDATED, updated_at);
+                        initialValues.put(KEY_DESKRIBAPENA, deskribapena);
+                        initialValues.put(KEY_JAKINARAZPENA1, false);
+                        long id = db.insert(TAULA_ekintza, null, initialValues);
+                        if (id == -1) {
+                            Log.d(tituloa, "Ez da ekintzarik gehitu");
+                        } else {
+                            JSONArray sortzaileak = fields.getJSONArray("sortzailea");
+                            Log.e("sortzaileak", sortzaileak + " ");
+                            for (int s = 0; s < sortzaileak.length(); s++) {
+                                int sortzaileaID = sortzaileak.getInt(s);
+                                Log.e("sortzailea ID", sortzaileaID + "");
+                                Log.d(tituloa, "+ ekintza");
+                                ContentValues initialValuesSortzailea = new ContentValues();
+                                initialValuesSortzailea.put(SOR_elkartea, sortzaileaID);
+                                initialValuesSortzailea.put(SOR_EKINTZA, id);
+                                long idsor = db.insert(TAULA_ekintza_sortzailea, null, initialValuesSortzailea);
+                                if (idsor == -1) {
+                                    Log.e("" + sortzaileaID, "Ez da sortzailea gehitu");
+                                } else {
+                                    Log.i("" + sortzaileaID, "+ sortzailea");
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e("elkarteasortu", e.toString());
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e("Elkarteak", e.toString());
+            } catch (Exception e) {
+                Log.e("Eguneratu", e.toString());
+            }
+        }
+    }
+
+    private void eguneratuEkintzak(JSONArray jarrayEkintzak){
+        for (int i = 0; i < jarrayEkintzak.length(); i++) {
+            try {
+                JSONObject c = jarrayEkintzak.getJSONObject(i);
+                int pk = Integer.parseInt(c.getString("pk"));
+                String info = c.getString("fields");
+                JSONObject fields = new JSONObject(info);
+
+                String tituloa = fields.getString(KEY_TITULOA);
+                String lekua = fields.getString(KEY_LEKUA);
+                String egune = fields.getString(KEY_EGUNE);
+                String amaiera = fields.getString(KEY_AMAIERA);
+                String deskribapena = fields.getString(KEY_DESKRIBAPENA);
+                String link = fields.getString(KEY_LINK);
+                String kartela = fields.getString(KEY_KARTELA);
+                String created_at = fields.getString(KEY_CREATED);
+                String updated_at = fields.getString(KEY_UPDATED);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);
+                java.util.Date dbAzkenUpdated = null;
+                java.util.Date ekitaldiaUpdated = null;
+
+                String query = "SELECT updated_at FROM " + TAULA_ekintza +" WHERE id ="+pk;
+                Cursor cursor = db.rawQuery(query, null);
+                String updated_at_db = null;
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            updated_at_db = cursor.getString(0);
+                            Log.i("update", updated_at_db);
+
+                        } catch (Exception e) {
+                            Log.e("DbE-azken_pub_date", e.toString());
+                            updated_at_db = "2015-02-25T16:44:56.441";
+                        }
+                    } while (cursor.moveToNext());
+                }
+                Log.e("azken_pub_date-DbE", updated_at);
+
+                try {
+                    dbAzkenUpdated = sdf.parse(updated_at_db, new ParsePosition(0));
+                } catch (Exception e) {
+                    Log.e("String to date-DbE", e.toString());
+                }
+
+                try {
+                    ekitaldiaUpdated = sdf.parse(updated_at, new ParsePosition(0));
+                } catch (Exception e) {
+                    Log.e("Parse date", e.toString());
+                }
+                if (dbAzkenUpdated.before(ekitaldiaUpdated)) {
+                    try {
+                        ContentValues initialValues = new ContentValues();
+                        initialValues.put("id", pk);
+                        initialValues.put(KEY_EGUNE, egune);
+                        initialValues.put(KEY_AMAIERA, amaiera);
+                        initialValues.put(KEY_LEKUA, lekua);
+                        initialValues.put(KEY_TITULOA, tituloa);
+                        initialValues.put(KEY_LINK, link);
+                        initialValues.put(KEY_KARTELA, "http://larrabetzu.net/media/" + kartela);
+                        initialValues.put(KEY_CREATED, created_at);
+                        initialValues.put(KEY_UPDATED, updated_at);
+                        initialValues.put(KEY_DESKRIBAPENA, deskribapena);
+                        initialValues.put(KEY_JAKINARAZPENA1, false);
+
+                        String[] whereArgs = {pk+""};
+                        int id = db.update(TAULA_ekintza,initialValues,"id",whereArgs);
+                        if (id > 0) {
+                            Log.d(tituloa, "ekintzaEguneratuDa");
+                        }
+                    } catch (Exception e) {
+                        Log.e("elkarteasortu", e.toString());
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e("Elkarteak", e.toString());
+            } catch (Exception e) {
+                Log.e("Eguneratu", e.toString());
+            }
+        }
+    }
+
+    public void eguneratuEkintzak() {
+
+        JSONArray jarrayEkintzak = ekintzakSortu();
+        int zenbatEkintzaAPI = jarrayEkintzak.length();
+        String queryZenbatEkintza = "SELECT COUNT(*) AS NumberOfOrders FROM "+TAULA_ekintza;
+        Cursor cursorZenbatEkintza = db.rawQuery(queryZenbatEkintza, null);
+        int zenbatEkintzaDB = 0;
+        if (cursorZenbatEkintza.moveToFirst()) {
+            do { zenbatEkintzaDB = cursorZenbatEkintza.getInt(0);
+            } while(cursorZenbatEkintza.moveToNext());
+        }
+        cursorZenbatEkintza.close();
+        Log.i("zenbatEkintzaDB",zenbatEkintzaDB+"");
+        Log.i("zenbatEkintzaAPI",zenbatEkintzaAPI+"");
+        if(zenbatEkintzaAPI > zenbatEkintzaDB){
+            ekintzaBarriakSartu(jarrayEkintzak);
+        }else{
+            eguneratuEkintzak(jarrayEkintzak);
+        }
+    }
+
+    private void elkarteBarriakSartu(JSONArray jarrayElkarteak){
+        for (int i = 0; i < jarrayElkarteak.length(); i++) {
+            try {
+                JSONObject c = jarrayElkarteak.getJSONObject(i);
+                int pk = Integer.parseInt(c.getString("pk"));
+                String info = c.getString("fields");
+                JSONObject fields = new JSONObject(info);
+                String nor = fields.getString(AUT_NOR);
+                String email = fields.getString(AUT_EMAIL);
+                String webgunea = fields.getString(AUT_WEBGUNEA);
+                String created = fields.getString(AUT_CREATED);
+                String updated = fields.getString(AUT_UPDATED);
+                String deskribapena = fields.getString(AUT_DESKRIBAPENA);
+                String ikonoa = fields.getString(AUT_IKONOA);
+                String goiburua = fields.getString(AUT_GOIBURUAK);
+
+                String query = "SELECT MAX(id) AS max_id FROM " + TAULA_elkartea;
+                Cursor cursor = db.rawQuery(query, null);
+                int idMax = 0;
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            idMax = Integer.parseInt(cursor.getString(0));
+                            Log.i("max (id)", idMax+"");
+
+                        } catch (Exception e) {
+                            Log.e("DbE-max id", e.toString());
+                        }
+                    } while (cursor.moveToNext());
+                }
+
+                if(idMax < pk){
+                    try {
+                        ContentValues initialValues = new ContentValues();
+                        initialValues.put(AUT_ID, pk);
+                        initialValues.put(AUT_NOR, nor);
+                        initialValues.put(AUT_EMAIL, email);
+                        initialValues.put(AUT_WEBGUNEA, webgunea);
+                        initialValues.put(AUT_CREATED, created);
+                        initialValues.put(AUT_UPDATED, updated);
+                        initialValues.put(AUT_DESKRIBAPENA, deskribapena);
+                        initialValues.put(AUT_IKONOA, ikonoa);
+                        initialValues.put(AUT_GOIBURUAK, goiburua);
+
+                        long id = db.insert(TAULA_elkartea, null, initialValues);
+                        if (id == -1) {
+                            Log.d(nor, "Ez da gehitu elkartea");
+                        } else {
+                            Log.d(nor, "+elkartea");
+                        }
+                    } catch (Exception e) {
+                        Log.e("elkarteasortu",e.toString());
+                    }
+                }
+            }
+            catch (JSONException e) {
+                Log.e("Elkarteak",e.toString());
+            }
+        }
+    }
+
+    private void eguneratuElkarteak(JSONArray jarrayElkarteak){
+        for (int i = 0; i < jarrayElkarteak.length(); i++) {
+            try {
+                JSONObject c = jarrayElkarteak.getJSONObject(i);
+                int pk = Integer.parseInt(c.getString("pk"));
+                String info = c.getString("fields");
+                JSONObject fields = new JSONObject(info);
+
+                String nor = fields.getString(AUT_NOR);
+                String email = fields.getString(AUT_EMAIL);
+                String webgunea = fields.getString(AUT_WEBGUNEA);
+                String created = fields.getString(AUT_CREATED);
+                String updated = fields.getString(AUT_UPDATED);
+                String deskribapena = fields.getString(AUT_DESKRIBAPENA);
+                String ikonoa = fields.getString(AUT_IKONOA);
+                String goiburua = fields.getString(AUT_GOIBURUAK);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH);
+                java.util.Date dbAzkenUpdated = null;
+                java.util.Date elkarteaUpdated = null;
+
+                String query = "SELECT updated_at FROM " + TAULA_elkartea +" WHERE id ="+pk;
+                Cursor cursor = db.rawQuery(query, null);
+                String updated_at_db = null;
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            updated_at_db = cursor.getString(0);
+                            Log.i("update", updated_at_db);
+
+                        } catch (Exception e) {
+                            Log.e("DbE-azken_pub_date", e.toString());
+                            updated_at_db = "2015-02-25T16:44:56.441";
+                        }
+                    } while (cursor.moveToNext());
+                }
+
+                try {
+                    dbAzkenUpdated = sdf.parse(updated_at_db, new ParsePosition(0));
+                } catch (Exception e) {
+                    Log.e("String to date-DbE", e.toString());
+                }
+
+                try {
+                    elkarteaUpdated = sdf.parse(updated, new ParsePosition(0));
+                } catch (Exception e) {
+                    Log.e("Parse date", e.toString());
+                }
+                if (dbAzkenUpdated.before(elkarteaUpdated)) {
+                    try {
+                        ContentValues initialValues = new ContentValues();
+                        initialValues.put(AUT_ID, pk);
+                        initialValues.put(AUT_NOR, nor);
+                        initialValues.put(AUT_EMAIL, email);
+                        initialValues.put(AUT_WEBGUNEA, webgunea);
+                        initialValues.put(AUT_CREATED, created);
+                        initialValues.put(AUT_UPDATED, updated);
+                        initialValues.put(AUT_DESKRIBAPENA, deskribapena);
+                        initialValues.put(AUT_IKONOA, ikonoa);
+                        initialValues.put(AUT_GOIBURUAK, goiburua);
+
+                        String[] whereArgs = {pk+""};
+                        int id = db.update(TAULA_elkartea,initialValues,"id",whereArgs);
+                        if (id > 0) {
+                            Log.d(nor, "ondo eguneratu da");
+                        }
+                    } catch (Exception e) {
+                        Log.e("elkarteaEguneratu", e.toString());
+                    }
+                }
+            } catch (JSONException e) {
+                Log.e("Elkarteak", e.toString());
+            } catch (Exception e) {
+                Log.e("Eguneratu", e.toString());
+            }
+        }
+    }
+
+
+    public void eguneratuElkarteak(){
+        JSONArray jarrayElkarteak = elkarteakSortu();
+        int zenbatEkintzaAPI = jarrayElkarteak.length();
+        String queryZenbatElkartea = "SELECT COUNT(*) AS NumberOfOrders FROM "+TAULA_elkartea;
+        Cursor cursorZenbatEkintza = db.rawQuery(queryZenbatElkartea, null);
+        int zenbatElkarteDB = 0;
+        if (cursorZenbatEkintza.moveToFirst()) {
+            do { zenbatElkarteDB = cursorZenbatEkintza.getInt(0);
+            } while(cursorZenbatEkintza.moveToNext());
+        }
+        cursorZenbatEkintza.close();
+        Log.i("zenbatElkarteDB",zenbatElkarteDB+"");
+        Log.i("zenbatElkarteAPI",zenbatEkintzaAPI+"");
+        if(zenbatEkintzaAPI > zenbatElkarteDB){
+            elkarteBarriakSartu(jarrayElkarteak);
+        }else{
+            eguneratuElkarteak(jarrayElkarteak);
+        }
+    }
+
+    public Cursor elkarteaLortuDanak()
     {
-        String query = "SELECT nor,email,webgunea FROM "+TAULA_autor+" order by nor";
+        String query = "SELECT nor,email,webgunea FROM "+TAULA_elkartea+" order by nor";
         Cursor c = db.rawQuery(query, null);
         if (c != null) {
             c.moveToFirst();
@@ -596,9 +705,9 @@ public class DbEgokitua {
         return c;
     }
 
-    public Cursor autorLortuId(int ekintza_id) throws SQLException
+    public Cursor elkarteaLortuId(int ekintza_id) throws SQLException
     {
-        String query = "SELECT autor_id FROM "+TAULA_ekintza_sortzailea+" WHERE ekintza_id = '"+ekintza_id+"'";
+        String query = "SELECT elkartea_id FROM "+TAULA_ekintza_sortzailea+" WHERE ekintza_id = '"+ekintza_id+"'";
         Cursor c = db.rawQuery(query, null);
         if (c != null) {
             c.moveToFirst();
@@ -606,25 +715,14 @@ public class DbEgokitua {
         return c;
     }
 
-    public Cursor autorLortu(int id)
+    public Cursor elkarteaLortu(int id)
     {
-        String query = "SELECT nor,email,webgunea FROM "+TAULA_autor+" WHERE id = '"+id+"'";
+        String query = "SELECT nor,email,webgunea FROM "+TAULA_elkartea+" WHERE id = '"+id+"'";
         Cursor c = db.rawQuery(query, null);
         if (c != null) {
             c.moveToFirst();
         }
         return c;
-    }
-
-	public int azkenId() 
-	{ 
-            String query = "SELECT MAX(id) AS max_id FROM "+TAULA_ekintza;
-            Cursor cursor = db.rawQuery(query, null);
-            int id = 0;
-            if (cursor.moveToFirst()) {
-                do { id = cursor.getInt(0);
-                } while(cursor.moveToNext());
-            } return id;
     }
 
     public Cursor ekitaldiakid(int urtea,int hilabeta,int egune)
@@ -637,11 +735,17 @@ public class DbEgokitua {
             return cursor;
     }
 
-    public boolean garbitu(int urtea,String hilabetea,String egune, String ordue)
+    public boolean garbitu()
     {
+        final Calendar calendar = Calendar.getInstance();
+        int urtea = calendar.get(Calendar.YEAR);
+        String hilabetea = String.format("%02d",calendar.get(Calendar.MONTH)+1);   //urtarrila=0
+        String egune= String.format("%02d",calendar.get(Calendar.DAY_OF_MONTH));
+        String ordue = String.format("%02d",calendar.get(Calendar.HOUR_OF_DAY));
+
         boolean garbiketa;
         try {
-            String query = "SELECT id FROM "+TAULA_ekintza+" WHERE egune <='"+urtea+"-"+hilabetea+"-"+egune+" "+ordue+":00:00 'order by egune";
+            String query = "SELECT id FROM "+TAULA_ekintza+" WHERE amaiera <='"+urtea+"-"+hilabetea+"-"+egune+"T"+ordue+":00.000 'order by egune";
             Cursor c = db.rawQuery(query, null);
             int id;
             if (c != null) {
@@ -669,27 +773,6 @@ public class DbEgokitua {
         return garbiketa;
     }
 
-    public void ekitaldiguztiakkendu(){
-        try {
-            db.execSQL("DELETE FROM "+TAULA_ekintza_sortzailea);
-            db.execSQL("DELETE FROM "+TAULA_ekintza);
-
-        }catch (Exception e){
-            Log.e("DBEgokitua-ekitaldiakkendu",e.toString());
-        }
-
-    }
-
-    public int ekitaldikzenbat(){
-        String query = "Select Count (*) From "+TAULA_ekintza;
-        Cursor cursor = db.rawQuery(query, null);
-        int id = 0;
-        if (cursor.moveToFirst()) {
-            do { id = cursor.getInt(0);
-            } while(cursor.moveToNext());
-        } return id;
-    }
-
 
     public Cursor ekitaldiaLortu(int id) throws SQLException
     {
@@ -702,7 +785,7 @@ public class DbEgokitua {
     }
     public Cursor ekitaldiaLortuDana(int id) throws SQLException
     {
-        String query = "SELECT tituloa,egune,lekua,deskribapena,link,kartela_link FROM "+TAULA_ekintza+" WHERE id = '"+id+"'";
+        String query = "SELECT tituloa,egune,lekua,deskribapena,link,kartela FROM "+TAULA_ekintza+" WHERE id = '"+id+"'";
         Cursor c = db.rawQuery(query, null);
         if (c != null) {
             c.moveToFirst();
