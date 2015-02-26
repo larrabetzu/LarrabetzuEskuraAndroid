@@ -485,7 +485,6 @@ public class DbEgokitua {
                 if (dbAzkenUpdated.before(ekitaldiaUpdated)) {
                     try {
                         ContentValues initialValues = new ContentValues();
-                        initialValues.put("id", pk);
                         initialValues.put(KEY_EGUNE, egune);
                         initialValues.put(KEY_AMAIERA, amaiera);
                         initialValues.put(KEY_LEKUA, lekua);
@@ -498,7 +497,8 @@ public class DbEgokitua {
                         initialValues.put(KEY_JAKINARAZPENA1, false);
 
                         String[] whereArgs = {pk+""};
-                        int id = db.update(TAULA_ekintza,initialValues,"id",whereArgs);
+                        String selection = "id = ?";
+                        int id = db.update(TAULA_ekintza,initialValues, selection, whereArgs);
                         if (id > 0) {
                             Log.d(tituloa, "ekintzaEguneratuDa");
                         }
@@ -647,7 +647,6 @@ public class DbEgokitua {
                 if (dbAzkenUpdated.before(elkarteaUpdated)) {
                     try {
                         ContentValues initialValues = new ContentValues();
-                        initialValues.put(AUT_ID, pk);
                         initialValues.put(AUT_NOR, nor);
                         initialValues.put(AUT_EMAIL, email);
                         initialValues.put(AUT_WEBGUNEA, webgunea);
@@ -658,7 +657,8 @@ public class DbEgokitua {
                         initialValues.put(AUT_GOIBURUAK, goiburua);
 
                         String[] whereArgs = {pk+""};
-                        int id = db.update(TAULA_elkartea,initialValues,"id",whereArgs);
+                        String selection = "id = ?";
+                        int id = db.update(TAULA_elkartea,initialValues, selection,whereArgs);
                         if (id > 0) {
                             Log.d(nor, "ondo eguneratu da");
                         }
