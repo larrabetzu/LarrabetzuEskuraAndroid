@@ -35,6 +35,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Ekintza extends Activity {
 
@@ -50,6 +51,7 @@ public class Ekintza extends Activity {
     TextView ekintza_deskribapena = null;
     TextView ekintza_link = null;
     Bitmap kartelabitmap = null;
+    String data;
     int id= -1;
     int hilea = 0;
     private ProgressDialog progressDialog;
@@ -65,7 +67,7 @@ public class Ekintza extends Activity {
             id = bundle.getInt("posicion");
         }
         Log.d("posicion", id + "");
-        Cursor cursor=db.ekitaldiaLortuDana(id);
+        Cursor cursor= db.ekitaldiaLortuDana(id);
         db.zarratu();
 
         kartela = (ImageView)findViewById(R.id.ekintza_kartela);
@@ -83,6 +85,7 @@ public class Ekintza extends Activity {
             ekintza_tituloa.setText(cursor.getString(0));
             ekintza_egune.setText(cursor.getString(1).substring(8, 10));
             ekintza_ordue.setText(cursor.getString(1).substring(11, 16));
+            data = cursor.getString(1);
             ekintza_lekue.setText(cursor.getString(2));
             ekintza_deskribapena.setText(cursor.getString(3));
             link = cursor.getString(4);
@@ -241,10 +244,10 @@ public class Ekintza extends Activity {
         }else{
             long ekitaldiEgunaMilise = 0;
             try{
-                final String ekitaldiegune = "2014-"+hilea+"-"+ekintza_egune.getText()+" "+ekintza_ordue.getText();
-                Log.i("ekitaldiegune", ekitaldiegune);
-                DateFormat formatoa = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                java.util.Date noz = formatoa.parse(ekitaldiegune , new ParsePosition(0));
+
+                Log.i("ekitaldiegune", data);
+                DateFormat formatoa = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+                java.util.Date noz = formatoa.parse(data , new ParsePosition(0));
                 ekitaldiEgunaMilise = noz.getTime()-900000;//900.000 => 15 min
                 Log.i("ekitaldiEgunaMilise", ekitaldiEgunaMilise + "");
             }catch (Exception e){
