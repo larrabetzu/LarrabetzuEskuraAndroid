@@ -354,6 +354,7 @@ public class DbEgokitua {
     }
 
     private void ekintzaBarriakSartu(JSONArray jarrayEkintzak){
+        int idMax = maxId(TAULA_ekintza);
         for (int i = 0; i < jarrayEkintzak.length(); i++) {
             try {
                 JSONObject c = jarrayEkintzak.getJSONObject(i);
@@ -371,20 +372,6 @@ public class DbEgokitua {
                 String created_at = fields.getString(KEY_CREATED);
                 String updated_at = fields.getString(KEY_UPDATED);
 
-                String query = "SELECT MAX(id) AS max_id FROM " + TAULA_ekintza;
-                Cursor cursor = db.rawQuery(query, null);
-                int idMax = 0;
-                if (cursor.moveToFirst()) {
-                    do {
-                        try {
-                            idMax = Integer.parseInt(cursor.getString(0));
-                            Log.i("max (id)", idMax+"");
-
-                        } catch (Exception e) {
-                            Log.e("DbE-max id", e.toString());
-                        }
-                    } while (cursor.moveToNext());
-                }
                 if (idMax < pk) {
                     try {
                         ContentValues initialValues = new ContentValues();
@@ -536,6 +523,7 @@ public class DbEgokitua {
     }
 
     private void elkarteBarriakSartu(JSONArray jarrayElkarteak){
+        int idMax = maxId(TAULA_elkartea);
         for (int i = 0; i < jarrayElkarteak.length(); i++) {
             try {
                 JSONObject c = jarrayElkarteak.getJSONObject(i);
@@ -551,20 +539,6 @@ public class DbEgokitua {
                 String ikonoa = fields.getString(AUT_IKONOA);
                 String goiburua = fields.getString(AUT_GOIBURUAK);
 
-                String query = "SELECT MAX(id) AS max_id FROM " + TAULA_elkartea;
-                Cursor cursor = db.rawQuery(query, null);
-                int idMax = 0;
-                if (cursor.moveToFirst()) {
-                    do {
-                        try {
-                            idMax = Integer.parseInt(cursor.getString(0));
-                            Log.i("max (id)", idMax+"");
-
-                        } catch (Exception e) {
-                            Log.e("DbE-max id", e.toString());
-                        }
-                    } while (cursor.moveToNext());
-                }
 
                 if(idMax < pk){
                     try {
@@ -693,6 +667,25 @@ public class DbEgokitua {
         }else{
             eguneratuElkarteak(jarrayElkarteak);
         }
+    }
+
+    private int maxId(String taula){
+        String query = "SELECT MAX(id) AS max_id FROM " + taula;
+        Cursor cursor = db.rawQuery(query, null);
+        int idMax = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    idMax = Integer.parseInt(cursor.getString(0));
+                    Log.i("max (id)", idMax+"");
+
+                } catch (Exception e) {
+                    Log.e("DbE-max id", e.toString());
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return idMax;
     }
 
     public Cursor elkarteaLortuDanak()
