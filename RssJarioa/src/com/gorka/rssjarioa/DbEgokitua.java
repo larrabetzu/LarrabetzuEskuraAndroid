@@ -303,6 +303,19 @@ public class DbEgokitua {
         }
     }
 
+    public void eguneratuEkintzak() {
+        JSONArray jarrayEkintzak = ekintzakSortu();
+        eguneratuEkintzak(jarrayEkintzak);
+        ekintzaBarriakSartu(jarrayEkintzak);
+
+    }
+
+    public void eguneratuElkarteak(){
+        JSONArray jarrayElkarteak = elkarteakSortu();
+        eguneratuElkarteak(jarrayElkarteak);
+        elkarteBarriakSartu(jarrayElkarteak);
+    }
+
     private static JSONArray elkarteakSortu(){
 
         String json = getJson("http://larrabetzu.net/wsElkarteak/");
@@ -501,26 +514,6 @@ public class DbEgokitua {
         }
     }
 
-    public void eguneratuEkintzak() {
-
-        JSONArray jarrayEkintzak = ekintzakSortu();
-        int zenbatEkintzaAPI = jarrayEkintzak.length();
-        String queryZenbatEkintza = "SELECT COUNT(*) AS NumberOfOrders FROM "+TAULA_ekintza;
-        Cursor cursorZenbatEkintza = db.rawQuery(queryZenbatEkintza, null);
-        int zenbatEkintzaDB = 0;
-        if (cursorZenbatEkintza.moveToFirst()) {
-            do { zenbatEkintzaDB = cursorZenbatEkintza.getInt(0);
-            } while(cursorZenbatEkintza.moveToNext());
-        }
-        cursorZenbatEkintza.close();
-        Log.i("zenbatEkintzaDB",zenbatEkintzaDB+"");
-        Log.i("zenbatEkintzaAPI",zenbatEkintzaAPI+"");
-        if(zenbatEkintzaAPI > zenbatEkintzaDB){
-            ekintzaBarriakSartu(jarrayEkintzak);
-        }else{
-            eguneratuEkintzak(jarrayEkintzak);
-        }
-    }
 
     private void elkarteBarriakSartu(JSONArray jarrayElkarteak){
         int idMax = maxId(TAULA_elkartea);
@@ -648,26 +641,6 @@ public class DbEgokitua {
         }
     }
 
-
-    public void eguneratuElkarteak(){
-        JSONArray jarrayElkarteak = elkarteakSortu();
-        int zenbatEkintzaAPI = jarrayElkarteak.length();
-        String queryZenbatElkartea = "SELECT COUNT(*) AS NumberOfOrders FROM "+TAULA_elkartea;
-        Cursor cursorZenbatEkintza = db.rawQuery(queryZenbatElkartea, null);
-        int zenbatElkarteDB = 0;
-        if (cursorZenbatEkintza.moveToFirst()) {
-            do { zenbatElkarteDB = cursorZenbatEkintza.getInt(0);
-            } while(cursorZenbatEkintza.moveToNext());
-        }
-        cursorZenbatEkintza.close();
-        Log.i("zenbatElkarteDB",zenbatElkarteDB+"");
-        Log.i("zenbatElkarteAPI",zenbatEkintzaAPI+"");
-        if(zenbatEkintzaAPI > zenbatElkarteDB){
-            elkarteBarriakSartu(jarrayElkarteak);
-        }else{
-            eguneratuElkarteak(jarrayElkarteak);
-        }
-    }
 
     private int maxId(String taula){
         String query = "SELECT MAX(id) AS max_id FROM " + taula;

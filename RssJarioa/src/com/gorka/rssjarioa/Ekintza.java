@@ -90,7 +90,11 @@ public class Ekintza extends Activity {
             ekintza_deskribapena.setText(cursor.getString(3));
             link = cursor.getString(4);
             String urlDb = cursor.getString(5);
-            url = urlDb.substring(0,urlDb.length()-4)+".medium."+urlDb.substring(urlDb.length()-3);
+            if( "peg".equalsIgnoreCase(urlDb.substring(urlDb.length()-3))){
+                url = urlDb.substring(0,urlDb.length()-5)+".medium."+urlDb.substring(urlDb.length()-4);
+            }else{
+                url = urlDb.substring(0,urlDb.length()-4)+".medium."+urlDb.substring(urlDb.length()-3);
+            }
         } while(cursor.moveToNext());
 
         if (link != null){
