@@ -79,7 +79,7 @@ public class DbEgokitua {
     static final String LINK_PUB_DATE = "blog_pub_date";
 
 
-	static final int DB_BERTSIOA = 16;
+	static final int DB_BERTSIOA = 17;
     static final String DB_IZENA = "NireDB";
     
     
