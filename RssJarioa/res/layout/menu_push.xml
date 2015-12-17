@@ -11,36 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:visibility="gone"
         />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/grisa"
-        android:padding="5dp"
-        >
-
-        <TextView
-            android:id="@+id/layout_menupush_zenbatpush"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Zenbat Abisu:"
-            />
-        <TextView
-            android:id="@+id/layout_menupush_pushnumeroa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center"
-            android:text=""
-            />
-
-        </LinearLayout>
 
     <EditText
         android:id="@+id/layout_menupush_tituloa"

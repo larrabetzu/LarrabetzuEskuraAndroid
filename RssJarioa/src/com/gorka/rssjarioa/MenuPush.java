@@ -14,18 +14,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.StandardExceptionParser;
 import com.google.analytics.tracking.android.Tracker;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 
@@ -36,14 +32,11 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.List;
 
 public class MenuPush extends Activity {
 
     int zenbatPushNumeroa ;
-    int pushNumeroaAktualizatuta;
     long denboraTot;
-    ParseObject parseObject;
     ParseUser user;
     boolean ping;
     String userKanala;
@@ -54,8 +47,6 @@ public class MenuPush extends Activity {
         setContentView(R.layout.menu_push);
 
         final Spinner spinnerKanala =(Spinner) findViewById(R.id.layout_menupush_kanala);
-        final TextView pushZenbatPushkanala = (TextView) findViewById(R.id.layout_menupush_zenbatpush);
-        final TextView pushNumeroa = (TextView) findViewById(R.id.layout_menupush_pushnumeroa);
         final EditText pushTituloa = (EditText) findViewById(R.id.layout_menupush_tituloa);
         final EditText pushTestua = (EditText) findViewById(R.id.layout_menupush_testua);
         final CheckBox url_rik = (CheckBox) findViewById(R.id.layout_menupush_urlcheckbox);
@@ -67,8 +58,7 @@ public class MenuPush extends Activity {
         final Button pasahitzaAldatu = (Button) findViewById(R.id.layout_menupush_pasahitza);
 
         user = ParseUser.getCurrentUser();
-        userKanala = user.getString("kanala");
-        pushZenbatPushkanala.setText("Zenbat Abisu "+userKanala+":");
+        final String kanalak[] = (String[]) user.get("kanalak");
         final Calendar c = Calendar.getInstance();
         final int mWeek = c.get(Calendar.WEEK_OF_YEAR);
 
@@ -79,7 +69,6 @@ public class MenuPush extends Activity {
         spinnerDataTartea.setAdapter(dataAdapter);
         spinnerDataTartea.setSelection(6);
 
-        final String kanalak[] ={"albisteak","udalgaiak","kirola","kultura"};
         ArrayAdapter<String> kanalakAdapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_spinner_item,kanalak);
         kanalakAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -93,35 +82,6 @@ public class MenuPush extends Activity {
             dialogToSetEmail();
         }
 
-        if(userKanala.equalsIgnoreCase("admin")){
-            zenbatPushNumeroa = 10;
-            spinnerKanala.setVisibility(View.VISIBLE);
-        }else{
-            ParseQuery<ParseObject> uery = ParseQuery.getQuery("PushNumeroa");
-            uery.whereEqualTo("channel", userKanala);
-            uery.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> scoreList, ParseException e) {
-                    if (e == null) {
-                        parseObject = scoreList.get(0);
-                        zenbatPushNumeroa = parseObject.getInt("numeroa");
-                        pushNumeroaAktualizatuta = parseObject.getInt("aktualizatua");
-                        Log.e("zenbatPushNumeroa", "" + zenbatPushNumeroa);
-                        pushNumeroa.setText("" + zenbatPushNumeroa);
-
-                        if (mWeek != pushNumeroaAktualizatuta) {
-                            parseObject.put("numeroa", 3);
-                            parseObject.put("aktualizatua", mWeek);
-                            pushNumeroa.setText("" + 3);
-                            parseObject.saveInBackground();
-
-                        }
-                    } else {
-                        Log.e("score", "Error: " + e.getMessage());
-                        showToast( "Saiatu beranduago");
-                    }
-                }
-            });
-        }
 
         spinnerKanala.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -209,7 +169,8 @@ public class MenuPush extends Activity {
                             try {
                                 data = new JSONObject("{ \"action\": \"com.gorka.rssjarioa.UPDATE_STATUS\"," +
                                         " \"alert\": \"" + pushTituloa.getText().toString() + "\", " +
-                                        "\"tex\": \"" + pushTestua.getText().toString() + "\", " +
+                                        "\"badge\" : \"Increment\","+
+                                        "\"sound\": \"default\","+
                                         "\"url\": \"" + urlText + "\" }");
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -225,10 +186,6 @@ public class MenuPush extends Activity {
                             pushTituloa.setText("");
                             pushTestua.setText("");
                             pushUrl.setText("");
-                            if(spinnerKanala.getVisibility()==View.GONE){
-                                parseObject.increment("numeroa", -1);
-                                parseObject.saveInBackground();
-                            }
                             finish();
                         }
                     }
