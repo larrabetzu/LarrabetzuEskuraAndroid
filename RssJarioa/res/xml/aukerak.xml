@@ -58,6 +58,10 @@
                 android:key="14"
                 android:title="Albisteak"
                 android:defaultValue="false" />
+            <CheckBoxPreference
+                android:key="15"
+                android:title="Agenda Abisuak"
+                android:defaultValue="false" />
         </PreferenceScreen>
 
     </PreferenceCategory>

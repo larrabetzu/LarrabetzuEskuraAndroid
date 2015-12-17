@@ -18,6 +18,7 @@ public class Hobespenak extends PreferenceActivity {
     Boolean kirola;
     Boolean udalgaiak;
     Boolean albisteak;
+    Boolean agendaAbisuak;
         @SuppressWarnings("deprecation")
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class Hobespenak extends PreferenceActivity {
             kirola= sharedPrefs.getBoolean("12", false);
             udalgaiak=sharedPrefs.getBoolean("13", false);
             albisteak= sharedPrefs.getBoolean("14", false);
+            agendaAbisuak= sharedPrefs.getBoolean("15", false);
         }
 
 
@@ -94,6 +96,13 @@ public class Hobespenak extends PreferenceActivity {
                 PushService.subscribe(this, "albisteak", Menua.class);
             }else{
                 PushService.unsubscribe(this, "albisteak");
+            }
+        }
+        if (agendaAbisuak != (sharedPrefs.getBoolean("15", false))){
+            if(!agendaAbisuak){
+                PushService.subscribe(this, "agendaAbisuak", Menua.class);
+            }else{
+                PushService.unsubscribe(this, "agendaAbisuak");
             }
         }
     }
